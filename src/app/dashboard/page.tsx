@@ -4,8 +4,11 @@ import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { socket } from 'app/lib/socket-client'
 
-const newLocal = '@/components/Editor'
-const Editor = dynamic(() => import(newLocal), {
+
+
+
+
+const Editor = dynamic(() => import('@/components/Editor'), {
   ssr: false,
 }) as React.ComponentType<{ docId: string }>
 

@@ -1,5 +1,5 @@
-import { prisma } from 'app/lib/db'
-import { verifyToken } from 'app/utils/jwt'
+import { prisma } from '@/app/lib/db'
+import { verifyToken } from '@/app/utils/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(
@@ -15,7 +15,7 @@ export async function GET(
     })
 
     if (!doc) {
-      return NextResponse.json({ error: 'Not Found' }, { status: 404 })
+      return NextResponse.json({ error: 'Document not found' }, { status: 404 })
     }
 
     if (!doc.isPublic && doc.userId !== user?.userId) {
@@ -28,8 +28,8 @@ export async function GET(
       content: doc.content,
       isPublic: doc.isPublic,
     })
-  } catch (err) {
-    console.error('GET_DOC_ERROR', err)
+  } catch (error) {
+    console.error('GET_DOC_ERROR', error)
     return NextResponse.json({ error: 'Server Error' }, { status: 500 })
   }
 }
