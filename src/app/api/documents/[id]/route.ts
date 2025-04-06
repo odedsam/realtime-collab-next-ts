@@ -4,9 +4,10 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
   try {
+    const { params } = context
     const token = req.cookies.get('token')?.value
     const user = token ? verifyToken(token) : null
 
@@ -15,7 +16,7 @@ export async function GET(
     })
 
     if (!doc) {
-      return NextResponse.json({ error: 'Document not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Not Found' }, { status: 404 })
     }
 
     if (!doc.isPublic && doc.userId !== user?.userId) {
@@ -30,6 +31,6 @@ export async function GET(
     })
   } catch (error) {
     console.error('GET_DOC_ERROR', error)
-    return NextResponse.json({ error: 'Server Error' }, { status: 500 })
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
