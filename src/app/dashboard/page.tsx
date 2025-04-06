@@ -1,7 +1,10 @@
 'use client'
 import { socket } from 'app/lib/socket-client'
+import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 
+const newLocal = '@/components/Editor'
+const Editor = dynamic(()=>import(newLocal), {ssr:false})
 export default function Dashboard() {
   const [messages, setMessages] = useState<string[]>([])
   const [input, setInput] = useState('')
@@ -27,10 +30,11 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white gap-4 p-8">
+    <div className="min-h-screen bg-gray-50 py-10 px-6 flex flex-col gap-8 items-center">
       <h1 className="text-2xl font-bold">🧠 Real-time Dashboard</h1>
 
-      <div className="w-full max-w-md border rounded p-4 space-y-2 bg-gray-50 h-64 overflow-y-auto">
+      {/* Real-Time Chat Section */}
+      <div className="w-full max-w-md border rounded p-4 space-y-2 bg-white shadow h-64 overflow-y-auto">
         {messages.map((msg, i) => (
           <div key={i} className="text-sm">{msg}</div>
         ))}
@@ -50,6 +54,9 @@ export default function Dashboard() {
           Send
         </button>
       </div>
+
+      {/* Live Collaborative Editor Section */}
+      <Editor />
     </div>
   )
 }
