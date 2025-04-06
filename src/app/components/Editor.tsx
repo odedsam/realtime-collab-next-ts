@@ -23,8 +23,23 @@ export default function Editor() {
       }
     })
 
+    const interval = setInterval(() => {
+      const html = editor?.getHTML()
+      if (html) {
+        fetch('/api/documents/save', {
+          method: 'POST',
+          body: JSON.stringify({
+            content: html,
+            title: 'Untitled',
+            id: 'demo-doc-id-1',
+          }),
+        })
+      }
+    }, 3000)
+
     return () => {
       socket.disconnect()
+      clearInterval(interval)
     }
   }, [editor])
 
