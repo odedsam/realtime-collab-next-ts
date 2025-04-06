@@ -2,9 +2,12 @@
 import { socket } from 'app/lib/socket-client'
 import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
-
 const newLocal = '@/components/Editor'
-const Editor = dynamic(()=>import(newLocal), {ssr:false})
+const Editor = dynamic(() => import(newLocal), {
+  ssr: false,
+}) as React.ComponentType<{ docId: string }>
+
+
 export default function Dashboard() {
   const [messages, setMessages] = useState<string[]>([])
   const [input, setInput] = useState('')
@@ -31,7 +34,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-6 flex flex-col gap-8 items-center">
-      <h1 className="text-2xl font-bold">🧠 Real-time Dashboard</h1>
+      <h1 className="text-2xl font-bold">Real-time Dashboard</h1>
 
       {/* Real-Time Chat Section */}
       <div className="w-full max-w-md border rounded p-4 space-y-2 bg-white shadow h-64 overflow-y-auto">
@@ -55,8 +58,7 @@ export default function Dashboard() {
         </button>
       </div>
 
-      {/* Live Collaborative Editor Section */}
-      <Editor />
+      <Editor docId="demo-doc-id-1" />
     </div>
   )
 }
