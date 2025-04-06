@@ -1,8 +1,9 @@
 'use client'
+
 import { useEffect, useState } from 'react'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import { socket } from 'app/lib/socket-client'
+import { socket } from '@/app/lib/socket-client'
 
 type EditorProps = {
   docId: string
@@ -21,25 +22,23 @@ export default function Editor({ docId }: EditorProps) {
     },
   })
 
+  // Load doc content from API
   useEffect(() => {
-    const interval = setInterval(() => {
-      const html = editor?.getHTML()
+    const fetchDoc = async () => {
+      const res = await fetch(`/api/documents/${docId}`)
+      if (res.ok) {
+        const data = await res.json()
+        setInitialContent(data.content || '<p>New doc</p>')
+        setLoaded(true)
+      }
+    }
 
-      fetch(`/api/documents/${docId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          content: html,
-          title: 'Untitled', // אפשר לשנות לשם דינמי
-        }),
-      })
-    }, 3000)
-
-    return () => clearInterval(interval)
-  }, [editor, docId])
+    fetchDoc()
+  }, [docId])
 
   useEffect(() => {
     if (!editor || !loaded) return
+
     socket.connect()
 
     socket.on('message', (html: string) => {
@@ -50,12 +49,12 @@ export default function Editor({ docId }: EditorProps) {
 
     const interval = setInterval(() => {
       const html = editor.getHTML()
-      fetch('/api/documents/save', {
-        method: 'POST',
+      fetch(`/api/documents/${docId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           content: html,
           title: 'Untitled',
-          id: docId,
         }),
       })
     }, 3000)
