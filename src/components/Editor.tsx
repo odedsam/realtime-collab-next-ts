@@ -1,5 +1,4 @@
 'use client'
-
 import { useEffect, useState } from 'react'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
@@ -23,17 +22,21 @@ export default function Editor({ docId }: EditorProps) {
   })
 
   useEffect(() => {
-    const fetchDoc = async () => {
-      const res = await fetch(`/api/documents/${docId}`)
-      if (res.ok) {
-        const data = await res.json()
-        setInitialContent(data.content || '<p>New doc</p>')
-        setLoaded(true)
-      }
-    }
+    const interval = setInterval(() => {
+      const html = editor?.getHTML()
 
-    fetchDoc()
-  }, [docId])
+      fetch(`/api/documents/${docId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          content: html,
+          title: 'Untitled', // אפשר לשנות לשם דינמי
+        }),
+      })
+    }, 3000)
+
+    return () => clearInterval(interval)
+  }, [editor, docId])
 
   useEffect(() => {
     if (!editor || !loaded) return

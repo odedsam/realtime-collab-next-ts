@@ -34,3 +34,43 @@ export async function GET(
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
+
+export async function PATCH(
+  req: NextRequest,
+  context: { params: { id: string } }
+) {
+  try {
+    const { params } = context
+    const token = req.cookies.get('token')?.value
+    const user = token ? verifyToken(token) : null
+
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const body = await req.json()
+    const { title, content, isPublic } = body
+
+    const existing = await prisma.document.findUnique({
+      where: { id: params.id },
+    })
+
+    if (!existing || existing.userId !== user.userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+    }
+
+    const updated = await prisma.document.update({
+      where: { id: params.id },
+      data: {
+        title: title ?? undefined,
+        content: content ?? undefined,
+        isPublic: isPublic ?? undefined,
+      },
+    })
+
+    return NextResponse.json(updated)
+  } catch (error) {
+    console.error('PATCH_DOC_ERROR', error)
+    return NextResponse.json({ error: 'Server Error' }, { status: 500 })
+  }
+}
