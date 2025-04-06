@@ -23,18 +23,18 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm space-y-4">
-        <h1 className="text-xl font-semibold text-center">Login</h1>
+        <h1 className="text-xl font-semibold text-center text-black">Login</h1>
         <input
           type="email"
+          className="w-full border p-2 rounded text-black"
           placeholder="Email"
-          className="w-full border p-2 rounded"
           value={email}
           onChange={e => setEmail(e.target.value)}
         />
         <input
           type="password"
+          className="w-full border p-2 rounded text-black"
           placeholder="Password"
-          className="w-full border p-2 rounded"
           value={password}
           onChange={e => setPassword(e.target.value)}
         />
