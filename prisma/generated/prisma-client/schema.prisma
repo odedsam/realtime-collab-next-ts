@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/prisma-client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                   String     @id @default(cuid())
+  email                String     @unique
+  password             String
+  name                 String?
+  resetToken           String?
+  resetTokenExpiration DateTime?
+  createdAt            DateTime   @default(now())
+  documents            Document[]
+}
+
+model Document {
+  id                   String    @id @default(cuid())
+  title                String
+  content              String    @default("")
+  userId               String
+  user                 User      @relation(fields: [userId], references: [id])
+  resetToken           String?
+  resetTokenExpiration DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+}

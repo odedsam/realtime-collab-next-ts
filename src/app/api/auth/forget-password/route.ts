@@ -1,57 +1,52 @@
-import { PrismaClient } from '@prisma/client';
-import crypto from 'crypto';
-import nodemailer from 'nodemailer';
+import { NextResponse } from "next/server";
+import { prisma } from "@/app/lib/db";
+import crypto from "crypto";
+import sendgridMail from "@sendgrid/mail";
 
-const prisma = new PrismaClient();
+sendgridMail.setApiKey(process.env.SENDGRID_API_KEY!);
 
-export async function POST(req: Request): Promise<Response> {
-  const { email }: { email: string } = await req.json();
+const generateResetToken = () => {
+  return crypto.randomBytes(32).toString("hex");
+};
 
-  if (!email) {
-    return new Response(JSON.stringify({ error: 'Email is required' }), { status: 400 });
-  }
+export async function POST(req: Request) {
+  const { email } = await req.json();
 
   const user = await prisma.user.findUnique({
     where: { email },
   });
 
   if (!user) {
-    return new Response(JSON.stringify({ error: 'User not found' }), { status: 404 });
+    return NextResponse.json({ message: "User not found." }, { status: 404 });
   }
 
-  const resetToken = crypto.randomBytes(32).toString('hex');
-  const resetTokenExpiration = Date.now() + 3600000;
+  const resetToken = generateResetToken();
+  const resetTokenExpiration = new Date(Date.now() + 3600000);
 
-  /*  storing the reset token and expiration in the database */
   await prisma.user.update({
     where: { email },
     data: {
-      resetToken,
-      resetTokenExpiration,
-    },
+      resetToken: resetToken,
+      resetTokenExpiration: resetTokenExpiration,
+    } as any,
   });
 
-  // send password reset email
+  const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+
+  const msg = {
+    to: email,
+    from: process.env.SENDGRID_EMAIL || "your-email@yourdomain.com",
+    subject: "Password Reset Request",
+    html: `
+      <p>Click <a href="${resetUrl}">here</a> to reset your password. The link will expire in 1 hour.</p>
+    `,
+  };
+
   try {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER!,
-        pass: process.env.EMAIL_PASSWORD!,
-      },
-    });
-
-    const resetLink = `${process.env.NEXT_PUBLIC_APP_URL}/auth/reset-password?token=${resetToken}`;
-
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER!,
-      to: email,
-      subject: 'Password Reset Request',
-      html: `<p>Click <a href="${resetLink}">here</a> to reset your password.</p>`,
-    });
-
-    return new Response(JSON.stringify({ success: true }), { status: 200 });
+    await sendgridMail.send(msg);
+    return NextResponse.json({ message: "Password reset email sent." }, { status: 200 });
   } catch (error) {
-    return new Response(JSON.stringify({ error: 'Error sending email' }), { status: 500 });
+    console.error("Error sending email:", error);
+    return NextResponse.json({ message: "Error sending email." }, { status: 500 });
   }
 }

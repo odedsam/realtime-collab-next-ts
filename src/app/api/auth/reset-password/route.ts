@@ -1,35 +1,59 @@
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcryptjs';
+import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
+import { prisma } from "@/app/lib/db";
+import bcrypt from "bcrypt";
 
-const prisma = new PrismaClient();
+export async function POST(req: NextRequest) {
+  const { token, newPassword } = await req.json();
 
-export async function POST(req: Request): Promise<Response> {
-  const { token, password }: { token: string; password: string } = await req.json();
 
-  if (!token || !password) {
-    return new Response(JSON.stringify({ error: 'Token and password are required' }), { status: 400 });
-  }
-
-  const user = await prisma.user.findUnique({
-    where: { resetToken: token },
+  const document = await prisma.document.findFirst({
+    where: {
+      resetToken: token,
+      resetTokenExpiration: {
+        gte: new Date(),
+      },
+    },
   });
 
-  if (!user || user.resetTokenExpiration < Date.now()) {
-    return new Response(JSON.stringify({ error: 'Invalid or expired token' }), { status: 400 });
+  if (!document) {
+    return NextResponse.json(
+      { message: "Invalid or expired token." },
+      { status: 400 }
+    );
   }
 
-  //  new password hashed
-  const hashedPassword = await bcrypt.hash(password, 10);
 
-  // udate the user's password and clear the reset token
+  const user = await prisma.user.findUnique({
+    where: { id: document.userId },
+  });
+
+  if (!user) {
+    return NextResponse.json(
+      { message: "User not found." },
+      { status: 404 }
+    );
+  }
+
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+
   await prisma.user.update({
     where: { id: user.id },
     data: {
       password: hashedPassword,
+    },
+  });
+
+  await prisma.document.update({
+    where: { id: document.id },
+    data: {
       resetToken: null,
       resetTokenExpiration: null,
     },
   });
 
-  return new Response(JSON.stringify({ success: true }), { status: 200 });
+  return NextResponse.json(
+    { message: "Password successfully reset." },
+    { status: 200 }
+  );
 }

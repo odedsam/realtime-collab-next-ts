@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "./generated/prisma-client"
 }
 
 datasource db {
@@ -8,21 +9,25 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(cuid())
-  email     String     @unique
-  password  String
-  name      String?
-  createdAt DateTime   @default(now())
-  documents Document[]
+  id                   String     @id @default(cuid())
+  email                String     @unique
+  password             String
+  name                 String?
+  resetToken           String?
+  resetTokenExpiration DateTime?
+  createdAt            DateTime   @default(now())
+  documents            Document[]
 }
 
 model Document {
-  id        String   @id @default(cuid())
-  title     String
-  content   String   @default("")
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  updatedAt DateTime @updatedAt
-  createdAt DateTime @default(now())
-  isPublic  Boolean  @default(false)
+  id                    String   @id @default(cuid())
+  title                 String
+  content               String   @default("")
+  userId                String
+  user                  User     @relation(fields: [userId], references: [id])
+  resetToken            String?
+  resetTokenExpiration  DateTime?
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
 }
+
