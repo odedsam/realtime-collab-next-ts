@@ -1,24 +1,25 @@
-'use client'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
 
   const handleLogin = async () => {
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
       body: JSON.stringify({ email, password }),
-    })
+    });
 
     if (res.ok) {
-      router.push('/dashboard')
+      router.push("/dashboard");
     } else {
-      alert('Login failed')
+      alert("Login failed");
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -29,22 +30,24 @@ export default function LoginPage() {
           className="w-full border p-2 rounded text-black"
           placeholder="Email"
           value={email}
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
           className="w-full border p-2 rounded text-black"
           placeholder="Password"
           value={password}
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
         />
-        <button
-          onClick={handleLogin}
-          className="w-full bg-black text-white py-2 rounded hover:opacity-80"
-        >
+        <button onClick={handleLogin} className="w-full bg-black text-white py-2 rounded hover:opacity-80">
           Login
         </button>
+        <div className="text-center mt-4">
+          <Link href="/auth/forgot-password" className="text-blue-500 hover:underline">
+            Forgot Password?
+          </Link>
+        </div>
       </div>
     </div>
-  )
+  );
 }

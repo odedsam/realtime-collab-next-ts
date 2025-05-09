@@ -4,7 +4,6 @@ import crypto from "crypto";
 import sendgridMail from "@sendgrid/mail";
 
 sendgridMail.setApiKey(process.env.SENDGRID_API_KEY!);
-
 const generateResetToken = () => {
   return crypto.randomBytes(32).toString("hex");
 };
@@ -12,6 +11,7 @@ const generateResetToken = () => {
 export async function POST(req: Request) {
   const { email } = await req.json();
 
+  const urlToReset = `${process.env.FRONTEND_URL}` || `http://localhost:3000`;
   const user = await prisma.user.findUnique({
     where: { email },
   });
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     } as any,
   });
 
-  const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`;
+  const resetUrl = `${urlToReset}/reset-password?token=${resetToken}`;
 
   const msg = {
     to: email,
