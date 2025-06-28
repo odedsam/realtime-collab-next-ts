@@ -2,15 +2,15 @@
 @import 'tw-animate-css';
 
 :root {
-  --background: #ffffff;
+  --background: #fff;
   --foreground: #171717;
   --clr-lay: #232946;
   --clr-main: #b8c1ec;
   --clr-pink: #eebbc3;
   --clr-stroke: #121629;
   --clr-headline: #fffffe;
-  --shadow-soft: 0 4px 12px rgba(35, 41, 70, 0.2);
-  --shadow-strong: 0 8px 24px rgba(18, 22, 41, 0.35);
+  --shadow-soft: 0 4px 12px rgb(35 41 70 / 20%);
+  --shadow-strong: 0 8px 24px rgb(18 22 41 / 35%);
 }
 
 @theme inline {
@@ -36,31 +36,38 @@
   }
 }
 
+body {
+  font-family: var(--font-sans);
+  color: var(--foreground);
+  background: var(--background);
+}
+
 @layer components {
+  .input {
+    @apply text-lay border-main placeholder:text-lay/60 focus:border-lay rounded-lg border-2 bg-gray-300 px-4 py-3 transition-colors outline-none focus:bg-gray-200;
+  }
+
+  .input-error {
+    @apply text-lay border-pnk placeholder:text-lay/60 focus:border-stroke w-full rounded-lg border-2 bg-gray-300 px-4 py-3 transition-colors outline-none focus:bg-gray-200;
+  }
+
   .card {
     @apply bg-main text-lay border-stroke rounded-lg;
   }
+
   .btn {
-    @apply bg-pnk text-lay w-full px-8 py-4 hover:opacity-80 rounded-sm;
+    @apply bg-pnk text-lay w-full rounded-md px-8 py-4 font-bold hover:opacity-80;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
-}
-
-/* Box Shadows */
-
+/* Box Shadows & Gradients */
 .shad-soft {
-  box-shadow: 0 4px 12px rgba(35, 41, 70, 0.2);
-}
-.shad-str {
-  box-shadow: 0 8px 24px rgba(18, 22, 41, 0.35);
+  box-shadow: 0 4px 12px rgb(35 41 70 / 20%);
 }
 
-/* Gradients  */
+.shad-str {
+  box-shadow: 0 8px 24px rgb(18 22 41 / 35%);
+}
 
 .grad-main {
   background: linear-gradient(135deg, #b8c1ec, #eebbc3);
@@ -68,4 +75,19 @@ body {
 
 .grad-deep {
   background: radial-gradient(circle at center, #232946, #121629);
+}
+
+.input {
+  @apply text-lay border-main placeholder:text-lay/60 focus:border-lay bg-background focus:bg-main/5 w-full rounded-lg border-2 px-4 py-3 transition-colors outline-none;
+}
+
+.input-error {
+  @apply text-lay border-pnk placeholder:text-lay/60 focus:border-stroke bg-background focus:bg-pnk/5 w-full rounded-lg border-2 px-4 py-3 transition-colors outline-none;
+}
+
+.mar {
+  display: flex;
+  width: 50px;
+  text-align: center;
+  height: 2;
 }

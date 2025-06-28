@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@stylistic/stylelint-config": "^2.0.0",
     "@tailwindcss/postcss": "^4",
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.9",
@@ -50,10 +51,6 @@
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.13",
     "rimraf": "^6.0.1",
-    "stylelint": "^16.21.0",
-    "stylelint-config-prettier": "^9.0.5",
-    "stylelint-config-recess-order": "^7.1.0",
-    "stylelint-order": "^7.0.0",
     "tailwindcss": "^4",
     "ts-prune": "^0.10.3",
     "tsx": "^4.20.3",
