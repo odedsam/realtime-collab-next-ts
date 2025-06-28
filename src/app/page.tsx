@@ -1,8 +1,9 @@
+//home
 import Link from 'next/link'
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-gray-200 px-6 py-16 text-center">
+    <main className="min-h-screen flex flex-col items-center justify-center bg-zinc-800 px-6 py-16 text-center">
       <h1 className="text-4xl font-bold mb-4 text-teal-300">📄 Real-time Collaboration Tool</h1>
       <p className="text-gray-600 mb-8">
         Create, edit, and share documents live with your team — fast and secure.

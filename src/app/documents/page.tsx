@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 type Doc = {
   id: string;
   title: string;
-  isPublic:boolean;
+  isPublic: boolean;
 };
 
 export default function DocumentsPage() {
@@ -98,7 +98,7 @@ export default function DocumentsPage() {
               </button>
 
               <button onClick={() => toggleShare(doc.id)} className="text-sm text-green-600 hover:underline">
-                 Share
+                Share
               </button>
             </div>
           </li>
