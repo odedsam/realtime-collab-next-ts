@@ -1,29 +1,29 @@
-import { verifyToken } from '@/utils/jwt'
-import { NextRequest, NextResponse } from 'next/server'
+import { verifyToken } from '@/utils/jwt';
+import { NextRequest, NextResponse } from 'next/server';
 
-const protectedRoutes = ['/dashboard']
+const protectedRoutes = ['/dashboard'];
 
 export function middleware(req: NextRequest) {
-  const token = req.cookies.get('token')?.value
-  const isProtected = protectedRoutes.some(path => req.nextUrl.pathname.startsWith(path))
+  const token = req.cookies.get('token')?.value;
+  const isProtected = protectedRoutes.some((path) => req.nextUrl.pathname.startsWith(path));
 
   if (isProtected && !token) {
-    return NextResponse.redirect(new URL('/login', req.url))
+    return NextResponse.redirect(new URL('/auth/login', req.url));
   }
 
   if (isProtected && token) {
-    const decoded = verifyToken(token)
+    const decoded = verifyToken(token);
     if (!decoded) {
-      return NextResponse.redirect(new URL('/login', req.url))
+      return NextResponse.redirect(new URL('/auth/login', req.url));
     }
   }
 
-  return NextResponse.next()
+  return NextResponse.next();
 }
 
 export const config = {
   matcher: ['/dashboard/:path*'],
-}
+};
 
 // import { prisma } from '@/lib/prisma'
 // import { NextRequest, NextResponse } from 'next/server'

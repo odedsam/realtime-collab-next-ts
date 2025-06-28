@@ -1,40 +1,38 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { signToken } from '@/utils/jwt';
-import { comparePassword } from '@/utils/hash';
 import { prisma } from '@/lib';
 
-export async function POST(req: NextRequest) {
-  try {
-    const { email, password } = await req.json();
+// export async function POST(req: NextRequest) {
+//   try {
+//     const { email, password } = await req.json();
 
-    if (!email || !password) {
-      return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
-    }
+//     if (!email || !password) {
+//       return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
+//     }
 
-    const user = await prisma.user.findUnique({ where: { email } });
+//     const user = await prisma.user.findUnique({ where: { email } });
 
-    if (!user) {
-      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
-    }
+//     if (!user) {
+//       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+//     }
 
-    const valid = await comparePassword(password, user.password);
+//     const valid = await comparePassword(password, user.password);
 
-    if (!valid) {
-      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
-    }
+//     if (!valid) {
+//       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
+//     }
 
-    const token = signToken({ userId: user.id });
+//     const token = signToken({ userId: user.id });
 
-    const response = NextResponse.json({ message: 'Logged in' });
-    response.cookies.set('token', token, {
-      httpOnly: true,
-      path: '/',
-      maxAge: 60 * 60 * 24 * 7,
-    });
+//     const response = NextResponse.json({ message: 'Logged in' });
+//     response.cookies.set('token', token, {
+//       httpOnly: true,
+//       path: '/',
+//       maxAge: 60 * 60 * 24 * 7,
+//     });
 
-    return response;
-  } catch (err) {
-    console.error('LOGIN_ERROR', err);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
-  }
-}
+//     return response;
+//   } catch (err) {
+//     console.error('LOGIN_ERROR', err);
+//     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+//   }
+// }

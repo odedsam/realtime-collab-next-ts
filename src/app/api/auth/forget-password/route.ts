@@ -1,11 +1,11 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@/app/lib/db";
-import crypto from "crypto";
-import sendgridMail from "@sendgrid/mail";
+import { NextResponse } from 'next/server';
+import { prisma } from '@/lib';
+import crypto from 'crypto';
+import sendgridMail from '@sendgrid/mail';
 
 sendgridMail.setApiKey(process.env.SENDGRID_API_KEY!);
 const generateResetToken = () => {
-  return crypto.randomBytes(32).toString("hex");
+  return crypto.randomBytes(32).toString('hex');
 };
 
 export async function POST(req: Request) {
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
   });
 
   if (!user) {
-    return NextResponse.json({ message: "User not found." }, { status: 404 });
+    return NextResponse.json({ message: 'User not found.' }, { status: 404 });
   }
 
   const resetToken = generateResetToken();
@@ -35,8 +35,8 @@ export async function POST(req: Request) {
 
   const msg = {
     to: email,
-    from: process.env.SENDGRID_EMAIL || "your-email@yourdomain.com",
-    subject: "Password Reset Request",
+    from: process.env.SENDGRID_EMAIL || 'your-email@yourdomain.com',
+    subject: 'Password Reset Request',
     html: `
       <p>Click <a href="${resetUrl}">here</a> to reset your password. The link will expire in 1 hour.</p>
     `,
@@ -44,9 +44,9 @@ export async function POST(req: Request) {
 
   try {
     await sendgridMail.send(msg);
-    return NextResponse.json({ message: "Password reset email sent." }, { status: 200 });
+    return NextResponse.json({ message: 'Password reset email sent.' }, { status: 200 });
   } catch (error) {
-    console.error("Error sending email:", error);
-    return NextResponse.json({ message: "Error sending email." }, { status: 500 });
+    console.error('Error sending email:', error);
+    return NextResponse.json({ message: 'Error sending email.' }, { status: 500 });
   }
 }

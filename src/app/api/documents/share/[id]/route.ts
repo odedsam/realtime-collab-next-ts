@@ -1,4 +1,4 @@
-import { prisma } from 'app/lib/db'
+import { prisma } from '@/lib'
 import { verifyToken } from '@/utils/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
