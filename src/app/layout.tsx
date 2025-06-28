@@ -1,30 +1,20 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import type { Viewport } from 'next';
+import { appMetaData, geistSans, geistMono } from '@/config/appConfig';
+import { Toaster } from 'sonner';
+import './globals.css';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+export const metadata = appMetaData;
+export const viewport: Viewport = { themeColor: '#27272A' };
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+export type LayoutProps = Readonly<{ children: React.ReactNode }>;
 
-export const metadata: Metadata = {
-  title: "WEB RTC Oded.dev",
-  description: "Real Time Communication App",
-};
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>{children}</body>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        {children}
+        <Toaster />
+      </body>
     </html>
   );
 }
