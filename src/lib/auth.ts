@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from './db'
+import { prisma } from './prisma'
 import { signToken } from '../utils/jwt'
 import { comparePassword } from '../utils/hash'
 

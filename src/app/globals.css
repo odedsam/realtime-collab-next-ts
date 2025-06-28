@@ -44,19 +44,21 @@ body {
 
 @layer components {
   .input {
-    @apply text-lay border-main placeholder:text-lay/60 focus:border-lay rounded-lg border-2 bg-gray-300 px-4 py-3 transition-colors outline-none focus:bg-gray-200;
+    @apply text-lay border-main placeholder:text-lay/60 focus:border-lay  w-full rounded-lg border-2 bg-gray-100 px-4 py-3 transition-colors outline-none focus:bg-gray-300;
   }
 
   .input-error {
-    @apply text-lay border-pnk placeholder:text-lay/60 focus:border-stroke w-full rounded-lg border-2 bg-gray-300 px-4 py-3 transition-colors outline-none focus:bg-gray-200;
+    @apply text-lay border-pnk placeholder:text-lay/60 focus:border-stroke w-full rounded-lg border-2 bg-gray-100 px-4 py-3 transition-colors outline-none focus:bg-gray-300;
   }
-
-  .card {
+  .card-main {
     @apply bg-main text-lay border-stroke rounded-lg;
+  }
+  .card-lay{
+    @apply bg-lay text-main border-stroke rounded-lg;
   }
 
   .btn {
-    @apply bg-pnk text-lay w-full rounded-md px-8 py-4 font-bold hover:opacity-80;
+    @apply bg-pnk text-lay w-full cursor-pointer rounded-md px-8 py-4 font-bold hover:bg-[#efa1ad] hover:text-black;
   }
 }
 
@@ -75,19 +77,4 @@ body {
 
 .grad-deep {
   background: radial-gradient(circle at center, #232946, #121629);
-}
-
-.input {
-  @apply text-lay border-main placeholder:text-lay/60 focus:border-lay bg-background focus:bg-main/5 w-full rounded-lg border-2 px-4 py-3 transition-colors outline-none;
-}
-
-.input-error {
-  @apply text-lay border-pnk placeholder:text-lay/60 focus:border-stroke bg-background focus:bg-pnk/5 w-full rounded-lg border-2 px-4 py-3 transition-colors outline-none;
-}
-
-.mar {
-  display: flex;
-  width: 50px;
-  text-align: center;
-  height: 2;
 }
