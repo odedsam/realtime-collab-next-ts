@@ -1,4 +1,5 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 :root {
   --background: #ffffff;
@@ -10,8 +11,6 @@
   --clr-headline: #fffffe;
   --shadow-soft: 0 4px 12px rgba(35, 41, 70, 0.2);
   --shadow-strong: 0 8px 24px rgba(18, 22, 41, 0.35);
-  --gradient-main: linear-gradient(135deg, #b8c1ec, #eebbc3);
-  --gradient-deep: radial-gradient(circle at center, #232946, #121629);
 }
 
 @theme inline {
@@ -28,10 +27,6 @@
   /* Box Shadows */
   --color-shad-soft: var(--shadow-soft);
   --color-shad-str: var(--shadow-strong);
-  /* Gradients */
-  --color-grad-main: var(--gradient-main);
-  --color-grad-deep: var(--gradient-deep);
-
 }
 
 @media (prefers-color-scheme: dark) {
@@ -41,8 +36,36 @@
   }
 }
 
+@layer components {
+  .card {
+    @apply bg-main text-lay border-stroke rounded-lg;
+  }
+  .btn {
+    @apply bg-pnk text-lay w-full px-8 py-4 hover:opacity-80 rounded-sm;
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+}
+
+/* Box Shadows */
+
+.shad-soft {
+  box-shadow: 0 4px 12px rgba(35, 41, 70, 0.2);
+}
+.shad-str {
+  box-shadow: 0 8px 24px rgba(18, 22, 41, 0.35);
+}
+
+/* Gradients  */
+
+.grad-main {
+  background: linear-gradient(135deg, #b8c1ec, #eebbc3);
+}
+
+.grad-deep {
+  background: radial-gradient(circle at center, #232946, #121629);
 }
