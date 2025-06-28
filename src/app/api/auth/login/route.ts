@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { signToken } from 'app/utils/jwt'
-import { comparePassword } from 'app/utils/hash'
+import { signToken } from '@/utils/jwt'
+import { comparePassword } from '@/utils/hash'
 import { prisma } from 'app/lib/db'
 
 export async function POST(req: NextRequest) {

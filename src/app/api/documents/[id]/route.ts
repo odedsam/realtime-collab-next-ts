@@ -1,5 +1,5 @@
 import { prisma } from '@/app/lib/db'
-import { verifyToken } from '@/app/utils/jwt'
+import { verifyToken } from '@/utils/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(
