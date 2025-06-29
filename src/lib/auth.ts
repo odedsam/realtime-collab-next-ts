@@ -1,15 +1,9 @@
-import { NextRequest } from 'next/server';
+import type { NextRequest } from 'next/server';
+import type { RateLimitEntry, CheckRateLimit, PasswordStrengthAnalyzer } from '@/types/auth';
 import { JWT_SECRET } from '@/config/env';
 import crypto from 'crypto';
 
 // Advanced rate limiting with Redis-like behavior using Map
-interface RateLimitEntry {
-  count: number;
-  resetTime: number;
-  blocked: boolean;
-  blockUntil?: number;
-}
-
 const rateLimitStore = new Map<string, RateLimitEntry>();
 
 // Enhanced security utilities
@@ -81,7 +75,7 @@ export class SecurityUtils {
     maxRequests: number = 5,
     windowMs: number = 15 * 60 * 1000,
     blockDurationMs: number = 60 * 60 * 1000,
-  ): { allowed: boolean; retryAfter?: number } {
+  ): CheckRateLimit {
     const now = Date.now();
     const record = rateLimitStore.get(identifier);
 
@@ -114,11 +108,7 @@ export class SecurityUtils {
   }
 
   // Password strength analyzer
-  static analyzePasswordStrength(password: string): {
-    score: number;
-    feedback: string[];
-    isStrong: boolean;
-  } {
+  static analyzePasswordStrength(password: string): PasswordStrengthAnalyzer {
     const feedback: string[] = [];
     let score = 0;
 
@@ -167,5 +157,3 @@ export class SecurityUtils {
     }
   }
 }
-
-// Enhanced JWT utilities with refresh token support
