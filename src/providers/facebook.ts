@@ -1,7 +1,6 @@
 import type { NextRequest } from 'next/server';
 import type { AuthResponse } from '@/types/auth';
 import { prisma } from '@/lib';
-import { ENV } from '@/config/env';
 import { JWTUtils } from '@/utils/jwt';
 import { SessionManager } from '@/lib/session';
 import { ActivityLogger } from '@/utils';
@@ -12,9 +11,9 @@ export async function getFacebookUserData(code: string, request: NextRequest): P
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
       code,
-      client_id: ENV.FACEBOOK_CLIENT_ID,
-      client_secret: ENV.FACEBOOK_CLIENT_SECRET,
-      redirect_uri: ENV.FACEBOOK_REDIRECT_URI,
+      client_id: process.env.NEXT_PUBLIC_FACEBOOK_CLIENT_ID!,
+      client_secret: process.env.FACEBOOK_CLIENT_SECRET!,
+      redirect_uri: process.env.FACEBOOK_REDIRECT_URI!,
     }),
   });
 

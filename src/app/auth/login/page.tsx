@@ -1,8 +1,8 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { ButtonFacebook, ButtonGoogle } from '@/components/ui/Buttons';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -77,9 +77,9 @@ export default function LoginPage() {
             {isLoading ? 'Logging in...' : 'Login'}
           </button>
         </form>
-        <div className="my-4 flex flex-col items-center justify-center py-4">
-          <ButtonGoogle onClick={RedirectGoogle} />
-          <ButtonFacebook onClick={RedirectFacebook} />
+        <div className="my-4 flex flex-col items-center justify-center py-4 gap-4">
+          <ButtonGoogle onClick={RedirectGoogle} disabled={true} />
+          <ButtonFacebook onClick={RedirectFacebook} disabled={true} />
         </div>
         <div className="mt-4 text-center">
           <p className="text-sm text-blue-500 transition-colors hover:text-black">

@@ -1,22 +1,21 @@
-import { ENV } from '@/config/env';
 import { UserPayload } from '@/types/auth';
 import jwt, { SignOptions } from 'jsonwebtoken';
 
 export class JWTUtils {
   static sign(userId: string): string {
-    const secret = ENV.JWT_SECRET as string;
+    const secret = process.env.JWT_SECRET! as string;
     const payload: UserPayload = { userId };
     const options: SignOptions = { expiresIn: '7d' };
     return jwt.sign(payload, secret, options);
   }
 
   static signRefresh(payload: object): string {
-    return jwt.sign(payload, ENV.JWT_SECRET!, { expiresIn: '30d' });
+    return jwt.sign(payload, process.env.JWT_SECRET!!, { expiresIn: '30d' });
   }
 
   static verify(token: string): any {
     try {
-      return jwt.verify(token, ENV.JWT_SECRET!);
+      return jwt.verify(token, process.env.JWT_SECRET!!);
     } catch (error) {
       return null;
     }

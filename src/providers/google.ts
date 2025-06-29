@@ -1,7 +1,6 @@
 import type { NextRequest } from 'next/server';
 import type { AuthResponse } from '@/types/auth';
 import { prisma } from '@/lib';
-import { ENV } from '@/config/env';
 import { JWTUtils } from '@/utils/jwt';
 import { SessionManager } from '@/lib/session';
 import { ActivityLogger } from '@/utils';
@@ -12,9 +11,9 @@ export async function getGoogleUserData(code: string, request: NextRequest): Pro
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
       code,
-      client_id: ENV.GOOGLE_CLIENT_ID!,
-      client_secret: ENV.GOOGLE_CLIENT_SECRET!,
-      redirect_uri: ENV.GOOGLE_REDIRECT_URI!,
+      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
+      client_secret: process.env.GOOGLE_CLIENT_SECRET!,
+      redirect_uri: process.env.GOOGLE_REDIRECT_URI!,
       grant_type: 'authorization_code',
     }),
   });

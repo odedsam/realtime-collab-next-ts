@@ -1,7 +1,6 @@
 import type { NextRequest } from 'next/server';
 import type { AuthResponse } from '@/types/auth';
 import { prisma } from '@/lib';
-import { BCRYPT_ROUNDS } from '@/config/env';
 import { SecurityUtils } from '@/lib/auth';
 import { JWTUtils } from '@/utils/jwt';
 import { SessionManager } from '@/lib/session';
@@ -23,7 +22,7 @@ export async function signUpWithEmail(email: string, password: string, request: 
     throw new Error(`Password too weak. ${strength.feedback.join(', ')}`);
   }
 
-  const hashed = await bcrypt.hash(password, BCRYPT_ROUNDS);
+  const hashed = await bcrypt.hash(password, process.env.BCRYPT_ROUNDS!);
 
   const user = await prisma.user.create({
     data: {

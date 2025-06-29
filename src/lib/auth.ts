@@ -1,6 +1,5 @@
 import type { NextRequest } from 'next/server';
 import type { RateLimitEntry, CheckRateLimit, PasswordStrengthAnalyzer } from '@/types/auth';
-import { ENV } from '@/config/env';
 import crypto from 'crypto';
 
 // Advanced rate limiting with Redis-like behavior using Map
@@ -10,7 +9,7 @@ const rateLimitStore = new Map<string, RateLimitEntry>();
 export class SecurityUtils {
   // Generate secure hash for various purposes
   static generateSecureHash(data: string, salt?: string): string {
-    const hashSalt = salt || ENV.JWT_SECRET;
+    const hashSalt = salt || process.env.JWT_SECRET!;
     return crypto
       .createHash('sha256')
       .update(data + hashSalt)

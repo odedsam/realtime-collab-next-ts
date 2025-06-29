@@ -1,5 +1,4 @@
 import type { NextRequest } from 'next/server';
-import { BCRYPT_ROUNDS } from '@/config/env';
 import { prisma } from '@/lib';
 import { SecurityUtils } from '@/lib/auth';
 import { ActivityLogger } from '@/utils';
@@ -7,9 +6,15 @@ import { getGoogleUserData } from './google';
 import { getFacebookUserData } from './facebook';
 import { signUpWithEmail } from './email';
 import { handleOAuthLogin } from './handler';
-
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
+
+
+
+
+
+
+
 
 export class AuthProviderHandler {
   static getGoogleUserData = getGoogleUserData;
@@ -62,7 +67,7 @@ export class PasswordResetManager {
       throw new Error(`Password is too weak. ${passwordStrength.feedback.join(', ')}`);
     }
 
-    const hashedPassword = await bcrypt.hash(newPassword, BCRYPT_ROUNDS);
+    const hashedPassword = await bcrypt.hash(newPassword, process.env.BCRYPT_ROUNDS!);
 
     await prisma.$transaction(async (tx) => {
       // Update password and clear reset token

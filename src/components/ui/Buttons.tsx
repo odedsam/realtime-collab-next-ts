@@ -109,12 +109,13 @@ export const CarouselButton = ({ direction, onClick, disabled, className }: Caro
   />
 );
 
-export const ButtonFacebook = ({ onClick }: { onClick?: () => void }) => {
-  const FacebookIcon = () => <img src="/icons/facebook-icon.svg" alt="Facebook" className="h-5 w-5" />;
+export const ButtonFacebook = ({ onClick,disabled }: { disabled?:boolean,onClick?: () => void }) => {
+  const FacebookIcon = () => <img src="/facebook-icon.svg" alt="Facebook" className="h-5 w-5" />;
   return (
     <button
       type="button"
       className="font-manrope flex w-full cursor-pointer items-center justify-center gap-2 rounded bg-[#1877F3] px-4 py-2 text-white transition hover:bg-[#145db2]"
+      disabled={disabled}
       onClick={onClick}>
       <FacebookIcon />
       Continue with Facebook
@@ -122,7 +123,7 @@ export const ButtonFacebook = ({ onClick }: { onClick?: () => void }) => {
   );
 };
 
-export const ButtonGoogle = ({ onClick }: { onClick?: () => void }) => {
+export const ButtonGoogle = ({ onClick,disabled }: { disabled?:boolean,onClick?: () => void }) => {
   const GoogleIcon = () => {
     return (
       <svg className="h-6 w-6" viewBox="0 0 48 48">
@@ -151,6 +152,7 @@ export const ButtonGoogle = ({ onClick }: { onClick?: () => void }) => {
     <button
       type="button"
       className="font-manrope flex w-full cursor-pointer items-center justify-center gap-2 rounded border border-gray-300 bg-white px-4 py-2 text-black transition hover:bg-gray-200"
+      disabled={disabled}
       onClick={onClick}>
       <GoogleIcon />
       Continue with Google

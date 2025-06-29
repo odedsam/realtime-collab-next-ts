@@ -58,7 +58,7 @@ body {
   }
 
   .btn {
-    @apply bg-pnk text-lay w-full cursor-pointer rounded-md px-8 py-4 font-bold hover:bg-[#efa1ad] hover:text-black;
+    @apply bg-pnk text-lay w-full cursor-pointer rounded-md px-8 py-3 font-bold hover:bg-[#efa1ad] hover:text-black;
   }
 }
 
