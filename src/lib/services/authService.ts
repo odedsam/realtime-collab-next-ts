@@ -3,10 +3,11 @@ import type { NextRequest } from 'next/server';
 import { AccountType, PrismaOAuthProvider } from '@/types/auth';
 import { BCRYPT_ROUNDS } from '@/config/env';
 import { prisma, SecurityUtils } from '@/lib';
-import { SessionManager, JWTUtils, OAuthProviderHandler, PasswordResetManager, ActivityLogger } from '@/utils';
+import { JWTUtils, OAuthProviderHandler, PasswordResetManager, ActivityLogger } from '@/utils';
 import { signUpSchema, signInSchema, oauthSchema, refreshTokenSchema, resetPasswordSchema, confirmResetSchema } from '@/utils/schemas';
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
+import { SessionManager } from '../session';
 
 // Main authentication serviceƒ
 

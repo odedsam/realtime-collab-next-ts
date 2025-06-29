@@ -1,5 +1,3 @@
-//register
-
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -19,7 +17,7 @@ export default function RegisterPage() {
     setError('');
 
     try {
-      const res = await fetch('/api/auth/register', {
+      const res = await fetch('/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -31,7 +29,7 @@ export default function RegisterPage() {
         router.push('/dashboard');
       } else {
         const data = await res.json();
-        setError(data.message || 'Login failed');
+        setError(data.error || 'Registration failed');
       }
     } catch (err) {
       setError('Something went wrong. Please try again.');
@@ -45,37 +43,18 @@ export default function RegisterPage() {
       <div className="card-main w-full max-w-sm space-y-4 rounded-xl p-8 shadow-md">
         <h1 className="text-center text-xl font-semibold text-black">Sign Up</h1>
         <form onSubmit={handleRegister} className="w-full space-y-4">
-          <input
-            type="text"
-            placeholder="Name"
-            className="input"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            className="input"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            className="input"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <input type="text" placeholder="Name" className="input" value={name} onChange={(e) => setName(e.target.value)} />
+          <input type="email" placeholder="Email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input type="password" placeholder="Password" className="input" value={password} onChange={(e) => setPassword(e.target.value)} />
           <button type="submit" disabled={isLoading} className="btn">
-            Register
+            {isLoading ? 'Registering...' : 'Register'}
           </button>
+          {error && <p className="text-center text-sm text-red-500">{error}</p>}
         </form>
 
-        <p className="text-sm text-blue-500 transition-colors hover:text-black text-center">
+        <p className="text-center text-sm text-blue-500 transition-colors hover:text-black">
           Already have an account?
-          <Link
-            href="/auth/login"
-            className="ml-2 text-sm text-blue-900 underline transition-colors hover:font-semibold hover:text-black">
+          <Link href="/auth/login" className="ml-2 text-sm text-blue-900 underline transition-colors hover:font-semibold hover:text-black">
             Login
           </Link>
         </p>

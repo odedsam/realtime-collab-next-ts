@@ -1,103 +1,65 @@
+import { User } from '@/types';
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 
-interface User {
-  id: string;
-  email: string;
-  name: string;
-  avatar?: string;
-}
-
-interface AuthState {
+type AuthState = {
   user: User | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, name: string) => Promise<void>;
+  accessToken: string | null;
+  refreshToken: string | null;
+  sessionToken: string | null;
+  deviceFingerprint: string | null;
+  loading: boolean;
+  error: string | null;
+
+  loginWithEmail: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  updateUser: (userData: Partial<User>) => void;
-}
+};
 
-export const useAuth = create<AuthState>()(
-  persist(
-    (set, get) => ({
+export const useAuthStore = create<AuthState>((set) => ({
+  user: null,
+  accessToken: null,
+  refreshToken: null,
+  sessionToken: null,
+  deviceFingerprint: null,
+  loading: false,
+  error: null,
+
+  loginWithEmail: async (email, password) => {
+    set({ loading: true, error: null });
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || 'Login failed');
+      }
+
+      const data = await res.json();
+      set({
+        user: data.user,
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
+        sessionToken: data.sessionToken,
+        deviceFingerprint: data.deviceFingerprint,
+        loading: false,
+      });
+    } catch (error: any) {
+      set({ error: error.message, loading: false });
+    }
+  },
+
+  logout: () => {
+    set({
       user: null,
-      isAuthenticated: false,
-      isLoading: false,
-
-      login: async (email: string, password: string) => {
-        set({ isLoading: true });
-        try {
-          // Simulate API call
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-
-          // Mock user data - replace with actual API call
-          const userData: User = {
-            id: '1',
-            email,
-            name: email.split('@')[0],
-            avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`,
-          };
-
-          set({
-            user: userData,
-            isAuthenticated: true,
-            isLoading: false,
-          });
-        } catch (error) {
-          set({ isLoading: false });
-          throw new Error('Login failed');
-        }
-      },
-
-      register: async (email: string, password: string, name: string) => {
-        set({ isLoading: true });
-        try {
-          // Simulate API call
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-
-          // Mock user creation - replace with actual API call
-          const userData: User = {
-            id: Date.now().toString(),
-            email,
-            name,
-            avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${email}`,
-          };
-
-          set({
-            user: userData,
-            isAuthenticated: true,
-            isLoading: false,
-          });
-        } catch (error) {
-          set({ isLoading: false });
-          throw new Error('Registration failed');
-        }
-      },
-
-      logout: () => {
-        set({
-          user: null,
-          isAuthenticated: false,
-          isLoading: false,
-        });
-      },
-
-      updateUser: (userData: Partial<User>) => {
-        const currentUser = get().user;
-        if (currentUser) {
-          set({
-            user: { ...currentUser, ...userData },
-          });
-        }
-      },
-    }),
-    {
-      name: 'auth-storage',
-      partialize: (state) => ({
-        user: state.user,
-        isAuthenticated: state.isAuthenticated,
-      }),
-    },
-  ),
-);
+      accessToken: null,
+      refreshToken: null,
+      sessionToken: null,
+      deviceFingerprint: null,
+      loading: false,
+      error: null,
+    });
+  },
+}));

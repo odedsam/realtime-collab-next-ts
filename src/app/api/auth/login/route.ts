@@ -1,38 +1,16 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib';
+import { NextResponse } from 'next/server';
+import { signInWithEmail } from '@/providers/email';
+import type { NextRequest } from 'next/server';
 
-// export async function POST(req: NextRequest) {
-//   try {
-//     const { email, password } = await req.json();
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { email, password } = body;
 
-//     if (!email || !password) {
-//       return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
-//     }
+    const result = await signInWithEmail(email, password, request);
 
-//     const user = await prisma.user.findUnique({ where: { email } });
-
-//     if (!user) {
-//       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
-//     }
-
-//     const valid = await comparePassword(password, user.password);
-
-//     if (!valid) {
-//       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
-//     }
-
-//     const token = signToken({ userId: user.id });
-
-//     const response = NextResponse.json({ message: 'Logged in' });
-//     response.cookies.set('token', token, {
-//       httpOnly: true,
-//       path: '/',
-//       maxAge: 60 * 60 * 24 * 7,
-//     });
-
-//     return response;
-//   } catch (err) {
-//     console.error('LOGIN_ERROR', err);
-//     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
-//   }
-// }
+    return NextResponse.json(result);
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 401 });
+  }
+}

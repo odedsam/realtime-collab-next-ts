@@ -1,3 +1,4 @@
+import type { User } from '@/generated/prisma';
 export enum AccountType {
   EMAIL = 'EMAIL',
   OAUTH = 'OAUTH',
@@ -29,3 +30,18 @@ export interface CheckRateLimit {
   allowed: boolean;
   retryAfter?: number;
 }
+
+
+export type AuthResponse = {
+  user: User;
+  accessToken: string;
+  refreshToken: string;
+  sessionToken: string;
+  deviceFingerprint: string;
+};
+
+
+
+
+
+export { User };
