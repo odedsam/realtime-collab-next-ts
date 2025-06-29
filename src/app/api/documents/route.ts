@@ -1,16 +1,16 @@
-import { prisma } from '@/lib'
-import { verifyToken } from '@/utils/jwt'
-import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib';
+import { JWTUtils } from '@/utils';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
-  const token = req.cookies.get('token')?.value
-  const user = token ? verifyToken(token) : null
-  if (!user) return NextResponse.json([], { status: 200 })
+  const token = req.cookies.get('token')?.value;
+  const user = token ? (JWTUtils.verify(token) as { id: string }) : null;
+  if (!user) return NextResponse.json([], { status: 200 });
 
   const docs = await prisma.document.findMany({
-    where: { userId: user.userId },
+    where: { ownerId: user.id },
     orderBy: { updatedAt: 'desc' },
-  })
+  });
 
-  return NextResponse.json(docs)
+  return NextResponse.json(docs);
 }

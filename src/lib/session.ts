@@ -1,15 +1,10 @@
 import type { NextRequest } from 'next/server';
+import type { SessionResponse } from '@/types';
 import { SecurityUtils } from './auth';
 import { prisma } from '@/lib';
 import crypto from 'crypto';
 
-
-export interface SessionResponse {
-  sessionToken: string;
-  deviceFingerprint: string;
-}
 export class SessionManager {
-
   static async createSession(userId: string, request: NextRequest, loginMethod: string = 'email'): Promise<SessionResponse> {
     const sessionToken = crypto.randomBytes(32).toString('hex');
     const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days

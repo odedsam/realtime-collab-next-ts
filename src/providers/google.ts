@@ -1,11 +1,10 @@
 import type { NextRequest } from 'next/server';
 import type { AuthResponse } from '@/types/auth';
 import { prisma } from '@/lib';
-import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '@/config/env';
+import { ENV } from '@/config/env';
 import { JWTUtils } from '@/utils/jwt';
 import { SessionManager } from '@/lib/session';
 import { ActivityLogger } from '@/utils';
-
 
 export async function getGoogleUserData(code: string, request: NextRequest): Promise<AuthResponse> {
   const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
@@ -13,9 +12,9 @@ export async function getGoogleUserData(code: string, request: NextRequest): Pro
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
       code,
-      client_id: GOOGLE_CLIENT_ID!,
-      client_secret: GOOGLE_CLIENT_SECRET!,
-      redirect_uri: process.env.GOOGLE_REDIRECT_URI!,
+      client_id: ENV.GOOGLE_CLIENT_ID!,
+      client_secret: ENV.GOOGLE_CLIENT_SECRET!,
+      redirect_uri: ENV.GOOGLE_REDIRECT_URI!,
       grant_type: 'authorization_code',
     }),
   });

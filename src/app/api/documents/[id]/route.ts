@@ -1,76 +1,66 @@
-import { prisma } from '@/lib'
-import { verifyToken } from '@/utils/jwt'
-import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib';
+import { JWTUtils } from '@/utils';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const { params } = context
-    const token = req.cookies.get('token')?.value
-    const user = token ? verifyToken(token) : null
+    const token = req.cookies.get('token')?.value;
+    const user = token ? (JWTUtils.verify(token) as { id: string }) : null;
 
     const doc = await prisma.document.findUnique({
       where: { id: params.id },
-    })
+    });
 
-    if (!doc) {
-      return NextResponse.json({ error: 'Not Found' }, { status: 404 })
-    }
+    if (!doc) return NextResponse.json({ error: 'Not Found' }, { status: 404 });
 
-    if (!doc.isPublic && doc.userId !== user?.userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
+    const isOwner = doc.ownerId === user?.id;
+
+    if (doc.visibility !== 'PUBLIC' && !isOwner) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     return NextResponse.json({
       id: doc.id,
       title: doc.title,
       content: doc.content,
-      isPublic: doc.isPublic,
-    })
-  } catch (error) {
-    console.error('GET_DOC_ERROR', error)
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+      visibility: doc.visibility,
+    });
+  } catch (err) {
+    console.error('GET_DOC_ERROR', err);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
-export async function PATCH(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
+export async function PATCH(req: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const { params } = context
-    const token = req.cookies.get('token')?.value
-    const user = token ? verifyToken(token) : null
+    const token = req.cookies.get('token')?.value;
+    const user = token ? (JWTUtils.verify(token) as { id: string }) : null;
 
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-    const body = await req.json()
-    const { title, content, isPublic } = body
+    const body = await req.json();
+    const { title, content, visibility } = body;
 
     const existing = await prisma.document.findUnique({
       where: { id: params.id },
-    })
+      select: { ownerId: true },
+    });
 
-    if (!existing || existing.userId !== user.userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 403 })
-    }
+    if (!existing) return NextResponse.json({ error: 'Not Found' }, { status: 404 });
+    if (existing.ownerId !== user.id) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
     const updated = await prisma.document.update({
       where: { id: params.id },
       data: {
         title: title ?? undefined,
         content: content ?? undefined,
-        isPublic: isPublic ?? undefined,
+        visibility: visibility ?? undefined,
       },
-    })
+    });
 
-    return NextResponse.json(updated)
-  } catch (error) {
-    console.error('PATCH_DOC_ERROR', error)
-    return NextResponse.json({ error: 'Server Error' }, { status: 500 })
+    return NextResponse.json(updated);
+  } catch (err) {
+    console.error('PATCH_DOC_ERROR', err);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

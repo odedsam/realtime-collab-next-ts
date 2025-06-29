@@ -1,12 +1,19 @@
-import { redirect } from 'next/navigation'
+import { redirect } from 'next/navigation';
 
 export default async function NewDocPage() {
-  const res = await fetch('http://localhost:3000/api/documents/new', {
+  const baseUrl = process.env.NEXT_PUBLIC_URL || 'http://localhost:3000';
+
+  const res = await fetch(`${baseUrl}/api/documents/new`, {
     method: 'POST',
     credentials: 'include',
-  })
+    cache: 'no-store',
+  });
 
-  const data = await res.json()
+  if (!res.ok) {
+    throw new Error('Failed to create new document');
+  }
 
-  redirect(`/dashboard?doc=${data.id}`)
+  const { id } = await res.json();
+
+  redirect(`/dashboard?doc=${id}`);
 }

@@ -122,15 +122,15 @@ export interface Activity {
 export interface Comment {
   id: string;
   content: string;
-  position?: string | null;
+  position: string | null;
   isResolved: boolean;
   createdAt: Date;
   updatedAt: Date;
   documentId: string;
   authorId: string;
-  parentId?: string | null;
+  parentId: string | null;
   document: Document;
   author: User;
-  parent?: Comment | null;
+  parent: Comment | null;
   replies: Comment[];
 }

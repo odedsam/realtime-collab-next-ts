@@ -1,19 +1,20 @@
-import { prisma } from '@/lib'
-import { verifyToken } from '@/utils/jwt'
-import { NextRequest, NextResponse } from 'next/server'
+import { prisma } from '@/lib';
+import { JWTUtils } from '@/utils';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
-  const token = req.cookies.get('token')?.value
-  const user = token ? verifyToken(token) : null
-  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const token = req.cookies.get('token')?.value;
+  const user = token ? (JWTUtils.verify(token) as { id: string }) : null;
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const doc = await prisma.document.create({
     data: {
       title: 'Untitled',
       content: '',
-      userId: user.userId,
+      ownerId: user.id,
     },
-  })
+    select: { id: true },
+  });
 
-  return NextResponse.json({ id: doc.id })
+  return NextResponse.json(doc);
 }

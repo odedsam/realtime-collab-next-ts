@@ -54,3 +54,8 @@ export interface AuthResponse {
   sessionToken: string;
   deviceFingerprint: string;
 }
+
+export interface SessionResponse {
+  sessionToken: string;
+  deviceFingerprint: string;
+}

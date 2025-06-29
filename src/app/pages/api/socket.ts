@@ -1,47 +1,54 @@
-import { Server as IOServer } from 'socket.io'
-import type { NextApiRequest, NextApiResponse } from 'next'
-import type { Server as HTTPServer } from 'http'
-import type { Socket as NetSocket } from 'net'
+import { Server as IOServer } from 'socket.io';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import type { Server as HTTPServer } from 'http';
+import type { Socket as NetSocket } from 'net';
 
-// Patch the res.socket.server type to include `io`
 type NextApiResponseWithSocket = NextApiResponse & {
   socket: NetSocket & {
     server: HTTPServer & {
-      io?: IOServer
-    }
-  }
-}
+      io?: IOServer;
+    };
+  };
+};
 
 export const config = {
   api: {
     bodyParser: false,
   },
-}
+};
 
-export default function handler(
-  _req: NextApiRequest,
-  res: NextApiResponseWithSocket
-) {
+export default function handler(_req: NextApiRequest, res: NextApiResponseWithSocket) {
   if (res.socket.server.io) {
-    console.log('Socket.IO already running')
-    return res.end()
+    console.log('🧠 Socket.IO already running');
+    res.end();
+    return;
   }
+
+  console.log('🚀 Initializing Socket.IO...');
 
   const io = new IOServer(res.socket.server, {
     path: '/api/socket',
-  })
+    addTrailingSlash: false,
+    cors: {
+      origin: '*', // remainder to put on production domain
+      methods: ['GET', 'POST'],
+    },
+  });
 
-  res.socket.server.io = io
+  res.socket.server.io = io;
 
-  io.on('connection', socket => {
-    console.log(' Socket connected:', socket.id)
+  io.on('connection', (socket) => {
+    console.log(' Socket connected:', socket.id);
 
-    socket.on('message', msg => {
-      console.log('💬 Message:', msg)
-      socket.broadcast.emit('message', msg)
-    })
-  })
+    socket.on('message', (msg) => {
+      console.log('💬 Incoming message:', msg);
+      socket.broadcast.emit('message', msg);
+    });
 
-  console.log('Socket.IO initialized')
-  res.end()
+    socket.on('disconnect', () => {
+      console.log('❌ Disconnected:', socket.id);
+    });
+  });
+
+  res.end();
 }
