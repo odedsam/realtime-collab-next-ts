@@ -3,18 +3,19 @@ import { SecurityUtils } from './auth';
 import { prisma } from '@/lib';
 import crypto from 'crypto';
 
+
+export interface SessionResponse {
+  sessionToken: string;
+  deviceFingerprint: string;
+}
 export class SessionManager {
-  static async createSession(
-    userId: string,
-    request: NextRequest,
-    loginMethod: string = 'email',
-  ): Promise<{ sessionToken: string; deviceFingerprint: string }> {
+
+  static async createSession(userId: string, request: NextRequest, loginMethod: string = 'email'): Promise<SessionResponse> {
     const sessionToken = crypto.randomBytes(32).toString('hex');
     const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
     const ip = SecurityUtils.extractIP(request);
     const userAgent = SecurityUtils.sanitizeUserAgent(request.headers.get('user-agent') || undefined);
     const acceptLanguage = request.headers.get('accept-language') || '';
-
     const deviceFingerprint = SecurityUtils.createDeviceFingerprint(userAgent || '', acceptLanguage, ip);
 
     await prisma.session.create({

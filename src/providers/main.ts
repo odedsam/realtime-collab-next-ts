@@ -21,14 +21,12 @@ export class AuthProviderHandler {
 export class PasswordResetManager {
   static async initiateReset(email: string, request: NextRequest): Promise<void> {
     const ip = SecurityUtils.extractIP(request);
-
     const rateLimit = SecurityUtils.checkRateLimit(`reset:${ip}`, 3, 60 * 60 * 1000); // 3 per hour
     if (!rateLimit.allowed) {
       throw new Error(`Too many password reset attempts. Try again in ${Math.ceil(rateLimit.retryAfter! / 60)} minutes.`);
     }
     const user = await prisma.user.findUnique({ where: { email: email.toLowerCase() } });
 
-    // Don't reveal if user exists or not
     if (!user) {
       return;
     }
@@ -45,9 +43,6 @@ export class PasswordResetManager {
     });
 
     await ActivityLogger.log(user.id, 'password_reset_requested', request, undefined, { email });
-
-    // TODO: Send email with reset token
-    // await sendPasswordResetEmail(user.email, resetToken);
   }
 
   static async confirmReset(token: string, newPassword: string, request: NextRequest): Promise<void> {
@@ -62,7 +57,6 @@ export class PasswordResetManager {
       throw new Error('Invalid or expired reset token');
     }
 
-    // Validate password strength
     const passwordStrength = SecurityUtils.analyzePasswordStrength(newPassword);
     if (!passwordStrength.isStrong) {
       throw new Error(`Password is too weak. ${passwordStrength.feedback.join(', ')}`);

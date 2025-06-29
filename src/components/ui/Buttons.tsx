@@ -21,8 +21,7 @@ const buttonVariants = cva(
           'bg-[#141414] text-white hover:bg-[#242424] border-3 border-quinary hover:text-gray-100 transition-all duration-200 ease-in-out hover:shadow-lg hover:scale-105',
         ghost:
           'bg-transparent text-white hover:bg-[#2a2a2a] border border-white/10 transition-all duration-200 ease-in-out hover:shadow-md',
-        favorite:
-          'bg-red-600 text-white hover:bg-red-700 transition-all duration-200 ease-in-out hover:shadow-red-500/30 hover:shadow-lg',
+        favorite: 'bg-red-600 text-white hover:bg-red-700 transition-all duration-200 ease-in-out hover:shadow-red-500/30 hover:shadow-lg',
         saved:
           'bg-green-600 text-white hover:bg-green-700 transition-all duration-200 ease-in-out hover:shadow-green-500/30 hover:shadow-lg',
       },
@@ -45,9 +44,7 @@ const buttonVariants = cva(
   },
 );
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
   href?: string;
@@ -56,21 +53,7 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement & HTMLAnchorElement, ButtonProps>(
-  (
-    {
-      className,
-      variant,
-      size,
-      icon,
-      iconPosition = 'left',
-      children,
-      href,
-      target,
-      full = false,
-      ...props
-    },
-    ref,
-  ) => {
+  ({ className, variant, size, icon, iconPosition = 'left', children, href, target, full = false, ...props }, ref) => {
     const content = icon ? (
       iconPosition === 'right' ? (
         <>
@@ -116,35 +99,22 @@ interface CarouselButtonProps {
   className?: string;
 }
 
-export const CarouselButton = ({
-  direction,
-  onClick,
-  disabled,
-  className,
-}: CarouselButtonProps) => (
+export const CarouselButton = ({ direction, onClick, disabled, className }: CarouselButtonProps) => (
   <Button
-    className={cn(
-      'p-2 rounded-full bg-primary text-gray-def hover:bg-gray-700 transition-colors h-auto',
-      className,
-    )}
+    className={cn('bg-primary text-gray-def h-auto rounded-full p-2 transition-colors hover:bg-gray-700', className)}
     disabled={disabled}
     onClick={onClick}
-    icon={
-      direction === 'prev' ? <ArrowLeft className="w-5 h-5" /> : <ArrowRight className="w-5 h-5" />
-    }
+    icon={direction === 'prev' ? <ArrowLeft className="h-5 w-5" /> : <ArrowRight className="h-5 w-5" />}
     aria-label={`${direction === 'prev' ? 'Previous' : 'Next'} items`}
   />
 );
 
 export const ButtonFacebook = ({ onClick }: { onClick?: () => void }) => {
-  const FacebookIcon = () => (
-    <img src="/icons/facebook-icon.svg" alt="Facebook" className="w-5 h-5" />
-  );
+  const FacebookIcon = () => <img src="/icons/facebook-icon.svg" alt="Facebook" className="h-5 w-5" />;
   return (
     <button
       type="button"
-      className="font-manrope cursor-pointer w-full flex items-center justify-center gap-2 bg-[#1877F3] text-white rounded px-4 py-2 hover:bg-[#145db2] transition"
-      // onClick={() => (window.location.href = '/api/auth/facebook')}
+      className="font-manrope flex w-full cursor-pointer items-center justify-center gap-2 rounded bg-[#1877F3] px-4 py-2 text-white transition hover:bg-[#145db2]"
       onClick={onClick}>
       <FacebookIcon />
       Continue with Facebook
@@ -155,7 +125,7 @@ export const ButtonFacebook = ({ onClick }: { onClick?: () => void }) => {
 export const ButtonGoogle = ({ onClick }: { onClick?: () => void }) => {
   const GoogleIcon = () => {
     return (
-      <svg className="w-6 h-6" viewBox="0 0 48 48">
+      <svg className="h-6 w-6" viewBox="0 0 48 48">
         <path
           fill="#4285F4"
           d="M24 9.5c3.64 0 6.43 1.39 8.28 2.56l6.15-6.15C34.58 2.03 29.71 0 24 0 14.71 0 6.9 5.39 2.82 13.23l7.32 5.69C13.13 12.08 18.02 9.5 24 9.5z"
@@ -180,8 +150,7 @@ export const ButtonGoogle = ({ onClick }: { onClick?: () => void }) => {
   return (
     <button
       type="button"
-      className="font-manrope cursor-pointer w-full flex items-center justify-center gap-2 bg-white hover:bg-gray-200 text-black border border-gray-300 rounded px-4 py-2  transition"
-      // onClick={() => (window.location.href = '/api/auth/google')}>
+      className="font-manrope flex w-full cursor-pointer items-center justify-center gap-2 rounded border border-gray-300 bg-white px-4 py-2 text-black transition hover:bg-gray-200"
       onClick={onClick}>
       <GoogleIcon />
       Continue with Google

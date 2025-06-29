@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { ButtonGoogle, ButtonFacebook } from '@/components/ui/Buttons';
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('');
@@ -10,6 +11,13 @@ export default function RegisterPage() {
   const router = useRouter();
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  const RedirectFacebook = () => {
+    window.location.href = '/api/auth/facebook';
+  };
+  const RedirectGoogle = () => {
+    window.location.href = '/api/auth/google';
+  };
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,7 +59,10 @@ export default function RegisterPage() {
           </button>
           {error && <p className="text-center text-sm text-red-500">{error}</p>}
         </form>
-
+        <div className="my-4 flex flex-col items-center justify-center py-4">
+          <ButtonGoogle onClick={RedirectGoogle} />
+          <ButtonFacebook onClick={RedirectFacebook} />
+        </div>
         <p className="text-center text-sm text-blue-500 transition-colors hover:text-black">
           Already have an account?
           <Link href="/auth/login" className="ml-2 text-sm text-blue-900 underline transition-colors hover:font-semibold hover:text-black">

@@ -1,59 +1,18 @@
-import { NextResponse } from "next/server";
-import { NextRequest } from "next/server";
-import { prisma } from "@/lib";
-import bcrypt from "bcrypt";
+import { NextRequest, NextResponse } from 'next/server';
+import { PasswordResetManager } from '@/providers/main';
 
-export async function POST(req: NextRequest) {
-  const { token, newPassword } = await req.json();
+export async function POST(request: NextRequest) {
+  try {
+    const { token, password } = await request.json();
 
+    if (!token || !password) {
+      return NextResponse.json({ message: 'Missing token or password.' }, { status: 400 });
+    }
 
-  const document = await prisma.document.findFirst({
-    where: {
-      resetToken: token,
-      resetTokenExpiration: {
-        gte: new Date(),
-      },
-    },
-  });
+    await PasswordResetManager.confirmReset(token, password, request);
 
-  if (!document) {
-    return NextResponse.json(
-      { message: "Invalid or expired token." },
-      { status: 400 }
-    );
+    return NextResponse.json({ message: 'Password reset successful.', success: true }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ message: error.message || 'Password reset failed.', success: false }, { status: 400 });
   }
-
-
-  const user = await prisma.user.findUnique({
-    where: { id: document.userId },
-  });
-
-  if (!user) {
-    return NextResponse.json(
-      { message: "User not found." },
-      { status: 404 }
-    );
-  }
-
-  const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-  await prisma.user.update({
-    where: { id: user.id },
-    data: {
-      password: hashedPassword,
-    },
-  });
-
-  await prisma.document.update({
-    where: { id: document.id },
-    data: {
-      resetToken: null,
-      resetTokenExpiration: null,
-    },
-  });
-
-  return NextResponse.json(
-    { message: "Password successfully reset." },
-    { status: 200 }
-  );
 }

@@ -14,12 +14,14 @@ export async function GET(request: NextRequest) {
       throw new Error('Invalid user data received from Google');
     }
 
+    const user = authResponse.user;
+
     const result = await AuthProviderHandler.handleOAuthLogin(
       'google',
-      authResponse.user.id,
-      authResponse.user.email,
-      authResponse.user.name,
-      authResponse.user.avatar,
+      user.id ?? null,
+      user.email ?? null,
+      user.name ?? null,
+      user.avatar ?? null,
       request,
     );
 

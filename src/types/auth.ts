@@ -1,4 +1,17 @@
-import type { User } from '@/generated/prisma';
+import { User } from './db';
+
+export interface SessionData {
+  id: string;
+  sessionToken: string;
+  userId: string;
+  expires: Date;
+  ipAddress?: string | null;
+  userAgent?: string | null;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export enum AccountType {
   EMAIL = 'EMAIL',
   OAUTH = 'OAUTH',
@@ -7,6 +20,7 @@ export enum AccountType {
 export enum PrismaOAuthProvider {
   GOOGLE = 'GOOGLE',
   FACEBOOK = 'FACEBOOK',
+  EMAIL = 'EMAIL',
 }
 export interface UserPayload {
   userId: string;
@@ -31,17 +45,12 @@ export interface CheckRateLimit {
   retryAfter?: number;
 }
 
+export type AuthUserMinimal = Pick<User, 'id' | 'email' | 'name' | 'avatar' | 'role' | 'emailVerified'>;
 
-export type AuthResponse = {
-  user: User;
+export interface AuthResponse {
+  user: AuthUserMinimal;
   accessToken: string;
   refreshToken: string;
   sessionToken: string;
   deviceFingerprint: string;
-};
-
-
-
-
-
-export { User };
+}

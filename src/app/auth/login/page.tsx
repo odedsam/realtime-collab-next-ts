@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { ButtonFacebook, ButtonGoogle } from '@/components/ui/Buttons';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -9,6 +10,13 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+  const RedirectFacebook = () => {
+    window.location.href = '/api/auth/facebook';
+  };
+  const RedirectGoogle = () => {
+    window.location.href = '/api/auth/google';
+  };
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -69,7 +77,10 @@ export default function LoginPage() {
             {isLoading ? 'Logging in...' : 'Login'}
           </button>
         </form>
-
+        <div className="my-4 flex flex-col items-center justify-center py-4">
+          <ButtonGoogle onClick={RedirectGoogle} />
+          <ButtonFacebook onClick={RedirectFacebook} />
+        </div>
         <div className="mt-4 text-center">
           <p className="text-sm text-blue-500 transition-colors hover:text-black">
             Don't have an account?

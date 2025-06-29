@@ -1,10 +1,10 @@
+import type { NextRequest } from 'next/server';
+import type { AuthResponse } from '@/types/auth';
 import { prisma } from '@/lib';
 import { FACEBOOK_CLIENT_ID, FACEBOOK_CLIENT_SECRET } from '@/config/env';
 import { JWTUtils } from '@/utils/jwt';
 import { SessionManager } from '@/lib/session';
 import { ActivityLogger } from '@/utils';
-import type { NextRequest } from 'next/server';
-import type { AuthResponse } from '@/types/auth';
 
 export async function getFacebookUserData(code: string, request: NextRequest): Promise<AuthResponse> {
   const tokenRes = await fetch('https://graph.facebook.com/v18.0/oauth/access_token', {
@@ -22,7 +22,6 @@ export async function getFacebookUserData(code: string, request: NextRequest): P
 
   const userRes = await fetch(`https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${tokens.access_token}`);
   const userData = await userRes.json();
-
   const provider = 'facebook';
   const providerAccountId = userData.id;
 

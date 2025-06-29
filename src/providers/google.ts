@@ -1,10 +1,11 @@
+import type { NextRequest } from 'next/server';
+import type { AuthResponse } from '@/types/auth';
 import { prisma } from '@/lib';
 import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '@/config/env';
 import { JWTUtils } from '@/utils/jwt';
 import { SessionManager } from '@/lib/session';
 import { ActivityLogger } from '@/utils';
-import type { NextRequest } from 'next/server';
-import type { AuthResponse } from '@/types/auth';
+
 
 export async function getGoogleUserData(code: string, request: NextRequest): Promise<AuthResponse> {
   const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {

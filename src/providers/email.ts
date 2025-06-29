@@ -1,12 +1,12 @@
+import type { NextRequest } from 'next/server';
+import type { AuthResponse } from '@/types/auth';
 import { prisma } from '@/lib';
-import bcrypt from 'bcryptjs';
 import { BCRYPT_ROUNDS } from '@/config/env';
 import { SecurityUtils } from '@/lib/auth';
 import { JWTUtils } from '@/utils/jwt';
 import { SessionManager } from '@/lib/session';
 import { ActivityLogger } from '@/utils';
-import type { NextRequest } from 'next/server';
-import type { AuthResponse } from '@/types/auth';
+import bcrypt from 'bcryptjs';
 
 export async function signUpWithEmail(email: string, password: string, request: NextRequest): Promise<AuthResponse> {
   const ip = SecurityUtils.extractIP(request);
@@ -43,10 +43,8 @@ export async function signUpWithEmail(email: string, password: string, request: 
   });
 
   await ActivityLogger.log(user.id, 'email_signup', request);
-
   const { accessToken, refreshToken } = JWTUtils.generateTokenPair({ userId: user.id });
   const { sessionToken, deviceFingerprint } = await SessionManager.createSession(user.id, request, 'email');
-
   return { user, accessToken, refreshToken, sessionToken, deviceFingerprint };
 }
 
@@ -58,9 +56,7 @@ export async function signInWithEmail(email: string, password: string, request: 
   if (!valid) throw new Error('Invalid email or password');
 
   await ActivityLogger.log(user.id, 'email_login', request);
-
   const { accessToken, refreshToken } = JWTUtils.generateTokenPair({ userId: user.id });
   const { sessionToken, deviceFingerprint } = await SessionManager.createSession(user.id, request, 'email');
-
   return { user, accessToken, refreshToken, sessionToken, deviceFingerprint };
 }

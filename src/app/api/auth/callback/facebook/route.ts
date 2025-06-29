@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { AuthProviderHandler } from '@/providers/main';
 
 export async function GET(request: NextRequest) {
@@ -14,12 +14,14 @@ export async function GET(request: NextRequest) {
       throw new Error('Invalid user data received from Facebook');
     }
 
+    const user = authResponse.user;
+
     const result = await AuthProviderHandler.handleOAuthLogin(
       'facebook',
-      authResponse.user.id,
-      authResponse.user.email,
-      authResponse.user.name,
-      authResponse.user.avatar,
+      user.id ?? null,
+      user.email ?? null,
+      user.name ?? null,
+      user.avatar ?? null,
       request,
     );
 
