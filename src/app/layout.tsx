@@ -11,7 +11,7 @@ export type LayoutProps = Readonly<{ children: React.ReactNode }>;
 export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} flex h-screen flex-col antialiased`}>
         {children}
         <Toaster />
       </body>

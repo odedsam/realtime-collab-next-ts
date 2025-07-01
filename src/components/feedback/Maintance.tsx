@@ -1,15 +1,7 @@
 'use client';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  DialogClose,
-} from '@/components/ui/Dialog';
-import { Button } from '@/components/ui/Buttons';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/Dialog';
 import { useDialogStore } from '@/store/useDialogStore';
+import { Button } from '@/components/ui/Buttons';
 
 export default function MaintanceDialog() {
   const { isOpen, close } = useDialogStore();
@@ -22,8 +14,7 @@ export default function MaintanceDialog() {
           <DialogHeader>
             <DialogTitle className="text-white">Heads Up!</DialogTitle>
             <DialogDescription className="text-purple-300">
-              Some features like <strong>Log In</strong> and <strong>Sign Up</strong> are still
-              under maintenance.
+              Some features like <strong>Log In</strong> and <strong>Sign Up</strong> are still under maintenance.
               <br />
               We’re working hard to get everything running smoothly — thank you for your patience.
             </DialogDescription>

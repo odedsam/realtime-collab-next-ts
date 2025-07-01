@@ -17,12 +17,36 @@ export default function Dashboard() {
   const docId = search.get('doc') ?? 'demo-doc-id-1';
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const reconnectAttempts = useRef(0);
+  const maxReconnectAttempts = 1;
 
   useEffect(() => {
-    if (!socket.connected) socket.connect();
+    const tryConnect = () => {
+      if (socket.connected) return;
 
-    socket.on('connect', () => setConnected(true));
-    socket.on('disconnect', () => setConnected(false));
+      socket.connect();
+
+      socket.once('connect', () => {
+        reconnectAttempts.current = 0;
+        setConnected(true);
+      });
+
+      socket.once('disconnect', () => {
+        setConnected(false);
+      });
+
+      socket.once('connect_error', () => {
+        reconnectAttempts.current++;
+        if (reconnectAttempts.current < maxReconnectAttempts) {
+          setTimeout(tryConnect, 5000);
+        } else {
+          console.error('Max reconnect attempts reached');
+          setConnected(false);
+        }
+      });
+    };
+
+    tryConnect();
 
     socket.on('message', (msg: string) => {
       setMessages((prev) => [...prev, msg]);
@@ -32,6 +56,7 @@ export default function Dashboard() {
       socket.off('message');
       socket.off('connect');
       socket.off('disconnect');
+      socket.off('connect_error');
       socket.disconnect();
     };
   }, []);
@@ -52,8 +77,12 @@ export default function Dashboard() {
   return (
     <div className="flex min-h-screen flex-col items-center gap-8 bg-[#121212] px-6 py-10 text-gray-300">
       <h1 className="text-3xl font-extrabold text-white">Real-time Dashboard</h1>
+
       {/* Collaborative Editor */}
-      <Editor docId={docId} />
+      <div className="w-full max-w-4xl rounded-lg border border-gray-700 bg-[#1E1E1E] p-6 shadow-lg">
+        <Editor docId={docId} />
+      </div>
+
       <div className={`text-center text-sm ${connected ? 'text-green-400' : 'text-red-600'}`}>
         {connected ? '🟢 Connected' : '🔴 Disconnected'}
       </div>
@@ -90,7 +119,7 @@ export default function Dashboard() {
         />
         <button
           onClick={sendMessage}
-          className={`rounded bg-blue-600 px-4 text-white transition-colors hover:bg-blue-700 disabled:bg-gray-600`}
+          className="rounded bg-blue-600 px-4 text-white transition-colors hover:bg-blue-700 disabled:bg-gray-600"
           disabled={!input.trim()}
           type="button">
           Send

@@ -1,5 +1,5 @@
-import { LucideIcon } from 'lucide-react';
 import { cn } from '@/utils';
+import { LucideIcon } from 'lucide-react';
 
 interface EmptyStateProps {
   title: string;
@@ -9,19 +9,12 @@ interface EmptyStateProps {
   className?: string;
 }
 
-const EmptyState: React.FC<EmptyStateProps> = ({
-  title,
-  description,
-  icon: Icon,
-  action,
-  className,
-}) => {
+const EmptyState: React.FC<EmptyStateProps> = ({ title, description, icon: Icon, action, className }) => {
   return (
-    <div
-      className={cn('flex flex-col items-center justify-center text-center py-12 px-6', className)}>
-      {Icon && <Icon className="w-12 h-12 text-gray-400 mb-4" />}
-      <h3 className="text-lg font-semibold text-gray-900 mb-2">{title}</h3>
-      {description && <p className="text-gray-600 mb-6 max-w-md">{description}</p>}
+    <div className={cn('flex flex-col items-center justify-center px-6 py-12 text-center', className)}>
+      {Icon && <Icon className="mb-4 h-12 w-12 text-gray-400" />}
+      <h3 className="mb-2 text-lg font-semibold text-gray-900">{title}</h3>
+      {description && <p className="mb-6 max-w-md text-gray-600">{description}</p>}
       {action && action}
     </div>
   );
