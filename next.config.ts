@@ -13,18 +13,6 @@ const nextConfig: NextConfig = {
     poweredByHeader: false,
     generateEtags: false,
   }),
-
-
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      config.externals = [...config.externals, 'socket.io'];
-    }
-    return config;
-  },
-
-
-
-
 };
 
 export default nextConfig;

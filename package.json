@@ -6,6 +6,8 @@
     "clean": "rimraf node_modules .next pnpm-lock.yaml",
     "dev": "next dev --turbopack",
     "generate": "prisma generate",
+    "sock": "ts-node server.ts",
+    "test":"pnpm exec playwright test",
     "build": "pnpm run generate && next build",
     "start": "next start",
     "lint": "next lint",
@@ -36,6 +38,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.53.2",
     "@stylistic/stylelint-config": "^2.0.0",
     "@tailwindcss/postcss": "^4",
     "@types/bcrypt": "^5.0.2",
@@ -52,6 +55,7 @@
     "prisma": "^6.7.0",
     "rimraf": "^6.0.1",
     "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
     "ts-prune": "^0.10.3",
     "tsx": "^4.20.3",
     "typescript": "^5"
