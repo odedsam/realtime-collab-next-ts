@@ -21,6 +21,7 @@ const io = new IOServer(httpServer, {
   transports: ['websocket', 'polling'],
 });
 
+
 io.on('connection', (socket: Socket) => {
   console.log(`Client connected: ${socket.id}`);
 
@@ -74,5 +75,5 @@ io.on('connection', (socket: Socket) => {
 const PORT = 4000;
 
 httpServer.listen(PORT, () => {
-  console.log(`Socket.IO server running on port ${PORT}`);
+  console.log(`Socket.IO server running on port ,${PORT}`);
 });

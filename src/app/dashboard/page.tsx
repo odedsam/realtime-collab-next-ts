@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { socket } from '@/lib/socket-client';
 
 const Editor = dynamic(() => import('@/components/Editor'), {
-  ssr: false,
+  ssr: true,
 }) as React.ComponentType<{ docId: string }>;
 
 export default function Dashboard() {
@@ -76,7 +76,7 @@ export default function Dashboard() {
 
   return (
     <div className="flex min-h-screen flex-col items-center gap-8 bg-[#121212] px-6 py-10 text-gray-300">
-      <h1 className="text-3xl font-extrabold text-white">Real-time Dashboard</h1>
+      <h1 className="text-3xl font-extrabold text-teal-300">Real-time Dashboard</h1>
 
       {/* Collaborative Editor */}
       <div className="w-full max-w-4xl rounded-lg border border-gray-700 bg-[#1E1E1E] p-6 shadow-lg">
@@ -119,7 +119,7 @@ export default function Dashboard() {
         />
         <button
           onClick={sendMessage}
-          className="rounded bg-blue-600 px-4 text-white transition-colors hover:bg-blue-700 disabled:bg-gray-600"
+          className="px-4 text-white transition-colors bg-blue-600 rounded hover:bg-blue-700 disabled:bg-gray-600"
           disabled={!input.trim()}
           type="button">
           Send
