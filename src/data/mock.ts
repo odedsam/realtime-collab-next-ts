@@ -10,10 +10,10 @@ This document is a shared space where everyone can contribute live.
 - Chat with collaborators`,
   },
   collaborators: [
-    { id: 'u1', name: 'Alice Johnson', avatar: 'https://avatars.dicebear.com/api/bottts/alicejohnson.svg' },
-    { id: 'u2', name: 'Bob Smith', avatar: 'https://avatars.dicebear.com/api/bottts/bobsmith.svg' },
-    { id: 'u3', name: 'Charlie', avatar: 'https://avatars.dicebear.com/api/bottts/charlie.svg' },
-    { id: 'u4', name: 'Dana', avatar: 'https://avatars.dicebear.com/api/bottts/dana.svg' },
+    { id: 'u1', name: 'Alice Johnson', avatar: 'https://api.dicebear.com/6.x/bottts/svg?seed=alicejohnson' },
+    { id: 'u2', name: 'Bob Smith', avatar: 'https://api.dicebear.com/6.x/bottts/svg?seed=bobsmith' },
+    { id: 'u3', name: 'Charlie', avatar: 'https://api.dicebear.com/6.x/bottts/svg?seed=charlie' },
+    { id: 'u4', name: 'Dana', avatar: 'https://api.dicebear.com/6.x/bottts/svg?seed=dana' },
   ],
   messages: [
     { id: 'm1', sender: 'Alice', content: 'Hey team! Ready to start?' },

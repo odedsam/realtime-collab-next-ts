@@ -7,7 +7,7 @@ const cases = [
 
 export default function UseCases() {
   return (
-    <section id="usecases" className="px-6 py-16 text-teal-300 bg-zinc-900">
+    <section id="usecases" className="w-full py-24 text-teal-300 bg-zinc-900">
       <div className="grid max-w-4xl gap-6 mx-auto sm:grid-cols-2">
         {cases.map(({ title, desc }) => (
           <div key={title} className="p-6 border rounded-xl border-zinc-700 bg-zinc-800">

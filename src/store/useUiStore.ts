@@ -1,8 +1,9 @@
 import { create } from 'zustand';
 
 interface UiState {
-  isMobileMenuOpen: boolean;
+  isMenuOpen: boolean;
   toggleMobileMenu: () => void;
+  closeMobileMenu: () => void;
 
   searchTerm: string;
   setSearchTerm: (term: string) => void;
@@ -11,9 +12,10 @@ interface UiState {
   toggleSearch: () => void;
 }
 
-export const useUiStore = create<UiState>()((set, get) => ({
-  isMobileMenuOpen: false,
-  toggleMobileMenu: () => set((state) => ({ isMobileMenuOpen: !state.isMobileMenuOpen })),
+export const useUiStore = create<UiState>()((set) => ({
+  isMenuOpen: false,
+  toggleMobileMenu: () => set((state) => ({ isMenuOpen: !state.isMenuOpen })),
+  closeMobileMenu: () => set({ isMenuOpen: false }),
 
   searchTerm: '',
   setSearchTerm: (term) => set({ searchTerm: term }),
@@ -22,10 +24,12 @@ export const useUiStore = create<UiState>()((set, get) => ({
   toggleSearch: () => set((state) => ({ isSearchOpen: !state.isSearchOpen })),
 }));
 
-export const useMobileMenuOpen = () => useUiStore((state) => state.isMobileMenuOpen);
+export const useIsMenuOpen = () => useUiStore((state) => state.isMenuOpen);
 export const useToggleMobileMenu = () => useUiStore((state) => state.toggleMobileMenu);
+export const useCloseMobileMenu = () => useUiStore((state) => state.closeMobileMenu);
 
 export const useSearchTerm = () => useUiStore((state) => state.searchTerm);
 export const useSetSearchTerm = () => useUiStore((state) => state.setSearchTerm);
+
 export const useIsSearchOpen = () => useUiStore((state) => state.isSearchOpen);
 export const useToggleSearch = () => useUiStore((state) => state.toggleSearch);
