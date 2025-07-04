@@ -31,11 +31,11 @@ export default function AppHeader() {
         {/* Auth Buttons for desktop */}
         <div className="items-center hidden gap-4 md:flex">
           <Link
-            href="/login"
+            href="/auth/login"
             className="px-5 py-2 text-sm transition border rounded-md border-zinc-700 bg-zinc-800 text-zinc-300 hover:bg-zinc-700 hover:text-white">
             Login
           </Link>
-          <Link href="/register" className="px-5 py-2 text-sm font-semibold text-white transition bg-teal-600 rounded-md hover:bg-teal-700">
+          <Link href="/auth/register" className="px-5 py-2 text-sm font-semibold text-white transition bg-teal-600 rounded-md hover:bg-teal-700">
             Sign Up
           </Link>
         </div>

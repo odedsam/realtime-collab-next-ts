@@ -3,18 +3,14 @@
 import { useState } from 'react';
 import { guestDemoData } from '@/data/mock';
 import ChatPanel from './ChatPanel';
-import SettingsPanel from './SettingsPanel';
 import UsersSidebar from './Sidebar';
 
 export default function GuestWorkspace() {
-  const { document, collaborators, messages: initialMessages, info } = guestDemoData;
-  const [messages, setMessages] = useState(initialMessages);
-  const [activeChatUser, setActiveChatUser] = useState<string | null>(null);
+  const { document, collaborators: initialCollaborators, messages: initialMessages, info } = guestDemoData;
 
-  // Settings state
-  const [settingsOpen, setSettingsOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [messages, setMessages] = useState(initialMessages);
+  const [collaborators, setCollaborators] = useState(initialCollaborators);
+  const [activeChatUser, setActiveChatUser] = useState<string | null>(null);
 
   const onSendMessage = (content: string) => {
     if (!activeChatUser) return;
@@ -29,16 +25,14 @@ export default function GuestWorkspace() {
 
     setMessages((prev) => [...prev, userMessage]);
 
+    // Simulate message delivered after 0.5s
     setTimeout(() => {
-      setMessages((prev) =>
-        prev.map((msg) => (msg.id === userMessage.id ? { ...msg, status: 'delivered' } : msg)),
-      );
+      setMessages((prev) => prev.map((msg) => (msg.id === userMessage.id ? { ...msg, status: 'delivered' } : msg)));
     }, 500);
 
+    // Simulate recipient reply and mark message as seen after 2s
     setTimeout(() => {
-      setMessages((prev) =>
-        prev.map((msg) => (msg.id === userMessage.id ? { ...msg, status: 'seen' } : msg)),
-      );
+      setMessages((prev) => prev.map((msg) => (msg.id === userMessage.id ? { ...msg, status: 'seen' } : msg)));
 
       const replyMessage = {
         id: crypto.randomUUID(),
@@ -52,31 +46,25 @@ export default function GuestWorkspace() {
     }, 2000);
   };
 
-  const clearChatHistory = () => {
-    setMessages([]);
+  const handleArchive = (userId: string) => {
+    setCollaborators((prev) => prev.map((user) => (user.id === userId ? { ...user, isArchived: true } : user)));
+  };
+
+  const handleUnarchive = (userId: string) => {
+    setCollaborators((prev) => prev.map((user) => (user.id === userId ? { ...user, isArchived: false } : user)));
   };
 
   return (
-    <div
-      className={`flex h-full min-h-screen flex-col overflow-hidden rounded-2xl bg-zinc-900 font-sans text-gray-100 shadow-xl ${darkMode ? 'dark' : ''}`}>
-      <div className="px-6 py-3 text-sm font-semibold text-center text-indigo-200 bg-indigo-800">
-        {info.banner}
-      </div>
+    <div className="flex h-full min-h-screen flex-col overflow-hidden rounded-2xl bg-zinc-900 font-sans text-gray-100 shadow-xl">
+      <div className="bg-indigo-800 px-6 py-3 text-center text-sm font-semibold text-indigo-200">{info.banner}</div>
 
-      <div className="relative flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden">
         <UsersSidebar
           collaborators={collaborators}
           activeChatUser={activeChatUser}
           onSelectUser={setActiveChatUser}
-          onArchive={(userId) => {
-            const idx = collaborators.findIndex((u) => u.id === userId);
-            if (idx >= 0) collaborators[idx].isArchived = true;
-          }}
-          onUnarchive={(userId) => {
-            const idx = collaborators.findIndex((u) => u.id === userId);
-            if (idx >= 0) collaborators[idx].isArchived = false;
-          }}
-          onOpenSettings={() => setSettingsOpen(true)}
+          onArchive={handleArchive}
+          onUnarchive={handleUnarchive}
         />
         <ChatPanel
           messages={messages}
@@ -84,16 +72,6 @@ export default function GuestWorkspace() {
           onSendMessage={onSendMessage}
           collaborators={collaborators}
           documentContent={document.content}
-        />
-
-        <SettingsPanel
-          open={settingsOpen}
-          onClose={() => setSettingsOpen(false)}
-          darkMode={darkMode}
-          toggleDarkMode={() => setDarkMode((v) => !v)}
-          notificationsEnabled={notificationsEnabled}
-          toggleNotifications={() => setNotificationsEnabled((v) => !v)}
-          clearChatHistory={clearChatHistory}
         />
       </div>
     </div>
