@@ -5,7 +5,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { socket } from '@/lib/socket-client';
 
-const Editor = dynamic(() => import('@/components/Editor'), {
+const Editor = dynamic(() => import('@/components/workspace/Editor'), {
   ssr: true,
 }) as React.ComponentType<{ docId: string }>;
 

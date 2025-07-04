@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ChatComponent } from '@/components/ChatComponent';
+import { ChatComponent } from '@/components/workspace/ChatComponent';
 import { ConnectionStatus } from '@/components/feedback/ConnectionStatus';
 
 export default function ChatPage() {

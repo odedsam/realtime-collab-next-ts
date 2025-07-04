@@ -2,10 +2,8 @@ import type { NextRequest } from 'next/server';
 import type { RateLimitEntry, CheckRateLimit, PasswordStrengthAnalyzer } from '@/types/auth';
 import crypto from 'crypto';
 
-// Advanced rate limiting with Redis-like behavior using Map
 const rateLimitStore = new Map<string, RateLimitEntry>();
 
-// Enhanced security utilities
 export class SecurityUtils {
   // Generate secure hash for various purposes
   static generateSecureHash(data: string, salt?: string): string {
@@ -27,7 +25,6 @@ export class SecurityUtils {
     return this.generateSecureHash(deviceData).substring(0, 32);
   }
 
-  // Enhanced user agent sanitization
   static sanitizeUserAgent(userAgent: string | undefined): string | null {
     if (!userAgent) return null;
 
@@ -68,7 +65,7 @@ export class SecurityUtils {
     return 'unknown';
   }
 
-  // Advanced rate limiting with progressive penalties
+
   static checkRateLimit(
     identifier: string,
     maxRequests: number = 5,
@@ -106,7 +103,7 @@ export class SecurityUtils {
     return { allowed: true };
   }
 
-  // Password strength analyzer
+
   static analyzePasswordStrength(password: string): PasswordStrengthAnalyzer {
     const feedback: string[] = [];
     let score = 0;

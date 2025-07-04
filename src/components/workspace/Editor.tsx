@@ -26,7 +26,7 @@ export default function Editor({ docId }: EditorProps) {
   // Load doc content from API
   useEffect(() => {
     const fetchDoc = async () => {
-      const res = await fetch(`/api/documents/${docId}`);
+      const res = await fetch(`http://localhost:4000/api/documents/${docId}`);
       if (res.ok) {
         const data = await res.json();
         setInitialContent(data.content || '<p>New doc</p>');
@@ -50,7 +50,7 @@ export default function Editor({ docId }: EditorProps) {
 
     const interval = setInterval(() => {
       const html = editor.getHTML();
-      fetch(`/api/documents/${docId}`, {
+      fetch(`http://localhost:4000/api/documents/${docId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -69,7 +69,7 @@ export default function Editor({ docId }: EditorProps) {
   if (!loaded || !editor) return <p className="p-10 text-center">Loading...</p>;
 
   return (
-    <div className="mx-auto mt-10 max-w-2xl rounded-xl bg-white p-6 shadow">
+    <div className="max-w-2xl p-6 mx-auto mt-10 bg-white shadow rounded-xl">
       <EditorContent editor={editor} />
     </div>
   );
