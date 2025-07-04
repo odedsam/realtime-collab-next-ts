@@ -3,7 +3,7 @@ import FinalCTA from '@/components/home/FinalCTA';
 import HomeHero from '@/components/home/HomeHero';
 import LivePreview from '@/components/home/LivePreview';
 import UseCases from '@/components/home/UseCases';
-import Link from 'next/link';
+
 
 export default function HomePage() {
   return (

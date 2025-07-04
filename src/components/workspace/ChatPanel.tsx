@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Send } from 'lucide-react';
+import { CheckDoubleBlue, CheckDoubleGray, CheckSingleGray } from '@/data/icons';
 
 interface Message {
   id: string;
@@ -24,47 +25,6 @@ interface ChatPanelProps {
   collaborators: User[];
   documentContent: string;
 }
-
-const CheckSingleGray = () => (
-  <svg
-    className="w-4 h-4 text-gray-400"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={2}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    viewBox="0 0 24 24">
-    <path d="M20 6L9 17l-5-5" />
-  </svg>
-);
-
-const CheckDoubleGray = () => (
-  <svg
-    className="w-4 h-4 text-gray-400"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={2}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    viewBox="0 0 24 24">
-    <path d="M20 6L9 17l-5-5" />
-    <path d="M22 6L11 17l-5-5" />
-  </svg>
-);
-
-const CheckDoubleBlue = () => (
-  <svg
-    className="w-4 h-4 text-teal-400"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth={2}
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    viewBox="0 0 24 24">
-    <path d="M20 6L9 17l-5-5" />
-    <path d="M22 6L11 17l-5-5" />
-  </svg>
-);
 
 export default function ChatPanel({ messages, activeChatUser, onSendMessage, collaborators, documentContent }: ChatPanelProps) {
   const [input, setInput] = useState('');
