@@ -26,7 +26,10 @@ interface ChatPanelProps {
   documentContent: string;
 }
 
-export default function ChatPanel({ messages, activeChatUser, onSendMessage, collaborators, documentContent }: ChatPanelProps) {
+export default function ChatPanel(
+  { messages, activeChatUser, onSendMessage, collaborators, documentContent }
+  : ChatPanelProps) {
+
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -50,10 +53,9 @@ export default function ChatPanel({ messages, activeChatUser, onSendMessage, col
   }
 
   const activeUser = collaborators.find((c) => c.id === activeChatUser);
+  const filteredMessages = messages.filter( (m) => (m.sender === 'You' && m.recipient === activeChatUser) || (m.sender === activeChatUser && m.recipient === 'You'),);
 
-  const filteredMessages = messages.filter(
-    (m) => (m.sender === 'You' && m.recipient === activeChatUser) || (m.sender === activeChatUser && m.recipient === 'You'),
-  );
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -105,8 +107,6 @@ export default function ChatPanel({ messages, activeChatUser, onSendMessage, col
           );
         })}
         <div ref={messagesEndRef} />
-        <CheckDoubleBlue />
-        <CheckDoubleBlue />
       </div>
 
       <form onSubmit={handleSubmit} className="flex items-center px-6 py-4 border-t border-zinc-700 bg-zinc-900">

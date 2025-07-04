@@ -17,16 +17,13 @@ export default function MobileMenu() {
 
   return (
     <>
-      {/* Overlay */}
       <div
         onClick={closeMobileMenu}
         className={`bg-opacity-60 fixed inset-0 bg-black backdrop-blur-sm transition-opacity duration-300 ease-in-out ${isMenuOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'}`}
       />
 
-      {/* Drawer */}
       <nav
         className={`fixed top-0 left-0 h-full w-72 transform border-r border-teal-600 bg-zinc-900 shadow-lg transition-transform duration-300 ease-in-out ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        {/* Close button */}
         <div className="flex items-center justify-end p-4">
           <button
             onClick={closeMobileMenu}
@@ -36,7 +33,6 @@ export default function MobileMenu() {
           </button>
         </div>
 
-        {/* Menu items */}
         <ul className="flex flex-col gap-6 p-4 text-lg font-semibold text-teal-300">
           {menuItems.map(({ href, label }) => (
             <li key={href}>
