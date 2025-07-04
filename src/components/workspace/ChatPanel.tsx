@@ -1,5 +1,6 @@
 'use client';
 
+import type { User as UserT } from '@/types';
 import { useState, useEffect, useRef } from 'react';
 import { Send } from 'lucide-react';
 import { CheckDoubleBlue, CheckDoubleGray, CheckSingleGray } from '@/data/icons';
@@ -26,10 +27,13 @@ interface ChatPanelProps {
   documentContent: string;
 }
 
-export default function ChatPanel(
-  { messages, activeChatUser, onSendMessage, collaborators, documentContent }
-  : ChatPanelProps) {
-
+export default function ChatPanel({
+  messages,
+  activeChatUser,
+  onSendMessage,
+  collaborators,
+  documentContent,
+}: ChatPanelProps) {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -53,9 +57,11 @@ export default function ChatPanel(
   }
 
   const activeUser = collaborators.find((c) => c.id === activeChatUser);
-  const filteredMessages = messages.filter( (m) => (m.sender === 'You' && m.recipient === activeChatUser) || (m.sender === activeChatUser && m.recipient === 'You'),);
-
-
+  const filteredMessages = messages.filter(
+    (m) =>
+      (m.sender === 'You' && m.recipient === activeChatUser) ||
+      (m.sender === activeChatUser && m.recipient === 'You'),
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,7 +82,12 @@ export default function ChatPanel(
     <section className="flex flex-col flex-1 overflow-hidden border-l border-zinc-700 bg-zinc-800">
       <header className="flex items-center gap-4 px-6 py-4 border-b border-zinc-700">
         {activeUser?.avatar ? (
-          <img src={activeUser.avatar} alt={activeUser.name} className="w-10 h-10 rounded-full ring-2 ring-teal-400" loading="lazy" />
+          <img
+            src={activeUser.avatar}
+            alt={activeUser.name}
+            className="w-10 h-10 rounded-full ring-2 ring-teal-400"
+            loading="lazy"
+          />
         ) : (
           <div className="grid w-10 h-10 text-xs font-semibold text-gray-400 rounded-full select-none place-content-center bg-zinc-700">
             ?
@@ -89,12 +100,19 @@ export default function ChatPanel(
         {filteredMessages.map(({ id, sender, content, status }) => {
           const isUser = sender === 'You';
           return (
-            <div key={id} className={`flex ${isUser ? 'justify-end' : 'justify-start'}`} title={`${sender} says`}>
+            <div
+              key={id}
+              className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}
+              title={`${sender} says`}>
               <div
                 className={`max-w-[70%] rounded-xl px-4 py-2 break-words ${
-                  isUser ? 'rounded-br-none bg-teal-600 text-white' : 'rounded-bl-none bg-zinc-700 text-gray-300'
+                  isUser
+                    ? 'rounded-br-none bg-teal-600 text-white'
+                    : 'rounded-bl-none bg-zinc-700 text-gray-300'
                 }`}>
-                <p className="mb-1 text-sm font-semibold">{!isUser && sender}</p>
+                <p className="mb-1 font-semibold text-left text-gray-100 text-md">
+                  {!isUser && sender}
+                </p>
                 <p className="text-sm leading-snug">{content}</p>
                 {isUser && (
                   <div className="flex items-center justify-end mt-1 space-x-1 text-xs">
@@ -109,7 +127,9 @@ export default function ChatPanel(
         <div ref={messagesEndRef} />
       </div>
 
-      <form onSubmit={handleSubmit} className="flex items-center px-6 py-4 border-t border-zinc-700 bg-zinc-900">
+      <form
+        onSubmit={handleSubmit}
+        className="flex items-center px-6 py-4 border-t border-zinc-700 bg-zinc-900">
         <input
           type="text"
           placeholder={`Message ${activeUser?.name}...`}

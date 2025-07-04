@@ -10,7 +10,7 @@ interface SearchComponentProps {
 
 export function SearchComponent({
   onSearch,
-  placeholder = 'Search users...',
+  placeholder = 'Search',
   expanded = true,
 }: SearchComponentProps) {
   const [searchTerm, setSearchTerm] = useState('');

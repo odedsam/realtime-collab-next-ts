@@ -22,13 +22,20 @@ export default function CollaboratorsHeader({ title, collaborators }: Props) {
             title={name}
             className="flex items-center gap-2 px-3 py-1 border border-teal-600 rounded-full shadow-inner bg-zinc-700">
             {avatar ? (
-              <img src={avatar} alt={name} loading="lazy" className="w-8 h-8 rounded-full ring-2 ring-teal-400" />
+              <img
+                src={avatar}
+                alt={name}
+                loading="lazy"
+                className="w-8 h-8 rounded-full ring-2 ring-teal-400"
+              />
             ) : (
               <div className="grid w-8 h-8 text-xs font-semibold rounded-full select-none place-content-center bg-zinc-600 text-zinc-400">
                 ?
               </div>
             )}
-            <span className="max-w-[100px] truncate text-sm font-semibold text-gray-200">{name}</span>
+            <span className="max-w-[100px] truncate text-sm font-semibold text-gray-200">
+              {name}
+            </span>
           </div>
         ))}
       </div>

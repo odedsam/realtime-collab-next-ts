@@ -27,8 +27,8 @@ export function ArchiveControls({
   onUnarchive,
   expanded,
 }: ArchiveControlsProps) {
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const archivedCount = users.filter((user) => user.isArchived).length;
 
   if (!expanded) return null;
