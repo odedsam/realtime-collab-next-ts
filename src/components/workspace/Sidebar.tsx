@@ -1,39 +1,65 @@
 'use client';
 
-interface Collaborator {
+import { useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+
+interface User {
   id: string;
-  avatar?: string;
   name: string;
+  avatar?: string;
 }
 
-interface Props {
-  collaborators: Collaborator[];
-  onSelectUser: (id: string) => void;
-  activeUserId: string | null;
+interface UsersSidebarProps {
+  collaborators: User[];
+  activeChatUser: string | null;
+  onSelectUser: (userId: string) => void;
 }
 
-export default function CollaboratorsSidebar({ collaborators, onSelectUser, activeUserId }: Props) {
+export default function UsersSidebar({ collaborators, activeChatUser, onSelectUser }: UsersSidebarProps) {
+  const [expanded, setExpanded] = useState(true);
+
+  const toggleSidebar = () => setExpanded((v) => !v);
+
   return (
-    <aside className="flex flex-col gap-4 p-4 overflow-y-auto border-r w-72 rounded-l-2xl border-zinc-700 bg-zinc-900">
-      <h2 className="mb-4 text-xl font-bold text-teal-400">👥 Collaborators</h2>
-      {collaborators.map(({ id, avatar, name }) => (
+    <aside
+      className={`transition-width flex flex-col border-r border-zinc-700 bg-zinc-900 duration-300 ease-in-out ${expanded ? 'w-72' : 'w-16'}`}>
+      {/* Header + toggle */}
+      <div className="flex items-center justify-between px-4 py-4 border-b border-zinc-700">
+        {expanded ? <h2 className="text-xl font-bold text-teal-400">Users</h2> : <div className="w-6 h-6" />}
         <button
-          key={id}
-          onClick={() => onSelectUser(id)}
-          title={name}
-          className={`flex cursor-pointer items-center gap-3 rounded-lg p-2 ${
-            activeUserId === id ? 'bg-teal-600 text-white shadow-lg' : 'bg-zinc-800 text-gray-300 hover:bg-teal-900'
-          }`}>
-          {avatar ? (
-            <img src={avatar} alt={name} loading="lazy" className="w-10 h-10 rounded-full ring-2 ring-teal-400" />
-          ) : (
-            <div className="grid w-10 h-10 text-sm font-semibold rounded-full select-none place-content-center bg-zinc-700 text-zinc-400">
-              ?
-            </div>
-          )}
-          <span className="truncate">{name}</span>
+          aria-label={expanded ? 'Collapse sidebar' : 'Expand sidebar'}
+          onClick={toggleSidebar}
+          className="p-1 text-teal-400 rounded-md hover:bg-zinc-700">
+          {expanded ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
         </button>
-      ))}
+      </div>
+
+      {/* Users list */}
+      <ul className="flex flex-col items-center flex-1 gap-2 px-2 py-4 overflow-y-auto no-scrollbar">
+        {collaborators.map(({ id, name, avatar }) => {
+          const isActive = activeChatUser === id;
+
+          return (
+            <li
+              key={id}
+              onClick={() => onSelectUser(id)}
+              title={name}
+              className={`flex cursor-pointer rounded-full border border-teal-600 bg-zinc-700 shadow-inner transition-colors duration-200 select-none hover:bg-teal-600 ${expanded ? 'w-full gap-3 px-3 py-2' : 'w-12 justify-center p-1'} ${isActive ? 'bg-teal-600 text-white' : 'text-gray-300'}`}>
+              {avatar ? (
+                <img src={avatar} alt={name} className="w-8 h-8 rounded-full ring-2 ring-teal-400" loading="lazy" />
+              ) : (
+                <div className="grid w-8 h-8 text-xs font-semibold rounded-full select-none place-content-center bg-zinc-600 text-zinc-400">
+                  ?
+                </div>
+              )}
+
+              {expanded && (
+                <span className={`max-w-[100px] truncate text-sm font-semibold ${isActive ? 'text-white' : 'text-gray-300'}`}>{name}</span>
+              )}
+            </li>
+          );
+        })}
+      </ul>
     </aside>
   );
 }

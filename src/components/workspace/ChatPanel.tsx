@@ -1,125 +1,170 @@
 'use client';
+
 import { useState, useEffect, useRef } from 'react';
+import { Send } from 'lucide-react';
 
 interface Message {
   id: string;
   sender: string;
   recipient: string;
   content: string;
+  status?: 'sent' | 'delivered' | 'seen';
 }
 
-interface Props {
-  initialMessages: Message[];
-  chatUser: string;
-  chatUserName?: string;
+interface User {
+  id: string;
+  name: string;
+  avatar?: string;
 }
 
-export default function ChatPanel({ initialMessages, chatUser, chatUserName }: Props) {
-  const [messages, setMessages] = useState(initialMessages);
+interface ChatPanelProps {
+  messages: Message[];
+  activeChatUser: string | null;
+  onSendMessage: (content: string) => void;
+  collaborators: User[];
+  documentContent: string;
+}
+
+const CheckSingleGray = () => (
+  <svg
+    className="w-4 h-4 text-gray-400"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    viewBox="0 0 24 24">
+    <path d="M20 6L9 17l-5-5" />
+  </svg>
+);
+
+const CheckDoubleGray = () => (
+  <svg
+    className="w-4 h-4 text-gray-400"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    viewBox="0 0 24 24">
+    <path d="M20 6L9 17l-5-5" />
+    <path d="M22 6L11 17l-5-5" />
+  </svg>
+);
+
+const CheckDoubleBlue = () => (
+  <svg
+    className="w-4 h-4 text-teal-400"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    viewBox="0 0 24 24">
+    <path d="M20 6L9 17l-5-5" />
+    <path d="M22 6L11 17l-5-5" />
+  </svg>
+);
+
+export default function ChatPanel({ messages, activeChatUser, onSendMessage, collaborators, documentContent }: ChatPanelProps) {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Scroll to bottom on new messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, [messages, activeChatUser]);
 
-  // Filter messages to this private chat only
+  if (!activeChatUser) {
+    return (
+      <section className="flex flex-col flex-1 p-8 overflow-auto text-gray-300 border-l border-zinc-700 bg-zinc-800">
+        <h2 className="mb-4 text-2xl font-bold text-teal-400">Welcome to the guest demo</h2>
+        <p className="mb-2">This document is a shared space where everyone can contribute live.</p>
+        <ul className="mb-4 space-y-1 list-disc list-inside">
+          <li>Add your ideas freely</li>
+          <li>Comment inline</li>
+          <li>Chat with collaborators</li>
+        </ul>
+        <pre className="text-sm leading-relaxed whitespace-pre-wrap">{documentContent}</pre>
+      </section>
+    );
+  }
+
+  const activeUser = collaborators.find((c) => c.id === activeChatUser);
+
   const filteredMessages = messages.filter(
-    (msg) =>
-      (msg.sender === 'You' && msg.recipient === chatUser) ||
-      (msg.sender === chatUser && msg.recipient === 'You')
+    (m) => (m.sender === 'You' && m.recipient === activeChatUser) || (m.sender === activeChatUser && m.recipient === 'You'),
   );
 
-  const sendMessage = () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     if (!input.trim()) return;
-    const newMsg = { id: String(Date.now()), sender: 'You', recipient: chatUser, content: input.trim() };
-    setMessages((msgs) => [...msgs, newMsg]);
+    onSendMessage(input.trim());
     setInput('');
-    simulateReply();
   };
 
-  const simulateReply = () => {
-    setTimeout(() => {
-      setMessages((msgs) => [
-        ...msgs,
-        {
-          id: String(Date.now() + 1),
-          sender: chatUser,
-          recipient: 'You',
-          content: 'Got your message!',
-        },
-      ]);
-    }, 1500);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
+  const renderStatusIcon = (status?: Message['status']) => {
+    if (!status) return null;
+    if (status === 'sent') return <CheckSingleGray />;
+    if (status === 'delivered') return <CheckDoubleGray />;
+    if (status === 'seen') return <CheckDoubleBlue />;
+    return null;
   };
 
   return (
-    <section className="flex flex-col flex-1 p-6 overflow-hidden border bg-zinc-900 rounded-br-2xl rounded-bl-2xl border-zinc-700">
-      <header className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-bold text-teal-400">
-          Chat with {chatUserName || chatUser}
-        </h2>
+    <section className="flex flex-col flex-1 overflow-hidden border-l border-zinc-700 bg-zinc-800">
+      <header className="flex items-center gap-4 px-6 py-4 border-b border-zinc-700">
+        {activeUser?.avatar ? (
+          <img src={activeUser.avatar} alt={activeUser.name} className="w-10 h-10 rounded-full ring-2 ring-teal-400" loading="lazy" />
+        ) : (
+          <div className="grid w-10 h-10 text-xs font-semibold text-gray-400 rounded-full select-none place-content-center bg-zinc-700">
+            ?
+          </div>
+        )}
+        <h2 className="text-xl font-semibold text-teal-400">{activeUser?.name}</h2>
       </header>
 
-      <div className="flex-1 px-2 space-y-4 overflow-y-auto scrollbar-thin scrollbar-thumb-teal-600 scrollbar-track-zinc-800">
-        {filteredMessages.map(({ id, sender, content }) => {
+      <div className="flex-1 px-6 py-4 space-y-4 overflow-y-auto">
+        {filteredMessages.map(({ id, sender, content, status }) => {
           const isUser = sender === 'You';
           return (
-            <div
-              key={id}
-              className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}
-              title={`${sender} says`}
-            >
+            <div key={id} className={`flex ${isUser ? 'justify-end' : 'justify-start'}`} title={`${sender} says`}>
               <div
-                className={`max-w-[70%] px-4 py-2 rounded-xl break-words
-                  ${isUser ? 'bg-teal-600 text-white rounded-br-none' : 'bg-zinc-700 text-gray-300 rounded-bl-none'}`}
-              >
+                className={`max-w-[70%] rounded-xl px-4 py-2 break-words ${
+                  isUser ? 'rounded-br-none bg-teal-600 text-white' : 'rounded-bl-none bg-zinc-700 text-gray-300'
+                }`}>
                 <p className="mb-1 text-sm font-semibold">{!isUser && sender}</p>
                 <p className="text-sm leading-snug">{content}</p>
                 {isUser && (
-                  <p className="mt-1 text-xs text-right text-gray-300">
-                    You
-                  </p>
+                  <div className="flex items-center justify-end mt-1 space-x-1 text-xs">
+                    <span className="text-gray-300">You</span>
+                    {renderStatusIcon(status)}
+                  </div>
                 )}
               </div>
             </div>
           );
         })}
         <div ref={messagesEndRef} />
+        <CheckDoubleBlue />
+        <CheckDoubleBlue />
       </div>
 
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          sendMessage();
-        }}
-        className="flex gap-3 mt-4"
-      >
+      <form onSubmit={handleSubmit} className="flex items-center px-6 py-4 border-t border-zinc-700 bg-zinc-900">
         <input
           type="text"
+          placeholder={`Message ${activeUser?.name}...`}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="Type your message..."
-          aria-label="Chat input"
-          className="flex-grow px-4 py-3 text-sm text-gray-200 placeholder-gray-500 border rounded-md border-zinc-700 bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-teal-400"
-          autoComplete="off"
-          spellCheck={false}
+          className="flex-grow px-4 py-3 mr-3 text-sm text-gray-200 border rounded-md border-zinc-600 bg-zinc-700 focus:ring-2 focus:ring-teal-400 focus:outline-none"
+          aria-label="Chat message input"
           autoFocus
         />
         <button
           type="submit"
+          disabled={!input.trim()}
           aria-label="Send message"
-          className="flex items-center justify-center px-5 py-3 text-white transition bg-teal-600 rounded-md hover:bg-teal-700"
-        >
-          Send
+          className="p-2 transition bg-teal-600 rounded-md hover:bg-teal-700 disabled:cursor-not-allowed disabled:opacity-50">
+          <Send className="w-5 h-5 text-white" />
         </button>
       </form>
     </section>
