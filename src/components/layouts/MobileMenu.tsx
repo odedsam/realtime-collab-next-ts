@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { X } from 'lucide-react'; // אם משתמש ב־lucide
+import { X } from 'lucide-react';
 import { useCloseMobileMenu, useIsMenuOpen } from '@/store/useUiStore';
 
 const menuItems = [
