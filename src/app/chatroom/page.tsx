@@ -18,7 +18,6 @@ export default function ChatRoom({ roomId, userId }: { roomId: string; userId: s
 
   useEffect(() => {
     socketRef.current = io('http://localhost:4000');
-
     socketRef.current.emit('join_room', roomId);
 
     socketRef.current.on('joined_room', (room: string) => {
@@ -46,20 +45,22 @@ export default function ChatRoom({ roomId, userId }: { roomId: string; userId: s
   };
 
   return (
-    <div>
-      <div style={{ height: '300px', overflowY: 'scroll' }}>
+    <div className='bg-gray-500 h-screen border-green-300 border-2 grid justify-center items-center'>
+      <div className='p-46  border-yellow-50 border-2'>
         {messages.map((m) => (
-          <div key={m.id}>
+          <div key={m.id} className='p-3 border-2 border-indigo-700'>
             <b>{m.username}:</b> {m.message} <small>{new Date(m.timestamp).toLocaleTimeString()}</small>
           </div>
         ))}
       </div>
-      <input
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Type your message..."
-      />
-      <button onClick={sendMessage}>Send</button>
+      <div className='p-4 bg-slate-500'>
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Type your message..."
+        />
+        <button onClick={sendMessage}>Send</button>
+      </div>
     </div>
   );
 }
