@@ -5,9 +5,8 @@ import type { NextRequest } from 'next/server';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { email, password } = body;
-
-    const result = await signInWithEmail(email, password, request);
+    const { name, email, password } = body;
+    const result = await signInWithEmail(name ,email, password, request);
 
     return NextResponse.json(result);
   } catch (error: any) {

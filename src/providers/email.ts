@@ -6,8 +6,9 @@ import { JWTUtils } from '@/utils/jwt';
 import { SessionManager } from '@/lib/session';
 import { ActivityLogger } from '@/utils';
 import bcrypt from 'bcryptjs';
+import { formatFullName } from '@/utils/format';
 
-export async function signUpWithEmail(email: string, password: string, request: NextRequest): Promise<AuthResponse> {
+export async function signUpWithEmail(name:string,email: string, password: string, request: NextRequest): Promise<AuthResponse> {
   const ip = SecurityUtils.extractIP(request);
   const rateLimit = SecurityUtils.checkRateLimit(`signup:${ip}`, 5, 60 * 60 * 1000);
   if (!rateLimit.allowed) {
@@ -27,8 +28,9 @@ export async function signUpWithEmail(email: string, password: string, request: 
   const user = await prisma.user.create({
     data: {
       email: email.toLowerCase(),
-      password: hashed,
+      name:formatFullName(name),
       emailVerified: false,
+      password: hashed,
     },
   });
 
@@ -47,7 +49,7 @@ export async function signUpWithEmail(email: string, password: string, request: 
   return { user, accessToken, refreshToken, sessionToken, deviceFingerprint };
 }
 
-export async function signInWithEmail(email: string, password: string, request: NextRequest): Promise<AuthResponse> {
+export async function signInWithEmail(name:string, email: string, password: string, request: NextRequest): Promise<AuthResponse> {
   const user = await prisma.user.findUnique({ where: { email: email.toLowerCase() } });
   if (!user || !user.password) throw new Error('Invalid email or password');
 

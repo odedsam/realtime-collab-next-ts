@@ -37,9 +37,9 @@ export default function ChatPanel({
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, activeChatUser]);
+  // useEffect(() => {
+  //   messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  // }, [messages, activeChatUser]);
 
   if (!activeChatUser) {
     return (
@@ -137,7 +137,7 @@ export default function ChatPanel({
           onChange={(e) => setInput(e.target.value)}
           className="flex-grow px-4 py-3 mr-3 text-sm text-gray-200 border rounded-md border-zinc-600 bg-zinc-700 focus:ring-2 focus:ring-teal-400 focus:outline-none"
           aria-label="Chat message input"
-          autoFocus
+          // autoFocus
         />
         <button
           type="submit"
