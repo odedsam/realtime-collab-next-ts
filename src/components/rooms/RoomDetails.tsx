@@ -1,6 +1,6 @@
 'use client';
 
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { getChatRoomById, updateChatRoom, deleteChatRoom } from '@/services/chatroom';
 import { ChatRoom } from '@/types/db';

@@ -34,8 +34,8 @@ const RoomView: React.FC<RoomViewProps> = ({ room, onJoinRoom }) => {
           {onJoinRoom && (
             <div className="mt-8 text-center">
               <button
-                onClick={() => onJoinRoom(room.id = 'cmdwarrhn00003tdzpayzfg1e')}
-                className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full shadow-lg text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300 transform transition duration-300 ease-in-out hover:scale-105"
+                onClick={() => onJoinRoom(room.id)}
+                className="cursor-pointer inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full shadow-lg text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300 transform transition duration-300 ease-in-out hover:scale-105"
               >
                 Join Room
                 <svg className="ml-2 -mr-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">

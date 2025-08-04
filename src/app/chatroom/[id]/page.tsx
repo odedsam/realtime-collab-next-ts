@@ -1,6 +1,6 @@
 'use client';
 
-import  { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { getChatRoomById, updateChatRoom, deleteChatRoom } from '@/services/chatroom';
 import { ChatRoom } from '@/types/db';
@@ -64,8 +64,8 @@ export default function ChatRoomDetailPage() {
   };
 
   const handleJoinRoom = (roomId: string) => {
-    alert(`You would join room: ${roomId}`);
-    // router.push(`/chat/${roomId}`);
+ router.push(`/chatroom/${roomId}/ChatInterface`);
+
   };
 
   useEffect(() => {

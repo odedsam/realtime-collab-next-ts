@@ -1,66 +1,73 @@
 'use client';
-import { useEffect, useState, useRef } from 'react';
-import { io, Socket } from 'socket.io-client';
 
-type Message = {
-  id: string;
-  message: string;
-  userId: string;
-  username: string;
-  timestamp: string;
-  roomId: string;
-};
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { getChatRooms, createChatRoom } from '@/services/chatroom';
+import { ChatRoom } from '@/types/db';
 
-export default function ChatRoom({ roomId, userId }: { roomId: string; userId: string }) {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState('');
-  const socketRef = useRef<Socket | null>(null);
+export default function ChatRoomsPage() {
+  const [rooms, setRooms] = useState<ChatRoom[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  useEffect(() => {
-    socketRef.current = io('http://localhost:4000');
-    socketRef.current.emit('join_room', roomId);
-
-    socketRef.current.on('joined_room', (room: string) => {
-      console.log(`Joined room ${room}`);
-    });
-
-    socketRef.current.on('receive_message', (msg: Message) => {
-      setMessages((prev) => [...prev, msg]);
-    });
-
-    return () => {
-      socketRef.current?.emit('leave_room', roomId);
-      socketRef.current?.disconnect();
-    };
-  }, [roomId]);
-
-  const sendMessage = () => {
-    if (!input.trim()) return;
-    socketRef.current?.emit('send_message', {
-      message: input,
-      userId,
-      roomId,
-    });
-    setInput('');
+  const fetchRooms = async () => {
+    setLoading(true);
+    setError('');
+    const { rooms: fetchedRooms, error: fetchError } = await getChatRooms();
+    if (fetchError) {
+      setError(fetchError);
+    } else {
+      setRooms(fetchedRooms);
+    }
+    setLoading(false);
   };
 
+  const handleCreateRoom = async () => {
+
+    const name = prompt('Enter room name:');
+    if (!name) return;
+
+    const { success, error: createError, room: newRoom } = await createChatRoom(name);
+    if (createError) {
+      setError(createError);
+    } else if (success && newRoom) {
+
+      fetchRooms();
+    }
+  };
+
+  useEffect(() => {
+    fetchRooms();
+  }, []);
+
+  if (loading) return <p className="p-6 text-gray-600">Loading rooms...</p>;
+  if (error) return <p className="p-6 text-red-500">{error}</p>;
+
   return (
-    <div className='bg-gray-500 h-screen border-green-300 border-2 grid justify-center items-center'>
-      <div className='p-46  border-yellow-50 border-2'>
-        {messages.map((m) => (
-          <div key={m.id} className='p-3 border-2 border-indigo-700'>
-            <b>{m.username}:</b> {m.message} <small>{new Date(m.timestamp).toLocaleTimeString()}</small>
-          </div>
+    <div className="p-6 max-w-3xl mx-auto">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Chat Rooms</h1>
+        <button
+          onClick={handleCreateRoom}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+        >
+          + Create Room
+        </button>
+      </div>
+
+      <ul className="space-y-4">
+        {rooms.map((room) => (
+          <li key={room.id} className="p-4 bg-gray-100 rounded shadow flex justify-between items-center">
+            <span className="font-medium text-black">{room.name ?? 'Unnamed room'}</span>
+            <Link
+               href={`http://localhost:3000/chatroom/${room.id}`}
+              className="text-blue-600 hover:underline"
+            >
+              View
+            </Link>
+          </li>
         ))}
-      </div>
-      <div className='p-4 bg-slate-500'>
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type your message..."
-        />
-        <button onClick={sendMessage}>Send</button>
-      </div>
+      </ul>
     </div>
   );
 }
