@@ -1,4 +1,3 @@
-
 export type UserRole = 'USER' | 'ADMIN' | 'MODERATOR';
 export type DocumentPermission = 'READ' | 'WRITE' | 'ADMIN';
 export type DocumentVisibility = 'PRIVATE' | 'PUBLIC' | 'TEAM';
@@ -26,6 +25,8 @@ export interface User {
   activities: Activity[];
   comments: Comment[];
   accounts: Account[];
+
+  messages?: Message[];
 }
 
 export interface Account {
@@ -133,4 +134,21 @@ export interface Comment {
   author: User;
   parent: Comment | null;
   replies: Comment[];
+}
+
+export interface ChatRoom {
+  id: string;
+  name: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  messages?: Message[];
+}
+export interface Message {
+  id: string;
+  content: string;
+  timestamp: Date;
+  userId: string;
+  user?: User;
+  roomId: string;
+  room?: ChatRoom;
 }

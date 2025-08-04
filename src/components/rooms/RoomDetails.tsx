@@ -4,7 +4,7 @@ import  { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { getChatRoomById, updateChatRoom, deleteChatRoom } from '@/services/chatroom';
 import { ChatRoom } from '@/types/db';
-import RoomView from '@/components/rooms/RoomView';
+import RoomView from './RoomView';
 
 export default function ChatRoomDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -110,7 +110,7 @@ export default function ChatRoomDetailPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-200 p-4 sm:p-6 lg:p-8">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-bottom from-indigo-600 via-cyan-600 to-pink-400 p-4 sm:p-6 lg:p-8">
       <RoomView room={room} onJoinRoom={handleJoinRoom} />
 
       <div className="mt-8 flex gap-4">

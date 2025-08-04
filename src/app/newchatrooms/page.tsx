@@ -1,11 +1,9 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
-
-interface ChatRoom {
-  id: string;
-  name: string | null;
-}
+import { getChatRooms, createChatRoom } from '@/services/chatroom';
+import { ChatRoom } from '@/types/db';
 
 export default function ChatRoomsPage() {
   const [rooms, setRooms] = useState<ChatRoom[]>([]);
@@ -13,27 +11,29 @@ export default function ChatRoomsPage() {
   const [error, setError] = useState('');
 
   const fetchRooms = async () => {
-    try {
-      const res = await fetch('http://localhost:4000/chatrooms');
-      if (!res.ok) throw new Error('Failed to fetch rooms');
-      const data = await res.json();
-      setRooms(data.rooms);
-    } catch (err) {
-      setError('Could not load rooms');
-    } finally {
-      setLoading(false);
+    setLoading(true);
+    setError('');
+    const { rooms: fetchedRooms, error: fetchError } = await getChatRooms();
+    if (fetchError) {
+      setError(fetchError);
+    } else {
+      setRooms(fetchedRooms);
     }
+    setLoading(false);
   };
 
   const handleCreateRoom = async () => {
+
     const name = prompt('Enter room name:');
     if (!name) return;
-    await fetch('http://localhost:4000/chatrooms', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name }),
-    });
-    fetchRooms();
+
+    const { success, error: createError, room: newRoom } = await createChatRoom(name);
+    if (createError) {
+      setError(createError);
+    } else if (success && newRoom) {
+
+      fetchRooms();
+    }
   };
 
   useEffect(() => {
@@ -58,13 +58,13 @@ export default function ChatRoomsPage() {
       <ul className="space-y-4">
         {rooms.map((room) => (
           <li key={room.id} className="p-4 bg-gray-100 rounded shadow flex justify-between items-center">
-            <span className="font-medium">{room.name ?? 'Unnamed room'}</span>
-            <a
-              href={`/chatrooms/${room.id}`}
+            <span className="font-medium text-black">{room.name ?? 'Unnamed room'}</span>
+            <Link
+               href={`http://localhost:3000/newchatrooms/${room.id}`}
               className="text-blue-600 hover:underline"
             >
               View
-            </a>
+            </Link>
           </li>
         ))}
       </ul>
