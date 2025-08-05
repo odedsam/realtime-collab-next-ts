@@ -1,0 +1,14 @@
+
+# http://localhost:4000/api/documents/10
+
+
+
+POST http://localhost:4000/auth/register
+Content-Type: application/json
+
+{
+  "name": "fraggylasd",
+  "email": "sahar26@gmail.com",
+  "password": "Password125A"
+}
+

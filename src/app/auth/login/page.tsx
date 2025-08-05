@@ -2,6 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { API_BASE_URL } from '@/services';
+
 import AuthForm from '@/components/forms/AuthForm';
 
 export default function LoginPage() {
@@ -9,7 +11,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
 
   const handleLogin = async (data: any) => {
-    const res = await fetch('/api/auth/login', {
+    const res = await fetch(`${API_BASE_URL}/auth/login`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
