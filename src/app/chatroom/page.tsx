@@ -1,9 +1,9 @@
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { getChatRooms, createChatRoom } from '@/services/chatroom';
 import { ChatRoom } from '@/types/db';
+import { Button } from '@/components/ui/Buttons';
 
 export default function ChatRoomsPage() {
   const [rooms, setRooms] = useState<ChatRoom[]>([]);
@@ -23,7 +23,6 @@ export default function ChatRoomsPage() {
   };
 
   const handleCreateRoom = async () => {
-
     const name = prompt('Enter room name:');
     if (!name) return;
 
@@ -31,7 +30,6 @@ export default function ChatRoomsPage() {
     if (createError) {
       setError(createError);
     } else if (success && newRoom) {
-
       fetchRooms();
     }
   };
@@ -44,30 +42,22 @@ export default function ChatRoomsPage() {
   if (error) return <p className="p-6 text-red-500">{error}</p>;
 
   return (
-    <div className="p-6 max-w-3xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
+    <section className="h-full bg-sky-800 p-6">
+      <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Chat Rooms</h1>
-        <button
-          onClick={handleCreateRoom}
-          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-        >
-          + Create Room
-        </button>
+        <Button onClick={handleCreateRoom} className='bg-sky-300'> + Create Room</Button>
       </div>
 
       <ul className="space-y-4">
         {rooms.map((room) => (
-          <li key={room.id} className="p-4 bg-gray-100 rounded shadow flex justify-between items-center">
+          <li key={room.id} className="flex cursor-pointer items-center justify-between rounded bg-gray-100 p-4 shadow hover:bg-gray-300">
             <span className="font-medium text-black">{room.name ?? 'Unnamed room'}</span>
-            <Link
-               href={`http://localhost:3000/chatroom/${room.id}`}
-              className="text-blue-600 hover:underline"
-            >
+            <Button href={`http://localhost:3000/chatroom/${room.id}`} variant={'ghost'} className="hover:bg-sky-200 text-blue-600 hover:underline">
               View
-            </Link>
+            </Button>
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   );
 }

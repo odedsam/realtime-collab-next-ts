@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 
-
 interface ReceivedMessage {
   id: string;
   message: string;
@@ -18,55 +17,47 @@ interface UseSocketResult {
   joinRoom: (roomId: string) => void;
   leaveRoom: (roomId: string) => void;
   sendMessage: (data: { message: string; roomId: string; userId?: string }) => void;
-
+  roomHistory: ReceivedMessage[];
 }
 
 export const useSocket = (serverUrl: string): UseSocketResult => {
   const socketRef = useRef<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [roomHistory, setRoomHistory] = useState<ReceivedMessage[]|any[]>([]);
 
   useEffect(() => {
-    // Initialize socket connection
-    const newSocket = io(serverUrl, {
-      transports: ['websocket'], // Prefer WebSocket for better performance
-      // You can add other options here if needed, e.g., auth tokens
-    });
+    const newSocket = io(serverUrl, { transports: ['websocket'] });
 
     socketRef.current = newSocket;
 
     newSocket.on('connect', () => {
       setIsConnected(true);
       setError(null);
-      console.log('Socket connected:', newSocket.id);
     });
 
     newSocket.on('disconnect', (reason) => {
       setIsConnected(false);
-      console.log('Socket disconnected:', reason);
       setError(`Disconnected: ${reason}`);
     });
 
     newSocket.on('connect_error', (err) => {
-      console.error('Socket connection error:', err.message);
       setError(`Connection Error: ${err.message}`);
     });
-
-
-    newSocket.on('joined_room', (roomId: string) => {
-      console.log(`Successfully joined room: ${roomId}`);
+    newSocket.on('join_room', (data: { roomId: string; messages: ReceivedMessage[] }) => {
+      console.log(`Successfully joined room: ${data.roomId}`);
+      setRoomHistory(data.messages);
+      console.log("data.history:",data)
     });
 
     newSocket.on('left_room', (roomId: string) => {
       console.log(`Successfully left room: ${roomId}`);
+      setRoomHistory([]);
     });
 
-
     return () => {
-      if (newSocket) {
-        newSocket.disconnect();
-        socketRef.current = null;
-      }
+      newSocket.disconnect();
+      socketRef.current = null;
     };
   }, [serverUrl]);
 
@@ -74,7 +65,6 @@ export const useSocket = (serverUrl: string): UseSocketResult => {
     if (socketRef.current && isConnected) {
       socketRef.current.emit('join_room', roomId);
     } else {
-      console.warn('Socket not connected, cannot join room.');
       setError('Socket not connected. Please try again.');
     }
   };
@@ -82,8 +72,6 @@ export const useSocket = (serverUrl: string): UseSocketResult => {
   const leaveRoom = (roomId: string) => {
     if (socketRef.current && isConnected) {
       socketRef.current.emit('leave_room', roomId);
-    } else {
-      console.warn('Socket not connected, cannot leave room.');
     }
   };
 
@@ -91,7 +79,6 @@ export const useSocket = (serverUrl: string): UseSocketResult => {
     if (socketRef.current && isConnected) {
       socketRef.current.emit('send_message', data);
     } else {
-      console.warn('Socket not connected, cannot send message.');
       setError('Socket not connected. Cannot send message.');
     }
   };
@@ -103,5 +90,6 @@ export const useSocket = (serverUrl: string): UseSocketResult => {
     joinRoom,
     leaveRoom,
     sendMessage,
+    roomHistory,
   };
 };

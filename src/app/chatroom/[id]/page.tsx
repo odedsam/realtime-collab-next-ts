@@ -1,14 +1,14 @@
 'use client';
 
+import type { ChatRoom } from '@/types/db';
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { getChatRoomById, updateChatRoom, deleteChatRoom } from '@/services/chatroom';
-import { ChatRoom } from '@/types/db';
 import RoomView from '@/components/rooms/RoomView';
 
 export default function ChatRoomDetailPage() {
-  const { id } = useParams<{ id: string }>();
   const router = useRouter();
+  const { id } = useParams<{ id: string }>();
   const [room, setRoom] = useState<ChatRoom | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
