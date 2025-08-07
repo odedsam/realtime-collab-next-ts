@@ -22,7 +22,6 @@ export default function ChatRoomPage() {
   });
 
   const room = data?.room ?? null;
-
   const { messages, sendMessage } = useChatSocket(roomId);
 
   const showCustomModal = (state: ModalState) => setModalState(state);
@@ -30,7 +29,9 @@ export default function ChatRoomPage() {
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newMessage.trim()) { return showCustomModal({ message: 'Cannot send empty message', type: 'alert' }); }
+    if (!newMessage.trim()) {
+      return showCustomModal({ message: 'Cannot send empty message', type: 'alert' });
+    }
 
     sendMessage({ message: newMessage, roomId });
     setNewMessage('');
@@ -41,19 +42,16 @@ export default function ChatRoomPage() {
   if (!room) return <ErrorMsg errMsg="Room Not Found" path="/chatroom" />;
 
   return (
-    <div className="flex h-screen flex-col bg-gradient-to-r from-blue-300 via-sky-300  to-purple-300">
-      {/* Header */}
+    <div className="flex h-screen flex-col bg-gradient-to-r from-blue-300 via-sky-300 to-purple-300">
       <div className="flex items-center justify-between bg-blue-700 p-4 text-white shadow-md">
         <h2 className="text-2xl font-bold">{room.name ?? 'Chat Room'}</h2>
         <span className="text-sm opacity-80">Room ID: {room.id}</span>
       </div>
 
-      {/* Messages Area */}
       <div className="flex-1 space-y-4 overflow-y-auto p-4">
         <MessagesList messages={messages.length > 0 ? messages : (room.messages as any) || []} />
       </div>
 
-      {/* Message Input */}
       <form onSubmit={handleSendMessage} className="flex items-center border-t border-gray-200 bg-white p-4 shadow-lg">
         <input
           type="text"
