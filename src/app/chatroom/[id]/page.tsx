@@ -8,6 +8,7 @@ import { Trash, Pencil } from 'lucide-react';
 import { ErrorMsg, Loading } from '@/components/feedback';
 import { Button } from '@/components/ui/Buttons';
 import RoomView from '@/components/rooms/RoomView';
+
 export default function ChatRoomDetailPage() {
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
@@ -37,7 +38,6 @@ export default function ChatRoomDetailPage() {
 
   const handleDelete = async () => {
     if (!room) return;
-
     const isConfirmed = confirm(`Are you sure you want to delete the room "${room.name ?? 'Unnamed Room'}"?`);
     if (!isConfirmed) return;
 
@@ -52,7 +52,6 @@ export default function ChatRoomDetailPage() {
 
   const handleRename = async () => {
     if (!room) return;
-
     const newName = prompt('Enter new name for the room:', room.name ?? '');
     if (!newName || newName.trim() === '') return;
 
@@ -73,32 +72,27 @@ export default function ChatRoomDetailPage() {
     fetchRoom();
   }, [id]);
 
-  if (loading) {
-    return <Loading message={'Loading room details...'} />;
-  }
-
-  if (error) {
-    return <ErrorMsg errMsg={error} path={'/chatrooms'} />;
-  }
-
-  if (!room) {
-    return <ErrorMsg errMsg={'Room not found.'} path={'/chatrooms'} />;
-  }
+  if (loading) return <Loading message="Loading room details..." />;
+  if (error) return <ErrorMsg errMsg={error} path="/chatrooms" />;
+  if (!room) return <ErrorMsg errMsg="Room not found." path="/chatrooms" />;
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-200 p-4 sm:p-6 lg:p-8">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-900 p-6 text-cyan-300">
+      {/* Room view */}
       <RoomView room={room} onJoinRoom={handleJoinRoom} />
+
+      {/* Actions */}
       <div className="mt-8 flex gap-4">
         <Button
           onClick={handleRename}
           icon={<Pencil />}
-          className="inline-flex transform cursor-pointer items-center justify-center rounded-full border border-transparent bg-yellow-500 px-6 py-2 text-base font-medium text-white shadow-md transition duration-300 ease-in-out hover:scale-105 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-300 focus:outline-none">
+          className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-400 via-emerald-400 to-lime-300 px-6 py-2 font-medium text-zinc-900 shadow-lg shadow-cyan-500/30 transition-all duration-200 hover:scale-105 hover:from-cyan-300 hover:via-emerald-300 hover:to-lime-200">
           Rename Room
         </Button>
         <Button
           onClick={handleDelete}
           icon={<Trash />}
-          className="inline-flex transform cursor-pointer items-center justify-center rounded-full border border-transparent bg-red-600 px-6 py-2 text-base font-medium text-white shadow-md transition duration-300 ease-in-out hover:scale-105 hover:bg-red-700 focus:ring-4 focus:ring-red-300 focus:outline-none">
+          className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-red-500 via-rose-500 to-pink-400 px-6 py-2 font-medium text-zinc-900 shadow-lg shadow-red-500/30 transition-all duration-200 hover:scale-105 hover:from-red-400 hover:via-rose-400 hover:to-pink-300">
           Delete Room
         </Button>
       </div>
