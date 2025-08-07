@@ -49,7 +49,7 @@ export default function AuthForm({ mode, onSubmit, error }: AuthFormProps) {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-800 px-4">
+    <div className="flex min-h-screen items-center justify-center grad-lime px-4">
       <div className="w-full max-w-md space-y-8 rounded-lg bg-zinc-700 p-8 shadow">
         <div>
           <h2 className="text-center text-2xl font-bold text-white">

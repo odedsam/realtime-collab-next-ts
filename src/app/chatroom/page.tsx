@@ -47,7 +47,7 @@ export default function ChatRoomsPage() {
     <section className="min-h-screen bg-zinc-900 p-8 text-cyan-300">
       <div className="mx-auto max-w-3xl">
         <div className="mb-8 flex items-center justify-between">
-          <h1 className="text-3xl font-bold tracking-tight">💬 Chat Rooms</h1>
+          <h1 className="text-3xl font-bold tracking-tight"> Chat Rooms 💬</h1>
           <Button
             onClick={handleCreateRoom}
             className="cursor-pointer rounded-xl bg-gradient-to-r from-cyan-400 via-emerald-400 to-lime-300 px-4 py-2 font-medium text-zinc-900 shadow-lg shadow-cyan-500/30 transition-all duration-200 hover:scale-105 hover:from-cyan-300 hover:via-emerald-300 hover:to-lime-200">

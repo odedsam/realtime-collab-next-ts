@@ -68,7 +68,7 @@ export default function GroqChatClient() {
           <button
             key={m}
             onClick={() => setModel(m)}
-            className={`rounded-md border px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
+            className={`cursor-pointer rounded-md border px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
               model === m
                 ? 'border-lime-400 bg-lime-500 text-black shadow-md'
                 : 'border-gray-600 bg-[#1a1a1a] text-gray-300 hover:border-lime-400 hover:text-lime-300'
@@ -110,7 +110,7 @@ export default function GroqChatClient() {
         <button
           onClick={sendMessage}
           disabled={loading}
-          className="flex min-h-[50px] w-full items-center justify-center gap-2 rounded-lg bg-lime-500 px-4 py-2 text-sm font-semibold text-black shadow-md transition hover:bg-lime-400 disabled:opacity-50 sm:w-auto">
+          className="cursor-pointer flex min-h-[4.125rem] w-full items-center justify-center gap-2 rounded-lg bg-lime-500 px-4 py-2 text-sm font-semibold text-black shadow-md transition hover:bg-lime-400 disabled:opacity-50 sm:w-auto">
           {loading ? (
             '...'
           ) : (
