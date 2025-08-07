@@ -8,3 +8,9 @@ export async function sendToAI(messages: { role: 'user' | 'assistant'; content: 
   const data = await res.json();
   return data.choices[0].message.content;
 }
+
+// usage
+/* const answer = await sendToAI([
+  { role: 'user', content: 'מה זה LLM ולמה זה חשוב?' }
+]);
+ */
