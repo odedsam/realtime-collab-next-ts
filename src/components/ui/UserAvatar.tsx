@@ -1,19 +1,29 @@
 'use client';
 
+import { useEffect } from 'react';
 import Image from 'next/image';
-import { useAppAuth } from '@/store/useAuth';
+import { useAuthStore } from '@/store/useAuth';
 
 export default function UserAvatar() {
-  const user = useAppAuth((state) => state.user);
+  const user = useAuthStore((s) => s.user);
+  const loading = useAuthStore((s) => s.loading);
+  const { fetchUser } = useAuthStore();
 
-  if (!user?.id) return null;
+  useEffect(() => {
+    if (!user) {
+      fetchUser();
+    }
+  }, [user, loading, fetchUser]);
 
-  const userImage = user?.avatar ?? '/avatar.svg';
+  if (loading) return <p>Loading...</p>;
+  if (!user) return null;
+
+  const avatar = user.avatar ?? '/avatar.svg';
 
   return (
     <div className="flex items-center gap-2">
-      <div className="flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-full border">
-        <Image src={userImage} alt="User" width={40} height={40} className="object-cover" />
+      <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border">
+        <Image src={avatar} alt="User" width={40} height={40} className="object-cover" />
       </div>
       <p className="text-teal-400">Hello {user?.name}</p>
     </div>

@@ -2,14 +2,14 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAppAuth } from '@/store/useAuth';
+import { useAuthStore } from '@/store/useAuth';
 import { register } from '@/services/user';
 import AuthForm from '@/components/forms/AuthForm';
 
 export default function SignupPage() {
   const router = useRouter();
   const [error, setError] = useState('');
-  const setUser = useAppAuth((state) => state.setUser);
+  const setUser = useAuthStore((state) => state.setUser);
 
   const handleSignup = async (data: any) => {
     if (data.password !== data.confirmPassword) {
@@ -24,10 +24,9 @@ export default function SignupPage() {
         password: data.password,
       });
       setUser(result.user);
-      if(result.user){
+      if (result.user) {
         router.push('/dashboard');
       }
-
     } catch (err) {
       console.error(err);
       setError((err as Error).message || 'Signup failed');

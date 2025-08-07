@@ -1,15 +1,11 @@
 'use client';
 
-import { useAppAuth } from '@/store/useAuth';
-
-type User = {
-  id: string;
-  email: string;
-  name?: string;
-};
+import { useAuthStore } from '@/store/useAuth';
 
 export default function Dashboard() {
-  const { user } = useAppAuth();
+  const { user, loading, fetchUser } = useAuthStore();
+  console.log('user from dashboard', user);
+  const logout = useAuthStore((state) => state.logout);
 
   return (
     <main className="mx-auto min-h-screen max-w-4xl bg-gray-900 p-8 font-sans text-gray-100">
@@ -22,7 +18,7 @@ export default function Dashboard() {
         <div className="rounded-lg bg-gray-800 p-6 shadow-lg transition-shadow duration-300 hover:shadow-2xl">
           <h2 className="mb-3 text-xl font-semibold">Profile Info</h2>
           <p>
-            <strong>Email:</strong> {user?.email}
+            <strong>Email:</strong> {user?.email || 'blabla'}
           </p>
           <p>
             <strong>Name:</strong> {user?.name ?? 'N/A'}

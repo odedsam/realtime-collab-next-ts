@@ -3,7 +3,7 @@ import { cookies } from 'next/headers';
 import { API } from '@/services';
 
 export async function getUser() {
-  const token = (await cookies()).get('token')?.value;
+  const token = (await cookies()).get('rtc_session')?.value;
   if (!token) return null;
 
   const res = await fetch(`${API}/auth/me`, {
@@ -22,7 +22,7 @@ export default async function ProtectedLayout({ children }: { children: React.Re
   console.log(user);
 
   if (!user) {
-    redirect('/home');
+    redirect('/auth/login');
   }
 
   return <>{children}</>;

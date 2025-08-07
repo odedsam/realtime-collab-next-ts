@@ -1,6 +1,6 @@
 'use client';
 
-import { useAppAuth } from '@/store/useAuth';
+import { useAuthStore } from '@/store/useAuth';
 import { Button } from '../ui/Buttons';
 import Link from 'next/link';
 import HamburgerButton from '@/components/layouts/HamburgerButton';
@@ -8,8 +8,8 @@ import MobileMenu from '@/components/layouts/MobileMenu';
 import UserAvatar from '../ui/UserAvatar';
 
 export default function AppHeader() {
-  const { user } = useAppAuth();
-  const logout = useAppAuth((state) => state.logout);
+  const { user } = useAuthStore();
+  const logout = useAuthStore((state) => state.logout);
 
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-700 bg-zinc-900 shadow-md">

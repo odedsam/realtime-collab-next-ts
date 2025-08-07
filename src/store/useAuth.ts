@@ -1,43 +1,49 @@
 'use client';
 
+import { create } from 'zustand';
+import { User } from '@/types';
+import { API } from '@/services';
+
 type AuthState = {
   user: User | null;
-  login: (user: User) => void;
-  logout: (redirectTo?: string) => Promise<void>;
+  loading: boolean;
+  fetchUser: () => Promise<void>;
   setUser: (user: User | null) => void;
-};
-import { createContext, useContext } from 'react';
-import { createStore, useStore } from 'zustand';
-import { logout as apiLogout } from '@/services/user';
-import { redirect } from 'next/navigation';
-import { User } from '@/types';
-
-export type AuthStore = ReturnType<typeof createAuthStore>;
-
-export const createAuthStore = (initialState: Partial<AuthState>) => {
-  return createStore<AuthState>((set) => ({
-    user: initialState.user ?? null,
-    login: (user) => set({ user }),
-    logout: async (redirectTo?: string) => {
-      try {
-        await apiLogout();
-      } catch (err) {
-        console.error('Logout failed:', err);
-      } finally {
-        set({ user: null });
-        if (redirectTo) redirect(redirectTo);
-      }
-    },
-    setUser: (user) => set({ user }),
-  }));
+  logout: (redirectTo?: string) => Promise<void>;
 };
 
-export const AuthContext = createContext<AuthStore | null>(null);
+export const useAuthStore = create<AuthState>()((set) => ({
+  user: null,
+  loading: true,
+  setUser: (user) => set({ user }),
+  fetchUser: async () => {
+    try {
+      const res = await fetch(`${API}/auth/me`, {
+        credentials: 'include',
+        cache: 'no-store',
+      });
+      if (!res.ok) throw new Error('Not authenticated');
+      const user = await res.json();
 
-export const useAppAuth = () => {
-  const store = useContext(AuthContext);
-  if (!store) {
-    throw new Error('useAppAuth must be used within AuthProvider');
-  }
-  return useStore(store);
-};
+      return  set({user,loading:false})
+    } catch(err) {
+      if(err){
+      set({ user: null, loading: false });}
+        console.log(err);
+    }
+
+  },
+  logout: async (redirectTo) => {
+    try {
+      await fetch(`${API}/auth/logout`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+    } catch (e) {
+      console.error('Logout failed:', e);
+    } finally {
+      set({ user: null });
+      if (redirectTo) window.location.href = redirectTo;
+    }
+  },
+}));
