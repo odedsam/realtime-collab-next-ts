@@ -1,41 +1,43 @@
 'use client';
 
-import { create } from 'zustand';
-
-export type User = {
-  id: string;
-  email: string;
-  name?: string;
-  avatar?: string | null;
-};
-
 type AuthState = {
   user: User | null;
-  isAuthenticated: boolean;
   login: (user: User) => void;
-  logout: () => void;
+  logout: (redirectTo?: string) => Promise<void>;
   setUser: (user: User | null) => void;
 };
+import { createContext, useContext } from 'react';
+import { createStore, useStore } from 'zustand';
+import { logout as apiLogout } from '@/services/user';
+import { redirect } from 'next/navigation';
+import { User } from '@/types';
 
-export const useAppAuth = create<AuthState>((set) => ({
-  user: null,
-  isAuthenticated: false,
+export type AuthStore = ReturnType<typeof createAuthStore>;
 
-  login: (user) =>
-    set(() => ({
-      user,
-      isAuthenticated: true,
-    })),
+export const createAuthStore = (initialState: Partial<AuthState>) => {
+  return createStore<AuthState>((set) => ({
+    user: initialState.user ?? null,
+    login: (user) => set({ user }),
+    logout: async (redirectTo?: string) => {
+      try {
+        await apiLogout();
+      } catch (err) {
+        console.error('Logout failed:', err);
+      } finally {
+        set({ user: null });
+        if (redirectTo) redirect(redirectTo);
+      }
+    },
+    setUser: (user) => set({ user }),
+  }));
+};
 
-  logout: () =>
-    set(() => ({
-      user: null,
-      isAuthenticated: false,
-    })),
+export const AuthContext = createContext<AuthStore | null>(null);
 
-  setUser: (user) =>
-    set(() => ({
-      user,
-      isAuthenticated: !!user,
-    })),
-}));
+export const useAppAuth = () => {
+  const store = useContext(AuthContext);
+  if (!store) {
+    throw new Error('useAppAuth must be used within AuthProvider');
+  }
+  return useStore(store);
+};

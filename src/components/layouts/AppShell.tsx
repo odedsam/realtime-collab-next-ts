@@ -1,12 +1,16 @@
+'use client';
+
+import React from 'react';
+import { AuthProvider } from '@/providers/AuthProvider';
 import AppHeader from './AppHeader';
 import AppFooter from './AppFooter';
 import TanstackProvider from '@/providers/Tanstack';
 import { Toaster } from 'sonner';
-import { AuthProvider } from '@/providers/AuthProvider';
+import { User } from '@/types';
 
 type Props = {
   children: React.ReactNode;
-  user: any;
+  user: User | null;
 };
 
 export default function AppShell({ children, user }: Props) {

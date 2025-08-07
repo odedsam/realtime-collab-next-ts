@@ -44,7 +44,7 @@ export async function logout() {
 }
 
 export async function fetchUser() {
-  const res = await fetch(`${API}/auth/verify`, {
+  const res = await fetch(`${API}/auth/me`, {
     method: 'GET',
     credentials: 'include',
   });

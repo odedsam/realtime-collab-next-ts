@@ -1,15 +1,15 @@
 'use client';
 
 import { useAppAuth } from '@/store/useAuth';
+import { Button } from '../ui/Buttons';
 import Link from 'next/link';
 import HamburgerButton from '@/components/layouts/HamburgerButton';
 import MobileMenu from '@/components/layouts/MobileMenu';
 import UserAvatar from '../ui/UserAvatar';
 
 export default function AppHeader() {
-const { user, isAuthenticated } = useAppAuth();
-const logOut = useAppAuth((state) => state.logout);
-
+  const { user } = useAppAuth();
+  const logout = useAppAuth((state) => state.logout);
 
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-700 bg-zinc-900 shadow-md">
@@ -37,12 +37,14 @@ const logOut = useAppAuth((state) => state.logout);
 
         {/* Auth Buttons or User Avatar for desktop */}
         <div className="hidden items-center gap-4 md:flex">
-          {isAuthenticated && user ? (
+          {user?.id ? (
             <>
-              <UserAvatar name={user.name} avatar={user.avatar} />
-              <button onClick={logOut} className="rounded-md bg-red-600 px-4 py-2 text-sm text-white transition hover:bg-red-700">
+              <UserAvatar />
+              <Button
+                onClick={() => logout('/')}
+                className="rounded-md bg-red-600 px-4 py-2 text-sm text-white transition hover:bg-red-700">
                 Logout
-              </button>
+              </Button>
             </>
           ) : (
             <>

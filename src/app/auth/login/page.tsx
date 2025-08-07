@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { login } from '@/services/user';
 import { useAppAuth } from '@/store/useAuth';
@@ -9,7 +9,7 @@ import AuthForm from '@/components/forms/AuthForm';
 export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState('');
-  const setUser = useAppAuth((state) => state.setUser);
+  const { setUser } = useAppAuth();
 
   const handleLogin = async (data: { email: string; password: string; remember?: boolean }) => {
     try {

@@ -1,32 +1,19 @@
 'use client';
+import { useRef, ReactNode } from 'react';
+import { AuthContext, createAuthStore, AuthStore } from '@/store/useAuth';
+import { User } from '@/types';
 
-import { createContext, useContext } from 'react';
-
-export type User = {
-  id: string;
-  name: string;
-  email: string;
-  avatar?:string | null;
-};
-
-type AuthContextType = {
+type AuthProviderProps = {
   user: User | null;
+  children: React.ReactNode;
 };
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export function AuthProvider({ user, children }: AuthProviderProps) {
+  const storeRef = useRef<AuthStore | null>(null);
 
-export function useAuth(): AuthContextType {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+  if (!storeRef.current) {
+    storeRef.current = createAuthStore({ user });
   }
-  return context;
-}
 
-export function AuthProvider({ user, children }: { user: User | null; children: React.ReactNode }) {
-  return (
-    <AuthContext.Provider value={{ user }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={storeRef.current}>{children}</AuthContext.Provider>;
 }

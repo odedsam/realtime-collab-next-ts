@@ -9,8 +9,7 @@ type User = {
 };
 
 export default function Dashboard() {
-  const { user, isAuthenticated } = useAppAuth();
-  console.log(user);
+  const { user } = useAppAuth();
 
   return (
     <main className="mx-auto min-h-screen max-w-4xl bg-gray-900 p-8 font-sans text-gray-100">

@@ -1,15 +1,18 @@
 import { API } from '@/services';
 import { cookies } from 'next/headers';
 
-export  async function getUser() {
-  const cookiesList =  cookies();
-  const token = (await cookiesList).get("rtc_token");
+export async function getUser() {
+  const cookiesList = cookies();
+  const session = (await cookiesList).get('rtc_session');
 
-  console.log(token);
-  if (!token) return null;
+  console.log(session);
+  if (!session) return null;
 
-  const res = await fetch(`http://localhost:4000/auth/me`, {
-    method:'GET',
+  const res = await fetch(`${API}/auth/me`, {
+    method: 'GET',
+    headers: {
+      Cookie: `rtc_session=${session.value}`,
+    },
     credentials: 'include',
     cache: 'no-store',
   });
@@ -19,5 +22,5 @@ export  async function getUser() {
   //   return null;
   // };
 
-  return res.json()
+  return res.json();
 }
