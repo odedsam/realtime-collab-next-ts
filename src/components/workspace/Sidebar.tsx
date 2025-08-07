@@ -72,11 +72,11 @@ export default function UsersSidebar({ collaborators, activeChatUser, onSelectUs
         style={{ height: '100dvh' }}>
         {/* Header + toggle */}
         <div className="flex items-center justify-between border-b border-zinc-700 px-4 py-4">
-          {expanded ? <h2 className="text-xl font-bold text-teal-400">Chats</h2> : <div className="h-6 w-6" />}
+          {expanded ? <h2 className="text-xl font-bold text-lime-400">Chats</h2> : <div className="h-6 w-6" />}
           <button
             aria-label={expanded ? 'Collapse sidebar' : 'Expand sidebar'}
             onClick={toggleSidebar}
-            className="rounded-md p-1 text-teal-400 hover:bg-zinc-700">
+            className="rounded-md p-1 text-lime-400 hover:bg-zinc-700">
             {expanded ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
           </button>
         </div>
@@ -96,24 +96,24 @@ export default function UsersSidebar({ collaborators, activeChatUser, onSelectUs
         )}
 
         {/* Users list */}
-        <ul className="select-none flex flex-1 flex-col items-center gap-2 overflow-y-auto px-2 py-4">
+        <ul className="flex flex-1 flex-col items-center gap-2 overflow-y-auto px-2 py-4 select-none">
           {filteredUsers.map(({ id, name, avatar, isArchived }) => {
             const isActive = activeChatUser === id;
 
             return (
               <li
                 key={id}
-                  onMouseDown={(e) => e.preventDefault()}
-                 onClick={(e) => {
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={(e) => {
                   e.currentTarget.blur();
                   onSelectUser(id);
                 }}
                 title={name}
-                className={`relative flex cursor-pointer rounded-full border border-teal-600 bg-zinc-700 shadow-inner transition-colors duration-200 focus:outline-none focus-visible:outline-none select-none hover:bg-teal-600 ${
+                className={`relative flex cursor-pointer rounded-full border border-lime-600 bg-zinc-700 shadow-inner transition-colors duration-200 select-none hover:bg-lime-600 focus:outline-none focus-visible:outline-none ${
                   expanded ? 'w-full gap-3 px-3 py-2' : 'w-12 justify-center p-1'
-                } ${isActive ? 'bg-teal-600 text-white' : 'text-gray-300'}`}>
+                } ${isActive ? 'bg-lime-600 text-white' : 'text-gray-300'}`}>
                 {avatar ? (
-                  <img src={avatar} alt={name} className="h-8 w-8 rounded-full ring-2 ring-teal-400" loading="lazy" />
+                  <img src={avatar} alt={name} className="h-8 w-8 rounded-full ring-2 ring-lime-400" loading="lazy" />
                 ) : (
                   <div className="grid h-8 w-8 place-content-center rounded-full bg-zinc-600 text-xs font-semibold text-zinc-400 select-none">
                     ?

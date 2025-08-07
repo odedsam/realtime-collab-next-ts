@@ -78,10 +78,8 @@ export default function ChatRoomDetailPage() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-zinc-900 p-6 text-cyan-300">
-      {/* Room view */}
       <RoomView room={room} onJoinRoom={handleJoinRoom} />
 
-      {/* Actions */}
       <div className="mt-8 flex gap-4">
         <Button
           onClick={handleRename}

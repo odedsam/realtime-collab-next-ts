@@ -56,7 +56,7 @@ export default function GuestWorkspace() {
 
   return (
     <div className="flex h-full min-h-screen flex-col overflow-hidden rounded-2xl bg-zinc-900 font-sans text-gray-100 shadow-xl">
-      <div className="bg-indigo-800 px-6 py-3 text-center text-sm font-semibold text-indigo-200">{info.banner}</div>
+      <div className="bg-orange-200 px-6 py-3 text-center text-sm font-semibold transition-all text-black text-shadow-2xs hover:bg-orange-300 hover:font-bold hover:text-pink-600 ">{info.banner}</div>
 
       <div className="flex flex-1 overflow-hidden scroll-smooth">
         <UsersSidebar

@@ -28,7 +28,7 @@ type Props = {
 
 const MessagesList: React.FC<Props> = ({ messages }) => {
   return (
-    <div className="space-y-4 p-4 grad-lime sm:p-8">
+    <div className="space-y-4 p-4 sm:p-8">
       {messages.map((msg) => {
         const isMine = msg.user?.id === 'me';
         return (

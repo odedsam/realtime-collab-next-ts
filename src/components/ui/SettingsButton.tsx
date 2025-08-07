@@ -13,7 +13,7 @@ export default function SettingsButton({ expanded, onOpenSettings }: SettingsBut
       <button
         type="button"
         onClick={onOpenSettings}
-        className="flex gap-2 px-3 py-2 text-sm text-teal-400 rounded-md hover:bg-zinc-700"
+        className="flex gap-2 px-3 py-2 text-sm text-lime-200 rounded-md hover:bg-zinc-700"
         title="Settings">
         <Settings size={18} />
         {expanded && <span>Settings</span>}

@@ -44,7 +44,7 @@ export default function ChatPanel({
   if (!activeChatUser) {
     return (
       <section className="flex flex-col flex-1 p-8 overflow-auto text-gray-300 border-l border-zinc-700 bg-zinc-800">
-        <h2 className="mb-4 text-2xl font-bold text-teal-400">Welcome to the guest demo</h2>
+        <h2 className="mb-4 text-2xl font-bold text-lime-400">Welcome to the guest demo</h2>
         <p className="mb-2">This document is a shared space where everyone can contribute live.</p>
         <ul className="mb-4 space-y-1 list-disc list-inside">
           <li>Add your ideas freely</li>
@@ -85,7 +85,7 @@ export default function ChatPanel({
           <img
             src={activeUser.avatar}
             alt={activeUser.name}
-            className="w-10 h-10 rounded-full ring-2 ring-teal-400"
+            className="w-10 h-10 rounded-full ring-2 ring-lime-400"
             loading="lazy"
           />
         ) : (
@@ -93,7 +93,7 @@ export default function ChatPanel({
             ?
           </div>
         )}
-        <h2 className="text-xl font-semibold text-teal-400">{activeUser?.name}</h2>
+        <h2 className="text-xl font-semibold text-lime-400">{activeUser?.name}</h2>
       </header>
 
       <div className="flex-1 px-6 py-4 space-y-4 overflow-y-auto">
@@ -107,7 +107,7 @@ export default function ChatPanel({
               <div
                 className={`max-w-[70%] rounded-xl px-4 py-2 break-words ${
                   isUser
-                    ? 'rounded-br-none bg-teal-600 text-white'
+                    ? 'rounded-br-none bg-lime-600 text-white'
                     : 'rounded-bl-none bg-zinc-700 text-gray-300'
                 }`}>
                 <p className="mb-1 font-semibold text-left text-gray-100 text-md">
@@ -135,7 +135,7 @@ export default function ChatPanel({
           placeholder={`Message ${activeUser?.name}...`}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="flex-grow px-4 py-3 mr-3 text-sm text-gray-200 border rounded-md border-zinc-600 bg-zinc-700 focus:ring-2 focus:ring-teal-400 focus:outline-none"
+          className="flex-grow px-4 py-3 mr-3 text-sm text-gray-200 border rounded-md border-zinc-600 bg-zinc-700 focus:ring-2 focus:ring-lime-400 focus:outline-none"
           aria-label="Chat message input"
           // autoFocus
         />
@@ -143,8 +143,8 @@ export default function ChatPanel({
           type="submit"
           disabled={!input.trim()}
           aria-label="Send message"
-          className="p-2 transition bg-teal-600 rounded-md hover:bg-teal-700 disabled:cursor-not-allowed disabled:opacity-50">
-          <Send className="w-5 h-5 text-white" />
+          className="p-4 cursor-pointer transition bg-lime-200 rounded-md hover:bg-lime-400 disabled:cursor-not-allowed disabled:opacity-50">
+          <Send className="w-5 h-5 text-black" />
         </button>
       </form>
     </section>

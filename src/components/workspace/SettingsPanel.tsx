@@ -32,7 +32,7 @@ export default function SettingsPanel({
         <button
           onClick={onClose}
           aria-label="Close settings"
-          className="font-bold text-teal-400 hover:text-teal-600">
+          className="font-bold text-lime-400 hover:text-lime-600">
           ✕
         </button>
       </div>
@@ -43,7 +43,7 @@ export default function SettingsPanel({
             type="checkbox"
             checked={darkMode}
             onChange={toggleDarkMode}
-            className="accent-teal-400"
+            className="accent-lime-400"
           />
           Dark Mode
         </label>
@@ -53,7 +53,7 @@ export default function SettingsPanel({
             type="checkbox"
             checked={notificationsEnabled}
             onChange={toggleNotifications}
-            className="accent-teal-400"
+            className="accent-lime-400"
           />
           Notifications
         </label>
@@ -66,7 +66,7 @@ export default function SettingsPanel({
 
         <button
           onClick={toggleSidebar}
-          className="px-3 py-2 mt-4 font-semibold text-white bg-teal-600 rounded hover:bg-teal-700">
+          className="px-3 py-2 mt-4 font-semibold text-white bg-lime-600 rounded hover:bg-lime-700">
           {sidebarExpanded ? 'Collapse Sidebar' : 'Expand Sidebar'}
         </button>
       </div>

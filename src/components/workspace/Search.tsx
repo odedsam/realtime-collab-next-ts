@@ -32,7 +32,7 @@ export function SearchComponent({
     return (
       <div className="flex justify-center px-2 py-2">
         <button
-          className="p-2 text-teal-400 transition-colors rounded-md hover:bg-zinc-700"
+          className="p-2 text-lime-400 transition-colors rounded-md hover:bg-zinc-700"
           title="Search users">
           <Search size={16} />
         </button>
