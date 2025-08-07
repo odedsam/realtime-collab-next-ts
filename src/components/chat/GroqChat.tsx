@@ -3,8 +3,9 @@
 import { API } from '@/services';
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '../ui/Buttons';
-import { Bot, SquareTerminal, Cpu, Send } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { CurrentModelDisplay } from './ModelDisplay';
+
 type Message = {
   role: 'user' | 'assistant';
   content: string;
@@ -60,50 +61,64 @@ export default function GroqChatClient() {
   }, [messages]);
 
   return (
-    <div className="mx-auto flex h-full max-h-screen min-h-[30rem] w-full max-w-3xl flex-col rounded-2xl bg-[#0f172a] p-4 text-white">
-      <div className="mb-3 flex justify-center gap-2">
+    <div className="mx-auto flex h-full min-h-[32rem] w-full max-w-5xl flex-col rounded-2xl bg-[#0c101b]/90 p-4 shadow-xl backdrop-blur-lg sm:p-6">
+      {/* Selector */}
+      <div className="mb-6 flex flex-wrap justify-center gap-2 sm:gap-4">
         {MODELS.map((m) => (
-          <Button
+          <button
             key={m}
             onClick={() => setModel(m)}
-            className={`cursor-pointer px-4 py-1 text-sm font-medium transition-all duration-200 ${model === m ? 'bg-blue-600 text-white shadow-2xs hover:text-bold  hover:border-2 hover:border-yellow-300 hover:bg-transparent' : 'bg-slate-700 text-gray-300 hover:bg-cyan-200 hover:text-purple-700'}`}>
+            className={`rounded-md border px-4 py-2 text-sm font-semibold transition-colors duration-300 ${
+              model === m
+                ? 'border-lime-400 bg-lime-500 text-black shadow-md'
+                : 'border-gray-600 bg-[#1a1a1a] text-gray-300 hover:border-lime-400 hover:text-lime-300'
+            }`}>
             {m}
-          </Button>
+          </button>
         ))}
       </div>
 
-      <div className="flex-1 overflow-y-auto rounded-xl border border-slate-700 bg-slate-800 p-4 shadow-inner">
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto rounded-lg border border-[#202939] bg-[#101a27] p-4 shadow-inner sm:p-6">
         <CurrentModelDisplay modelName={model} />
-        {messages.map((msg, idx) => (
-          <div key={idx} className={`mb-4 flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-            <div
-              className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm whitespace-pre-wrap shadow-md transition-all duration-300 ${
-                msg.role === 'user' ? 'bg-blue-600 text-white' : 'bg-slate-700 text-gray-200'
-              }`}>
-              {msg.content}
+
+        <div className="mt-4 space-y-4">
+          {messages.map((msg, idx) => (
+            <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div
+                className={`max-w-[85%] rounded-xl px-4 py-3 text-sm whitespace-pre-wrap shadow-md sm:max-w-[75%] ${
+                  msg.role === 'user' ? 'bg-lime-500 text-black' : 'border border-gray-700 bg-[#1c2531] text-gray-200'
+                }`}>
+                {msg.content}
+              </div>
             </div>
-          </div>
-        ))}
-        <div ref={bottomRef} />
+          ))}
+          <div ref={bottomRef} />
+        </div>
       </div>
 
-      <div className="mt-4 flex items-end gap-2">
+      {/* Input */}
+      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end">
         <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Type a message..."
+          placeholder="Type your message..."
           rows={2}
-          className="max-w-[80%] flex-1 resize-none rounded-xl border border-slate-700 bg-slate-900 px-4 py-2 text-sm text-white shadow-inner placeholder:text-gray-500 focus:ring-2 focus:ring-blue-600 focus:outline-none"
+          className="w-full resize-none rounded-lg border border-gray-700 bg-[#0f172a] px-4 py-3 text-sm text-white placeholder:text-gray-500 focus:ring-2 focus:ring-lime-400 focus:outline-none"
         />
-        <Button
+        <button
           onClick={sendMessage}
-          icon={<Send />}
-          iconPosition={'right'}
           disabled={loading}
-          className="min-h-[58px] min-w-[140px] cursor-pointer rounded-xl bg-blue-600 px-4 py-2 text-start text-sm text-white transition hover:bg-cyan-400 disabled:opacity-50">
-          {loading ? '...' : 'Send'}
-        </Button>
+          className="flex min-h-[50px] w-full items-center justify-center gap-2 rounded-lg bg-lime-500 px-4 py-2 text-sm font-semibold text-black shadow-md transition hover:bg-lime-400 disabled:opacity-50 sm:w-auto">
+          {loading ? (
+            '...'
+          ) : (
+            <>
+              Send <Send size={16} />
+            </>
+          )}
+        </button>
       </div>
     </div>
   );
