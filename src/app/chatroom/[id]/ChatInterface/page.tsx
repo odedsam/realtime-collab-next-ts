@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { getChatRoomById } from '@/services/chatroom';
 import { useChatSocket } from '@/hooks/useChatSocket';
-import { Modal, Loading, Error } from '@/components/feedback';
+import { Modal, Loading, ErrorMsg } from '@/components/feedback';
 import MessagesList from '@/components/rooms/MessagesList';
 import { Button } from '@/components/ui/Buttons';
 
@@ -37,8 +37,8 @@ export default function ChatRoomPage() {
   };
 
   if (isLoading) return <Loading message="Loading Room Details" />;
-  if (error) return <Error errorMessage={error instanceof Error ? error.message : 'Unknown error'} path="/chatroom" />;
-  if (!room) return <Error errorMessage="Room Not Found" path="/chatroom" />;
+  if (error) return <ErrorMsg errMsg={error instanceof Error ? error.message : 'Unknown error'} path="/chatroom" />;
+  if (!room) return <ErrorMsg errMsg="Room Not Found" path="/chatroom" />;
 
   return (
     <div className="flex h-screen flex-col bg-gradient-to-r from-blue-300 via-sky-300  to-purple-300">

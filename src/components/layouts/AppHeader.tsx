@@ -1,14 +1,14 @@
 'use client';
 
-import { useAuth } from '@/store/useAuth';
+import { useAppAuth } from '@/store/useAuth';
 import Link from 'next/link';
 import HamburgerButton from '@/components/layouts/HamburgerButton';
 import MobileMenu from '@/components/layouts/MobileMenu';
 import UserAvatar from '../ui/UserAvatar';
 
 export default function AppHeader() {
-  const { user, setUser,isAuthenticated, logout } = useAuth();
-  // setUser({ id: '2', name: 'Sahar',email:"oded960@gmail.com"});
+const { user, isAuthenticated } = useAppAuth();
+const logOut = useAppAuth((state) => state.logout);
 
 
   return (
@@ -40,7 +40,7 @@ export default function AppHeader() {
           {isAuthenticated && user ? (
             <>
               <UserAvatar name={user.name} avatar={user.avatar} />
-              <button onClick={logout} className="rounded-md bg-red-600 px-4 py-2 text-sm text-white transition hover:bg-red-700">
+              <button onClick={logOut} className="rounded-md bg-red-600 px-4 py-2 text-sm text-white transition hover:bg-red-700">
                 Logout
               </button>
             </>

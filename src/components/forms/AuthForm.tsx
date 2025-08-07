@@ -5,7 +5,7 @@ import { GoogleButton, FacebookButton } from '../ui/Buttons';
 import { loginSchema, signupSchema, LoginSchema, SignupSchema } from '@/lib/validation/auth';
 
 interface AuthFormProps {
-  mode: 'login' | 'signup';
+  mode: 'login' | 'signup' | 'testlogin';
   onSubmit: (data: LoginSchema | SignupSchema) => void;
   error?: string;
 }
@@ -21,6 +21,12 @@ export default function AuthForm({ mode, onSubmit, error }: AuthFormProps) {
 
   const [formError, setFormError] = useState<string | null>(null);
 
+  const testForm = {
+    email: 'check123@setExample.com',
+    password: 'StrongPass123!',
+    remember: true,
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData({ ...formData, [name]: type === 'checkbox' ? checked : value });
@@ -29,7 +35,9 @@ export default function AuthForm({ mode, onSubmit, error }: AuthFormProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setFormError(null);
-
+     if(mode === 'testlogin'){
+    onSubmit(testForm);
+     }
     const result = mode === 'login' ? loginSchema.safeParse(formData) : signupSchema.safeParse(formData);
 
     if (!result.success) {
@@ -80,6 +88,7 @@ export default function AuthForm({ mode, onSubmit, error }: AuthFormProps) {
                 type="email"
                 autoComplete="email"
                 required
+                value={mode === 'testlogin' ? testForm.email : ''}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 focus:outline-none sm:text-sm"
               />
@@ -94,6 +103,7 @@ export default function AuthForm({ mode, onSubmit, error }: AuthFormProps) {
                 name="password"
                 type="password"
                 required
+                value={mode === 'testlogin' ? testForm.email : ''}
                 autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-cyan-500 focus:ring-cyan-500 focus:outline-none sm:text-sm"
@@ -116,30 +126,38 @@ export default function AuthForm({ mode, onSubmit, error }: AuthFormProps) {
             )}
           </div>
 
-          {mode === 'login' && (
-            <div className="flex items-center justify-between">
-              <label className="flex items-center text-sm text-white">
-                <input
-                  type="checkbox"
-                  name="remember"
-                  checked={formData.remember}
-                  onChange={handleChange}
-                  className="mr-2 rounded border-gray-300 text-cyan-600 accent-cyan-400 shadow-sm focus:ring-cyan-500"
-                />
-                Remember me
-              </label>
-              <a href="#" className="text-sm text-cyan-600 hover:underline">
-                Forgot password?
-              </a>
-            </div>
-          )}
-
+          {mode === 'login' ||
+            (mode === 'testlogin' && (
+              <div className="flex items-center justify-between">
+                <label className="flex items-center text-sm text-white">
+                  <input
+                    type="checkbox"
+                    name="remember"
+                    checked={formData.remember || testForm.remember}
+                    onChange={handleChange}
+                    className="mr-2 rounded border-gray-300 text-cyan-600 accent-cyan-400 shadow-sm focus:ring-cyan-500"
+                  />
+                  Remember me
+                </label>
+                <a href="#" className="text-sm text-cyan-600 hover:underline">
+                  Forgot password?
+                </a>
+              </div>
+            ))}
           <div>
-            <button
-              type="submit"
-              className="flex w-full cursor-pointer justify-center rounded-md bg-teal-300 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-cyan-500 focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:outline-none">
-              {mode === 'login' ? 'Sign in' : 'Sign up'}
-            </button>
+            {mode === 'testlogin' ? (
+              <button
+                type="submit"
+                className="flex w-full cursor-pointer justify-center rounded-md bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-cyan-500 focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:outline-none">
+                TEST LOGIN
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="flex w-full cursor-pointer justify-center rounded-md bg-teal-300 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-cyan-500 focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:outline-none">
+                {mode === 'login' ? 'Sign in' : 'Sign up'}
+              </button>
+            )}
           </div>
         </form>
 

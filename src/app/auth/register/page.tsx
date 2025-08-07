@@ -1,13 +1,15 @@
 'use client';
 
-import AuthForm from '@/components/forms/AuthForm';
-
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAppAuth } from '@/store/useAuth';
+import { register } from '@/services/user';
+import AuthForm from '@/components/forms/AuthForm';
 
 export default function SignupPage() {
   const router = useRouter();
   const [error, setError] = useState('');
+  const setUser = useAppAuth((state) => state.setUser);
 
   const handleSignup = async (data: any) => {
     if (data.password !== data.confirmPassword) {
@@ -15,17 +17,20 @@ export default function SignupPage() {
       return;
     }
 
-    const res = await fetch('/api/auth/signup', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: { 'Content-Type': 'application/json' },
-    });
+    try {
+      const result = await register({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
+      setUser(result.user);
+      if(result.user){
+        router.push('/dashboard');
+      }
 
-    if (!res.ok) {
-      const result = await res.json();
-      setError(result.message || 'Signup failed');
-    } else {
-      router.push('/auth/login');
+    } catch (err) {
+      console.error(err);
+      setError((err as Error).message || 'Signup failed');
     }
   };
 

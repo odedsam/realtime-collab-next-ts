@@ -7,8 +7,8 @@ const menuItems = [
   { href: '#features', label: 'Features' },
   { href: '#demo', label: 'Live Demo' },
   { href: '#usecases', label: 'Use Cases' },
-  { href: '/login', label: 'Login' },
-  { href: '/register', label: 'Sign Up' },
+  { href: '/auth/login', label: 'Login' },
+  { href: '/auth/register', label: 'Sign Up' },
 ];
 
 export default function MobileMenu() {

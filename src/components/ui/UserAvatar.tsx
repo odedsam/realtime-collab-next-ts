@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { User } from 'lucide-react';
 import Image from 'next/image';
-import { useAuth } from '@/store/useAuth';
+import { useAppAuth } from '@/store/useAuth';
 
 type UserType = {
   id: string;
@@ -13,22 +13,11 @@ type UserType = {
 };
 
 export default function UserAvatar({ name }: Partial<UserType>) {
-  const { user, setUser,isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout } = useAppAuth();
 
   useEffect(() => {
     // TODO: Replace this simulation with your real auth fetch
-    const loggedIn = true;
-    if (loggedIn) {
-      setUser({
-        id: '1',
-        email: 'user@example.com',
-        name: 'John Doe',
-        avatar: '/avatar.svg',
-      });
-    } else {
-      setUser(null);
-    }
-  }, []);
+  }, [isAuthenticated]);
 
   const userImage = user?.avatar || '/avatar.svg';
 

@@ -2,10 +2,10 @@
 
 import { create } from 'zustand';
 
-type User = {
+export type User = {
   id: string;
   email: string;
-  name: string;
+  name?: string;
   avatar?: string | null;
 };
 
@@ -17,11 +17,25 @@ type AuthState = {
   setUser: (user: User | null) => void;
 };
 
-export const useAuth = create<AuthState>((set) => ({
+export const useAppAuth = create<AuthState>((set) => ({
   user: null,
   isAuthenticated: false,
 
-  login: (user) => set({ user, isAuthenticated: true }),
-  logout: () => set({ user: null, isAuthenticated: false }),
-  setUser: (user) => set({ user, isAuthenticated: !!user }),
+  login: (user) =>
+    set(() => ({
+      user,
+      isAuthenticated: true,
+    })),
+
+  logout: () =>
+    set(() => ({
+      user: null,
+      isAuthenticated: false,
+    })),
+
+  setUser: (user) =>
+    set(() => ({
+      user,
+      isAuthenticated: !!user,
+    })),
 }));
