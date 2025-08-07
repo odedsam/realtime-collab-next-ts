@@ -33,13 +33,13 @@ export default function UserAvatar() {
             <Image src={avatar} alt="User" width={40} height={40} className="object-cover" draggable={false} />
           </Link>
         </div>
-        <p className="font-sans font-semibold text-orange-200 text-shadow-2xs hover:text-amber-400">Hello {user?.name}</p>
+        <p className="font-sans font-semibold text-yellow-100 text-shadow-2xs hover:text-lime-300">Hello {user?.name}</p>
       </div>
       <Button
         onClick={() => logout('/')}
         icon={<LogOut />}
-        iconPosition='right'
-        className="cursor-pointer inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-red-500 via-rose-500 to-pink-400 px-3 py-2 font-medium text-zinc-900 shadow-lg shadow-red-500/30 transition-all duration-200 hover:scale-105 hover:from-red-400 hover:via-rose-400 hover:to-orange-200">
+        iconPosition="right"
+        className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-gradient-to-r from-red-500 via-rose-500 to-pink-400 px-3 py-2 font-medium text-zinc-900 shadow-lg shadow-red-500/30 transition-all duration-200 hover:scale-105 hover:from-red-400 hover:via-rose-400 hover:to-orange-200">
         Logout
       </Button>
     </div>

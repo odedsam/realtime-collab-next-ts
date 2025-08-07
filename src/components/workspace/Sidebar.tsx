@@ -68,7 +68,7 @@ export default function UsersSidebar({ collaborators, activeChatUser, onSelectUs
   return (
     <>
       <aside
-        className={`flex flex-col border-r border-zinc-700 bg-zinc-900 duration-300 ease-in-out ${expanded ? 'w-72' : 'w-16'}`}
+        className={`relative flex flex-col border-r border-zinc-700 bg-zinc-900 duration-300 ease-in-out ${expanded ? 'w-72' : 'w-16'}`}
         style={{ height: '100dvh' }}>
         {/* Header + toggle */}
         <div className="flex items-center justify-between border-b border-zinc-700 px-4 py-4">
