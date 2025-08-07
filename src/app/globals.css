@@ -44,7 +44,7 @@ body {
 
 @layer components {
   .input {
-    @apply text-lay border-main placeholder:text-lay/60 focus:border-lay  w-full rounded-lg border-2 bg-gray-100 px-4 py-3 transition-colors outline-none focus:bg-gray-300;
+    @apply text-lay border-main placeholder:text-lay/60 focus:border-lay w-full rounded-lg border-2 bg-gray-100 px-4 py-3 transition-colors outline-none focus:bg-gray-300;
   }
 
   .input-error {
@@ -53,12 +53,15 @@ body {
   .card-main {
     @apply bg-main text-lay border-stroke rounded-lg;
   }
-  .card-lay{
+  .card-lay {
     @apply bg-lay text-main border-stroke rounded-lg;
   }
 
   .btn {
     @apply bg-pnk text-lay w-full cursor-pointer rounded-md px-8 py-3 font-bold hover:bg-[#efa1ad] hover:text-black;
+  }
+  .grad-lime {
+    @apply bg-gradient-to-r from-cyan-400 via-emerald-400 to-lime-300 p-6 text-zinc-900 shadow-md shadow-cyan-500/30;
   }
 }
 

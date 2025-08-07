@@ -32,7 +32,6 @@ export default function ChatRoomPage() {
     if (!newMessage.trim()) {
       return showCustomModal({ message: 'Cannot send empty message', type: 'alert' });
     }
-
     sendMessage({ message: newMessage, roomId });
     setNewMessage('');
   };
@@ -42,31 +41,41 @@ export default function ChatRoomPage() {
   if (!room) return <ErrorMsg errMsg="Room Not Found" path="/chatroom" />;
 
   return (
-    <div className="flex h-screen flex-col bg-gradient-to-r from-blue-300 via-sky-300 to-purple-300">
-      <div className="flex items-center justify-between bg-blue-700 p-4 text-white shadow-md">
-        <h2 className="text-2xl font-bold">{room.name ?? 'Chat Room'}</h2>
-        <span className="text-sm opacity-80">Room ID: {room.id}</span>
+    <div className="flex h-screen flex-col bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 text-teal-300">
+      {/* Header */}
+      <div className="flex items-center justify-between bg-zinc-950 border-b border-zinc-700 p-4 shadow-md">
+        <h2 className="text-xl sm:text-2xl font-bold tracking-tight">{room.name ?? 'Chat Room'}</h2>
+        <span className="text-xs sm:text-sm opacity-70">Room ID: {room.id}</span>
       </div>
 
+      {/* Messages */}
       <div className="flex-1 space-y-4 overflow-y-auto p-4">
-        <MessagesList messages={messages.length > 0 ? messages : (room.messages as any) || []} />
+        <MessagesList
+          messages={messages.length > 0 ? messages : (room.messages as any) || []}
+        />
       </div>
 
-      <form onSubmit={handleSendMessage} className="flex items-center border-t border-gray-200 bg-white p-4 shadow-lg">
+      {/* Input */}
+      <form
+        onSubmit={handleSendMessage}
+        className="flex items-center border-t border-zinc-700 bg-zinc-850 p-4"
+      >
         <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Type your message..."
-          className="flex-1 rounded-full border border-gray-300 p-3 text-lg text-black focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          className="flex-1 rounded-full bg-zinc-800 border border-zinc-600 p-3 text-sm sm:text-base text-teal-200 placeholder-teal-500/50 focus:ring-2 focus:ring-teal-400 focus:outline-none"
         />
         <Button
           type="submit"
-          className="ml-3 transform rounded-full bg-blue-600 px-6 py-3 font-semibold text-white shadow-lg transition duration-200 ease-in-out hover:scale-105 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none">
+          className="ml-3 rounded-full bg-teal-500 px-6 py-2 sm:py-3 text-white font-semibold shadow-lg transition duration-200 ease-in-out hover:scale-105 hover:bg-teal-400 focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 focus:outline-none"
+        >
           Send
         </Button>
       </form>
 
+      {/* Modal */}
       {modalState && (
         <Modal
           message={modalState.message}
