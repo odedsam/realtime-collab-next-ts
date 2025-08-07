@@ -1,5 +1,7 @@
+import { API } from "./api";
+
 export async function sendToAI(messages: { role: 'user' | 'assistant'; content: string }[]) {
-  const res = await fetch('http://localhost:3001/api/ai', {
+  const res = await fetch(`${API}/api/ai`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ messages }),

@@ -54,8 +54,8 @@ export default function GroqChatClient() {
   }, [messages]);
 
   return (
-    <div className="mx-auto flex h-[90vh] w-full max-w-2xl flex-col p-4">
-      <div className="flex-1 overflow-y-auto rounded-xl border bg-white p-4 shadow">
+    <div className="mx-auto flex h-[90vh] w-full max-w-2xl bg-blue-900 flex-col p-4">
+      <div className="flex-1 overflow-y-auto rounded-xl border p-4 shadow">
         {messages.map((msg, idx) => (
           <div
             key={idx}
