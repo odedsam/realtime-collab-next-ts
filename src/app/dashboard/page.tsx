@@ -5,7 +5,6 @@ import { useAuthStore } from '@/store/useAuth';
 export default function Dashboard() {
   const { user, loading, fetchUser } = useAuthStore();
   console.log('user from dashboard', user);
-  const logout = useAuthStore((state) => state.logout);
 
   return (
     <main className="mx-auto min-h-screen max-w-4xl bg-gray-900 p-8 font-sans text-gray-100">
