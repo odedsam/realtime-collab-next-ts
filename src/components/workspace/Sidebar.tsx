@@ -109,11 +109,11 @@ export default function UsersSidebar({ collaborators, activeChatUser, onSelectUs
                   onSelectUser(id);
                 }}
                 title={name}
-                className={`relative flex cursor-pointer rounded-full border border-lime-600 bg-zinc-700 shadow-inner transition-colors duration-200 select-none hover:bg-lime-600 focus:outline-none focus-visible:outline-none ${
+                className={`relative flex cursor-pointer rounded-full border border-lime-600 bg-zinc-700 text-black shadow-inner transition-colors duration-200 select-none hover:bg-orange-200 hover:text-black focus:outline-none focus-visible:outline-none ${
                   expanded ? 'w-full gap-3 px-3 py-2' : 'w-12 justify-center p-1'
-                } ${isActive ? 'bg-lime-600 text-white' : 'text-gray-300'}`}>
+                } ${isActive ? 'bg-lime-600 text-amber-700' : 'text-amber-900'}`}>
                 {avatar ? (
-                  <img src={avatar} alt={name} className="h-8 w-8 rounded-full ring-2 ring-lime-400" loading="lazy" />
+                  <img src={avatar} alt={name} className="h-8 w-8 rounded-full ring-2 ring-orange-400" loading="lazy" />
                 ) : (
                   <div className="grid h-8 w-8 place-content-center rounded-full bg-zinc-600 text-xs font-semibold text-zinc-400 select-none">
                     ?
@@ -121,12 +121,11 @@ export default function UsersSidebar({ collaborators, activeChatUser, onSelectUs
                 )}
 
                 {expanded && (
-                  <span className={`max-w-[100px] truncate text-sm font-semibold ${isActive ? 'text-white' : 'text-gray-300'}`}>
+                  <span className={`max-w-[100px] truncate text-sm font-semibold ${isActive ? 'text-amber-600' : 'text-amber-300'}`}>
                     {name}
                   </span>
                 )}
 
-                {/* Archive toggle icon */}
                 {expanded && (
                   <div className="group relative ml-auto flex items-center">
                     {isArchived && <Archive size={12} className="mr-1 text-zinc-400" />}

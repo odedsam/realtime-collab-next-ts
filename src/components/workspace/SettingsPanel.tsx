@@ -47,13 +47,13 @@ export default function SettingsPanel({
 
         <button
           onClick={clearChatHistory}
-          className="mt-4 cursor-pointer rounded bg-red-600 px-3 py-2 font-semibold text-white hover:bg-red-700">
+          className="mt-4 cursor-pointer rounded-xl bg-gradient-to-r from-red-500 via-rose-500 to-pink-400 px-3 py-2 font-medium text-zinc-900 shadow-lg shadow-red-500/30 transition-all duration-200 hover:scale-105 hover:from-red-400 hover:via-rose-400 hover:to-orange-200">
           Clear Chat History
         </button>
 
         <button
           onClick={toggleSidebar}
-          className="mt-4 cursor-pointer rounded bg-lime-600 px-3 py-2 font-semibold text-white hover:bg-lime-700">
+          className="mt-4 cursor-pointer rounded-xl bg-orange-200 px-3 py-2 font-semibold text-zinc-900 shadow-lg shadow-orange-500/30 transition-all hover:scale-105 duration-200 hover:border-2 hover:border-amber-700 hover:bg-orange-300 hover:text-black">
           {sidebarExpanded ? 'Collapse Sidebar' : 'Expand Sidebar'}
         </button>
       </div>
