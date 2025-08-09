@@ -3,7 +3,9 @@ import { PasswordResetManager } from '@/providers/main';
 import { prisma } from '@/lib';
 import sendgridMail from '@sendgrid/mail';
 
-sendgridMail.setApiKey(process.env.SENDGRID_API_KEY!);
+const apiKey = process.env.SENDGRID_API_KEY!;
+
+sendgridMail.setApiKey(apiKey);
 
 export async function POST(request: NextRequest) {
   try {
@@ -25,9 +27,7 @@ export async function POST(request: NextRequest) {
       to: email,
       from: process.env.SENDGRID_EMAIL || 'no-reply@yourdomain.com',
       subject: 'Password Reset Request',
-      html: `
-        <p>Click <a href="${resetUrl}">here</a> to reset your password. This link will expire in 1 hour.</p>
-      `,
+      html: `<p>Click <a href="${resetUrl}">here</a> to reset your password. This link will expire in 1 hour.</p>`,
     });
 
     return NextResponse.json({ message: 'If this email exists, reset link was sent.' }, { status: 200 });

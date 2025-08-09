@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { GoogleButton, FacebookButton } from '../ui/Buttons';
 import { loginSchema, signupSchema, LoginSchema, SignupSchema } from '@/lib/validation/auth';
-import { PasswordInput } from '../ui';
 
 export interface AuthFormProps {
   mode: 'login' | 'signup' | 'testlogin';

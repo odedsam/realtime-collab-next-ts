@@ -1,11 +1,11 @@
 'use client';
 
 import { useAuthStore } from '@/store/useAuth';
+import { NavLinks } from './AppLinks';
 import Link from 'next/link';
 import HamburgerButton from '@/components/layouts/HamburgerButton';
 import MobileMenu from '@/components/layouts/MobileMenu';
 import UserAvatar from './UserAvatar';
-import { NavLinks } from './AppLinks';
 
 export interface AppLinksProps {}
 
