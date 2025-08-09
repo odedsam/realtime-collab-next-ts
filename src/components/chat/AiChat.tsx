@@ -2,7 +2,6 @@
 
 import { API } from '@/services';
 import { useState, useRef, useEffect } from 'react';
-import { Button } from '../ui/Buttons';
 import { Send } from 'lucide-react';
 import { CurrentModelDisplay } from './ModelDisplay';
 
@@ -14,7 +13,7 @@ type Message = {
 const MODELS = ['groq', 'together', 'openrouter'] as const;
 type Model = (typeof MODELS)[number];
 
-export default function GroqChatClient() {
+export default function AiChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -62,7 +61,6 @@ export default function GroqChatClient() {
 
   return (
     <div className="mx-auto flex h-full min-h-[32rem] w-full max-w-5xl flex-col rounded-2xl bg-[#0c101b]/90 p-4 shadow-xl backdrop-blur-lg sm:p-6">
-      {/* Selector */}
       <div className="mb-6 flex flex-wrap justify-center gap-2 sm:gap-4">
         {MODELS.map((m) => (
           <button
@@ -78,7 +76,6 @@ export default function GroqChatClient() {
         ))}
       </div>
 
-      {/* Messages */}
       <div className="flex-1 overflow-y-auto rounded-lg border border-[#202939] bg-[#101a27] p-4 shadow-inner sm:p-6">
         <CurrentModelDisplay modelName={model} />
 
@@ -97,7 +94,6 @@ export default function GroqChatClient() {
         </div>
       </div>
 
-      {/* Input */}
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-end">
         <textarea
           value={input}
@@ -110,7 +106,7 @@ export default function GroqChatClient() {
         <button
           onClick={sendMessage}
           disabled={loading}
-          className="cursor-pointer flex min-h-[4.125rem] w-full items-center justify-center gap-2 rounded-lg bg-lime-500 px-4 py-2 text-sm font-semibold text-black shadow-md transition hover:bg-lime-400 disabled:opacity-50 sm:w-auto">
+          className="flex min-h-[4.125rem] w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-lime-500 px-4 py-2 text-sm font-semibold text-black shadow-md transition hover:bg-lime-400 disabled:opacity-50 sm:w-auto">
           {loading ? (
             '...'
           ) : (

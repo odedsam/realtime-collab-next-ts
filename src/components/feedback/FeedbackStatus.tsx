@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/utils';
 
@@ -102,11 +101,13 @@ export const StatusWrapper: React.FC<StatusWrapperProps> = ({
 
 //usage
 
-{/* <StatusWrapper
+{
+  /* <StatusWrapper
   isLoading={isLoading}
   error={error}
   notFound={notFound}
   loadingMessage="Loading Data..."
   errorMessage="Oh no! Something went wrong while loading the data."
   notFoundMessage="The item you were looking for was not found."
-  onBackClick={handleBackClick}></StatusWrapper>; */}
+  onBackClick={handleBackClick}></StatusWrapper>; */
+}

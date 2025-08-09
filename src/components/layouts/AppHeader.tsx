@@ -20,16 +20,19 @@ export default function AppHeader() {
         </Link>
 
         <nav className="hidden items-center gap-8 text-sm font-medium text-zinc-300 md:flex">
-          <Link href="#features" className="transition-colors hover:text-yellow-200">
+          <Link href="/#features" className="transition-colors hover:text-yellow-200">
             Features
           </Link>
-          <Link href="#demo" className="transition-colors hover:text-yellow-200">
+          <Link href="/#demo" className="transition-colors hover:text-yellow-200">
             Live Demo
           </Link>
-          <Link href="#usecases" className="transition-colors hover:text-yellow-200">
+          <Link href="/#usecases" className="transition-colors hover:text-yellow-200">
             Use Cases
           </Link>
-          <Link href="/groq" className="transition-colors hover:text-yellow-200">
+           <Link href="/chatroom" className="transition-colors hover:text-yellow-200">
+           Chat Rooms
+          </Link>
+          <Link href="/ask-ai" className="transition-colors hover:text-yellow-200">
             Ask AI
           </Link>
         </nav>

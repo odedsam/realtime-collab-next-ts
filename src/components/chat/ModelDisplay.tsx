@@ -1,4 +1,4 @@
-import { type LucideIcon } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import { SquareTerminal, Bot, BrainCircuit } from 'lucide-react';
 
 export type ModelConfig = {
