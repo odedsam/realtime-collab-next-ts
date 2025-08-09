@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from 'react';
 import { Input, PasswordInput, CheckboxInput, RadioInput, Textarea, Select } from '@/components/ui';
 
@@ -10,7 +12,7 @@ export default function FormExample() {
   const [country, setCountry] = useState('israel');
 
   return (
-    <form className="max-w-md space-y-6">
+    <form className="max-w-md bg-white space-y-6">
       <Input
         id="username"
         label="Username"
@@ -22,6 +24,7 @@ export default function FormExample() {
       <PasswordInput
         id="password"
         label="Password"
+
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Enter your password"

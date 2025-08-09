@@ -2,7 +2,7 @@ import { cn } from '@/utils';
 import { useEffect } from 'react';
 import { Button } from './Buttons';
 
-interface DialogProps {
+export interface DialogProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
@@ -26,7 +26,7 @@ export const Dialog: React.FC<DialogProps> = ({ isOpen, onClose, children, class
 
   return (
     <>
-      {isOpen && <div className="fixed inset-0 bg-black/50 z-40" onClick={onClose} />}
+      {isOpen && <div className="fixed inset-0 z-40 bg-black/50" onClick={onClose} />}
       {isOpen && <div className={baseClasses}>{children}</div>}
     </>
   );
@@ -46,7 +46,7 @@ export const DialogContent: React.FC<DialogContentProps> = ({ children, classNam
   return <div className={baseClasses}>{children}</div>;
 };
 
-interface DialogHeaderProps {
+export interface DialogHeaderProps {
   children: React.ReactNode;
   className?: string;
 }
@@ -56,7 +56,7 @@ export const DialogHeader: React.FC<DialogHeaderProps> = ({ children, className 
   return <div className={baseClasses}>{children}</div>;
 };
 
-interface DialogTitleProps {
+export interface DialogTitleProps {
   children: React.ReactNode;
   className?: string;
 }
@@ -66,7 +66,7 @@ export const DialogTitle: React.FC<DialogTitleProps> = ({ children, className })
   return <h2 className={baseClasses}>{children}</h2>;
 };
 
-interface DialogDescriptionProps {
+export interface DialogDescriptionProps {
   children: React.ReactNode;
   className?: string;
 }
@@ -86,7 +86,7 @@ export const DialogFooter: React.FC<DialogFooterProps> = ({ children, className 
   return <div className={baseClasses}>{children}</div>;
 };
 
-interface DialogCloseProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface DialogCloseProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string;
 }
 
@@ -98,13 +98,7 @@ export const DialogClose: React.FC<DialogCloseProps> = ({ className, ...props })
   );
   return (
     <Button variant="ghost" size="icon" className={baseClasses} {...props}>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-4 w-4"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={2}>
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
       </svg>
       <span className="sr-only">Close</span>

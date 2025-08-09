@@ -1,6 +1,6 @@
 import { cn } from '@/utils';
 
-type BadgeProps = {
+export type BadgeProps = {
   text: string;
   color?: 'red' | 'green' | 'blue' | 'yellow';
   className?: string;
