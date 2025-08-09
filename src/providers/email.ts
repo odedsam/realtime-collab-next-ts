@@ -5,8 +5,8 @@ import { SecurityUtils } from '@/lib/auth';
 import { JWTUtils } from '@/utils/jwt';
 import { SessionManager } from '@/lib/session';
 import { ActivityLogger } from '@/utils';
-import bcrypt from 'bcryptjs';
 import { formatFullName } from '@/utils/format';
+import bcrypt from 'bcryptjs';
 
 export async function signUpWithEmail(name:string,email: string, password: string, request: NextRequest): Promise<AuthResponse> {
   const ip = SecurityUtils.extractIP(request);

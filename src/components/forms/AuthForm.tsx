@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { GoogleButton, FacebookButton } from '../ui/Buttons';
 import { loginSchema, signupSchema, LoginSchema, SignupSchema } from '@/lib/validation/auth';
+import { PasswordInput } from '../ui';
 
-interface AuthFormProps {
+export interface AuthFormProps {
   mode: 'login' | 'signup' | 'testlogin';
   onSubmit: (data: LoginSchema | SignupSchema) => void;
   error?: string;
@@ -65,7 +66,7 @@ export default function AuthForm({ mode, onSubmit, error }: AuthFormProps) {
                   type="text"
                   autoComplete="name"
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-orange-500 focus:ring-orange-500 focus:outline-none sm:text-sm"
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-orange-500 focus:ring-orange-500 focus:outline-none text-white sm:text-sm"
                 />
               </div>
             )}
@@ -81,7 +82,7 @@ export default function AuthForm({ mode, onSubmit, error }: AuthFormProps) {
                 autoComplete="email"
                 required
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-orange-500 focus:ring-orange-500 focus:outline-none sm:text-sm"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-orange-500 focus:ring-orange-500 focus:outline-none sm:text-sm text-white"
               />
             </div>
 
@@ -96,7 +97,7 @@ export default function AuthForm({ mode, onSubmit, error }: AuthFormProps) {
                 required
                 autoComplete={mode === 'signup' ? 'new-password' : 'current-password'}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-orange-500 focus:ring-orange-500 focus:outline-none sm:text-sm"
+                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-orange-500 focus:ring-orange-500 focus:outline-none sm:text-sm text-white"
               />
             </div>
 
@@ -110,7 +111,7 @@ export default function AuthForm({ mode, onSubmit, error }: AuthFormProps) {
                   name="confirmPassword"
                   type="password"
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-orange-500 focus:ring-orange-500 focus:outline-none sm:text-sm"
+                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-orange-500 focus:ring-orange-500 focus:outline-none sm:text-sm text-white"
                 />
               </div>
             )}
