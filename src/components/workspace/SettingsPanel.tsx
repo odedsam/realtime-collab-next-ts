@@ -1,6 +1,6 @@
 'use client';
 
-interface SettingsPanelProps {
+export interface SettingsPanelProps {
   expanded: boolean;
   onClose: () => void;
   darkMode: boolean;
@@ -53,7 +53,7 @@ export default function SettingsPanel({
 
         <button
           onClick={toggleSidebar}
-          className="mt-4 cursor-pointer rounded-xl bg-orange-200 px-3 py-2 font-semibold text-zinc-900 shadow-lg shadow-orange-500/30 transition-all hover:scale-105 duration-200 hover:border-2 hover:border-amber-700 hover:bg-orange-300 hover:text-black">
+          className="mt-4 cursor-pointer rounded-xl bg-orange-200 px-3 py-2 font-semibold text-zinc-900 shadow-lg shadow-orange-500/30 transition-all duration-200 hover:scale-105 hover:border-2 hover:border-amber-700 hover:bg-orange-300 hover:text-black">
           {sidebarExpanded ? 'Collapse Sidebar' : 'Expand Sidebar'}
         </button>
       </div>

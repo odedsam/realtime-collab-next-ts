@@ -12,8 +12,10 @@
   },
   "javascript.referencesCodeLens.enabled": true,
   "javascript.referencesCodeLens.showOnAllFunctions": true,
-  "typescript.referencesCodeLens.enabled": true,
-  "typescript.referencesCodeLens.showOnAllFunctions": true,
+  // "typescript.referencesCodeLens.enabled": true,
+   "editor.codeLens": true,
+  // "typescript.referencesCodeLens.showOnAllFunctions": true,
+
   "search.exclude": {
     "**/node_modules": true,
     "**/dist": true,
