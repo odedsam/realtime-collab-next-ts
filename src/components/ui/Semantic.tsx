@@ -63,7 +63,7 @@ export function Section({ children, className, ...props }: SectionProps) {
 export function Article({ children, title, className, ...props }: ArticleProps) {
   return (
     <article className={cn('mb-8', className)} {...props}>
-      {title && <h2 className="text-2xl font-bold mb-4">{title}</h2>}
+      {title && <h2 className="mb-4 text-2xl font-bold">{title}</h2>}
       {children}
     </article>
   );
@@ -77,7 +77,7 @@ export function Main({ children, className, ...props }: MainProps) {
   );
 }
 
-export function Dialog({ children, className, open, ...props }: DialogProps) {
+function Dialog({ children, className, open, ...props }: DialogProps) {
   return (
     <dialog className={cn(className)} open={open} {...props}>
       {children}
@@ -87,7 +87,7 @@ export function Dialog({ children, className, open, ...props }: DialogProps) {
 
 export function Aside({ children, className, ...props }: AsideProps) {
   return (
-    <aside className={cn('w-64 p-4 bg-gray-100 rounded-md', className)} {...props}>
+    <aside className={cn('w-64 rounded-md bg-gray-100 p-4', className)} {...props}>
       {children}
     </aside>
   );
@@ -122,38 +122,5 @@ export function Container({ children, className, fluid, ...props }: ContainerPro
     <div className={cn(fluid ? 'w-full' : 'max-w-7xl', className)} {...props}>
       {children}
     </div>
-  );
-}
-
-const paragraphSizes: Record<ParagraphLevel, string> = {
-  p1: 'text-sm md:text-base lg:text-lg',
-  p2: 'text-base md:text-lg lg:text-xl',
-  p3: 'text-lg md:text-xl lg:text-2xl',
-  p4: 'text-xl md:text-2xl lg:text-3xl',
-};
-
-export function Paragraph({ children, level = 'p2', className, ...props }: ParagraphProps) {
-  return (
-    <p className={cn('font-clash', paragraphSizes[level], className)} {...props}>
-      {children}
-    </p>
-  );
-}
-
-const headingSizes: Record<HeadingLevel, string> = {
-  h1: 'text-2xl md:text-3xl lg:text-4xl',
-  h2: 'text-xl md:text-2xl lg:text-3xl',
-  h3: 'text-lg md:text-xl lg:text-2xl',
-  h4: 'text-base md:text-lg lg:text-xl',
-  h5: 'text-sm md:text-base lg:text-lg',
-  h6: 'text-xs md:text-sm lg:text-base',
-};
-
-export function Heading({ children, level = 'h1', className, ...props }: HeadingProps) {
-  const Tag = level;
-  return (
-    <Tag className={cn('font-clash', headingSizes[level], className)} {...props}>
-      {children}
-    </Tag>
   );
 }

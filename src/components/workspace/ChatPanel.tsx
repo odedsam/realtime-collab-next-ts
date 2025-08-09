@@ -1,6 +1,5 @@
 'use client';
 
-import type { User as UserT } from '@/types';
 import { useState, useEffect, useRef } from 'react';
 import { Send } from 'lucide-react';
 import { CheckDoubleBlue, CheckDoubleGray, CheckSingleGray } from '@/data/icons';
@@ -27,13 +26,7 @@ interface ChatPanelProps {
   documentContent: string;
 }
 
-export default function ChatPanel({
-  messages,
-  activeChatUser,
-  onSendMessage,
-  collaborators,
-  documentContent,
-}: ChatPanelProps) {
+export default function ChatPanel({ messages, activeChatUser, onSendMessage, collaborators, documentContent }: ChatPanelProps) {
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -43,10 +36,10 @@ export default function ChatPanel({
 
   if (!activeChatUser) {
     return (
-      <section className="flex flex-col flex-1 p-8 overflow-auto text-gray-300 border-l border-zinc-700 bg-zinc-800">
+      <section className="flex flex-1 flex-col overflow-auto border-l border-zinc-700 bg-zinc-800 p-8 text-gray-300">
         <h2 className="mb-4 text-2xl font-bold text-lime-400">Welcome to the guest demo</h2>
         <p className="mb-2">This document is a shared space where everyone can contribute live.</p>
-        <ul className="mb-4 space-y-1 list-disc list-inside">
+        <ul className="mb-4 list-inside list-disc space-y-1">
           <li>Add your ideas freely</li>
           <li>Comment inline</li>
           <li>Chat with collaborators</li>
@@ -58,9 +51,7 @@ export default function ChatPanel({
 
   const activeUser = collaborators.find((c) => c.id === activeChatUser);
   const filteredMessages = messages.filter(
-    (m) =>
-      (m.sender === 'You' && m.recipient === activeChatUser) ||
-      (m.sender === activeChatUser && m.recipient === 'You'),
+    (m) => (m.sender === 'You' && m.recipient === activeChatUser) || (m.sender === activeChatUser && m.recipient === 'You'),
   );
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -79,43 +70,31 @@ export default function ChatPanel({
   };
 
   return (
-    <section className="flex flex-col flex-1 overflow-hidden border-l border-zinc-700 bg-zinc-800">
-      <header className="flex items-center gap-4 px-6 py-4 border-b border-zinc-700">
+    <section className="flex flex-1 flex-col overflow-hidden border-l border-zinc-700 bg-zinc-800">
+      <header className="flex items-center gap-4 border-b border-zinc-700 px-6 py-4">
         {activeUser?.avatar ? (
-          <img
-            src={activeUser.avatar}
-            alt={activeUser.name}
-            className="w-10 h-10 rounded-full ring-2 ring-lime-400"
-            loading="lazy"
-          />
+          <img src={activeUser.avatar} alt={activeUser.name} className="h-10 w-10 rounded-full ring-2 ring-lime-400" loading="lazy" />
         ) : (
-          <div className="grid w-10 h-10 text-xs font-semibold text-gray-400 rounded-full select-none place-content-center bg-zinc-700">
+          <div className="grid h-10 w-10 place-content-center rounded-full bg-zinc-700 text-xs font-semibold text-gray-400 select-none">
             ?
           </div>
         )}
         <h2 className="text-xl font-semibold text-lime-400">{activeUser?.name}</h2>
       </header>
 
-      <div className="flex-1 px-6 py-4 space-y-4 overflow-y-auto">
+      <div className="flex-1 space-y-4 overflow-y-auto px-6 py-4">
         {filteredMessages.map(({ id, sender, content, status }) => {
           const isUser = sender === 'You';
           return (
-            <div
-              key={id}
-              className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}
-              title={`${sender} says`}>
+            <div key={id} className={`flex ${isUser ? 'justify-end' : 'justify-start'}`} title={`${sender} says`}>
               <div
                 className={`max-w-[70%] rounded-xl px-4 py-2 break-words ${
-                  isUser
-                    ? 'rounded-br-none bg-lime-600 text-white'
-                    : 'rounded-bl-none bg-zinc-700 text-gray-300'
+                  isUser ? 'rounded-br-none bg-lime-600 text-white' : 'rounded-bl-none bg-zinc-700 text-gray-300'
                 }`}>
-                <p className="mb-1 font-semibold text-left text-gray-100 text-md">
-                  {!isUser && sender}
-                </p>
+                <p className="text-md mb-1 text-left font-semibold text-gray-100">{!isUser && sender}</p>
                 <p className="text-sm leading-snug">{content}</p>
                 {isUser && (
-                  <div className="flex items-center justify-end mt-1 space-x-1 text-xs">
+                  <div className="mt-1 flex items-center justify-end space-x-1 text-xs">
                     <span className="text-gray-300">You</span>
                     {renderStatusIcon(status)}
                   </div>
@@ -127,15 +106,13 @@ export default function ChatPanel({
         <div ref={messagesEndRef} />
       </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="flex items-center px-6 py-4 border-t border-zinc-700 bg-zinc-900">
+      <form onSubmit={handleSubmit} className="flex items-center border-t border-zinc-700 bg-zinc-900 px-6 py-4">
         <input
           type="text"
           placeholder={`Message ${activeUser?.name}...`}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="flex-grow px-4 py-3 mr-3 text-sm text-gray-200 border rounded-md border-zinc-600 bg-zinc-700 focus:ring-2 focus:ring-lime-400 focus:outline-none"
+          className="mr-3 flex-grow rounded-md border border-zinc-600 bg-zinc-700 px-4 py-3 text-sm text-gray-200 focus:ring-2 focus:ring-lime-400 focus:outline-none"
           aria-label="Chat message input"
           // autoFocus
         />
@@ -143,8 +120,8 @@ export default function ChatPanel({
           type="submit"
           disabled={!input.trim()}
           aria-label="Send message"
-          className="p-4 cursor-pointer transition bg-lime-200 rounded-md hover:bg-lime-400 disabled:cursor-not-allowed disabled:opacity-50">
-          <Send className="w-5 h-5 text-black" />
+          className="cursor-pointer rounded-md bg-lime-200 p-4 transition hover:bg-lime-400 disabled:cursor-not-allowed disabled:opacity-50">
+          <Send className="h-5 w-5 text-black" />
         </button>
       </form>
     </section>

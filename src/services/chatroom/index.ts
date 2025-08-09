@@ -1,13 +1,13 @@
 import type { ChatRoom } from "@/types/db";
+import { API } from "../api";
 
-const BASE_URL = `http://localhost:4000`
 
 
 type ChatRoomUpdatePayload = Partial<Omit<ChatRoom, 'id' | 'createdAt' | 'updatedAt' | 'messages'>>;
 
 export async function getChatRooms(): Promise<{ rooms: ChatRoom[]; error: string | null }> {
   try {
-    const res = await fetch(`${BASE_URL}/chatrooms`);
+    const res = await fetch(`${API}/chatrooms`);
     if (!res.ok) {
       if (res.status === 401) {
         return { rooms: [], error: 'Authentication required.' };
@@ -26,7 +26,7 @@ export async function getChatRooms(): Promise<{ rooms: ChatRoom[]; error: string
 
 export async function getChatRoomById(id: string): Promise<{ room: ChatRoom | null; error: string | null }> {
   try {
-    const res = await fetch(`${BASE_URL}/chatrooms/${id}`);
+    const res = await fetch(`${API}/chatrooms/${id}`);
     if (!res.ok) {
       if (res.status === 404) {
         return { room: null, error: 'Room not found.' };
@@ -47,7 +47,7 @@ export async function getChatRoomById(id: string): Promise<{ room: ChatRoom | nu
 
 export async function createChatRoom(name: string): Promise<{ success: boolean; room?: ChatRoom; error: string | null }> {
   try {
-    const res = await fetch(`${BASE_URL}/chatrooms`, {
+    const res = await fetch(`${API}/chatrooms`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name }),
@@ -68,7 +68,7 @@ export async function createChatRoom(name: string): Promise<{ success: boolean; 
 
 export async function updateChatRoom(id: string, updates: ChatRoomUpdatePayload): Promise<{ success: boolean; room?: ChatRoom; error: string | null }> {
   try {
-    const res = await fetch(`${BASE_URL}/chatrooms/${id}`, {
+    const res = await fetch(`${API}/chatrooms/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updates),
@@ -92,7 +92,7 @@ export async function updateChatRoom(id: string, updates: ChatRoomUpdatePayload)
 
 export async function deleteChatRoom(id: string): Promise<{ success: boolean; error: string | null }> {
   try {
-    const res = await fetch(`${BASE_URL}/chatrooms/${id}`, {
+    const res = await fetch(`${API}/chatrooms/${id}`, {
       method: 'DELETE',
     });
 

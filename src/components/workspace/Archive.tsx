@@ -19,15 +19,7 @@ interface ArchiveControlsProps {
   expanded: boolean;
 }
 
-export function ArchiveControls({
-  users,
-  showArchived,
-  onToggleArchiveView,
-  onArchive,
-  onUnarchive,
-  expanded,
-}: ArchiveControlsProps) {
-
+export function ArchiveControls({ users, showArchived, onToggleArchiveView, onArchive, onUnarchive, expanded }: ArchiveControlsProps) {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const archivedCount = users.filter((user) => user.isArchived).length;
 
@@ -55,7 +47,7 @@ export function ArchiveControls({
       {archivedCount > 0 && (
         <button
           onClick={onToggleArchiveView}
-          className="flex items-center gap-1 px-2 py-1 text-xs transition-colors rounded-full w-max bg-zinc-700 text-zinc-300 hover:bg-zinc-600"
+          className="flex w-max items-center gap-1 rounded-full bg-zinc-700 px-2 py-1 text-xs text-zinc-300 transition-colors hover:bg-zinc-600"
           title={showArchived ? 'Show active chats' : `View ${archivedCount} archived`}>
           <Archive size={12} />
           {showArchived ? 'Back' : archivedCount}
@@ -63,7 +55,7 @@ export function ArchiveControls({
       )}
 
       {users.map((user) => (
-        <div key={user.id} className="relative flex items-center group">
+        <div key={user.id} className="group relative flex items-center">
           <span className="mr-2 text-sm">{user.name}</span>
 
           {user.isArchived && <Archive size={12} className="mr-1 text-zinc-400" />}
@@ -71,7 +63,7 @@ export function ArchiveControls({
           <button
             type="button"
             onClick={(e) => handleToggleDropdown(user.id, e)}
-            className="p-1 transition-opacity rounded opacity-0 group-hover:opacity-100 hover:bg-zinc-600">
+            className="rounded p-1 opacity-0 transition-opacity group-hover:opacity-100 hover:bg-zinc-600">
             <MoreHorizontal size={12} />
           </button>
 
@@ -81,7 +73,7 @@ export function ArchiveControls({
                 <button
                   type="button"
                   onClick={(e) => handleUnarchive(user.id, e)}
-                  className="flex items-center w-full gap-2 px-3 py-2 text-sm text-left rounded-md hover:bg-zinc-700">
+                  className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm hover:bg-zinc-700">
                   <ArchiveRestore size={14} />
                   Unarchive
                 </button>
@@ -89,7 +81,7 @@ export function ArchiveControls({
                 <button
                   type="button"
                   onClick={(e) => handleArchive(user.id, e)}
-                  className="flex items-center w-full gap-2 px-3 py-2 text-sm text-left rounded-md hover:bg-zinc-700">
+                  className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm hover:bg-zinc-700">
                   <Archive size={14} />
                   Archive
                 </button>

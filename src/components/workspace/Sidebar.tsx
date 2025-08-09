@@ -2,9 +2,8 @@
 
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight, MoreHorizontal, Archive, ArchiveRestore } from 'lucide-react';
-import { SearchComponent } from './Search';
+import { SettingsButton, SearchComponent } from '../ui';
 import SettingsPanel from './SettingsPanel';
-import SettingsButton from '../ui/SettingsButton';
 
 interface User {
   id: string;

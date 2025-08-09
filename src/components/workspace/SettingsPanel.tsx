@@ -1,5 +1,8 @@
 'use client';
 
+import { ActionButton } from '../ui/Buttons';
+import { Toggle } from '../ui/Toggle';
+
 export interface SettingsPanelProps {
   expanded: boolean;
   onClose: () => void;
@@ -25,6 +28,11 @@ export default function SettingsPanel({
 }: SettingsPanelProps) {
   if (!expanded) return null;
 
+  const toggles = [
+    { id: 'dark-mode-toggle', label: 'Dark Mode', checked: darkMode, onChange: toggleDarkMode },
+    { id: 'notifications-toggle', label: 'Notifications', checked: notificationsEnabled, onChange: toggleNotifications },
+  ];
+
   return (
     <div className="absolute z-20 flex h-full w-72 flex-col border-l border-zinc-700 bg-zinc-900 p-4 text-gray-300 shadow-lg">
       <div className="mb-4 flex items-center justify-between">
@@ -35,27 +43,12 @@ export default function SettingsPanel({
       </div>
 
       <div className="flex flex-col gap-4">
-        <label className="flex items-center gap-2">
-          <input type="checkbox" checked={darkMode} onChange={toggleDarkMode} className="cursor-pointer accent-lime-400" />
-          Dark Mode
-        </label>
+        {toggles.map(({ id, label, checked, onChange }) => (
+          <Toggle key={id} id={id} label={label} checked={checked} onChange={onChange} />
+        ))}
 
-        <label className="flex items-center gap-2">
-          <input type="checkbox" checked={notificationsEnabled} onChange={toggleNotifications} className="cursor-pointer accent-lime-400" />
-          Notifications
-        </label>
-
-        <button
-          onClick={clearChatHistory}
-          className="mt-4 cursor-pointer rounded-xl bg-gradient-to-r from-red-500 via-rose-500 to-pink-400 px-3 py-2 font-medium text-zinc-900 shadow-lg shadow-red-500/30 transition-all duration-200 hover:scale-105 hover:from-red-400 hover:via-rose-400 hover:to-orange-200">
-          Clear Chat History
-        </button>
-
-        <button
-          onClick={toggleSidebar}
-          className="mt-4 cursor-pointer rounded-xl bg-orange-200 px-3 py-2 font-semibold text-zinc-900 shadow-lg shadow-orange-500/30 transition-all duration-200 hover:scale-105 hover:border-2 hover:border-amber-700 hover:bg-orange-300 hover:text-black">
-          {sidebarExpanded ? 'Collapse Sidebar' : 'Expand Sidebar'}
-        </button>
+        <ActionButton label="Clear Chat History" onClick={clearChatHistory} variant="danger" />
+        <ActionButton label={sidebarExpanded ? 'Collapse Sidebar' : 'Expand Sidebar'} onClick={toggleSidebar} variant="sidebar" />
       </div>
     </div>
   );

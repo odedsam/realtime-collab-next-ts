@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useQueryClient } from '@tanstack/react-query';
 import { User } from '@/types';
-
+import { API } from '@/services';
 interface ReceivedMessage {
   id: string;
   message: string;
@@ -27,11 +27,10 @@ export const useChatSocket = (roomId: string) => {
   useEffect(() => {
     if (!roomId) return;
 
-    const newSocket = io('http://localhost:4000', { transports: ['websocket'] });
+    const newSocket = io(`${API}`, { transports: ['websocket'] });
     setSocket(newSocket);
 
     newSocket.emit('join_room', roomId);
-
     newSocket.on('receive_message', (msg: ReceivedMessage) => {
       setMessages((prev) => {
         const hasTemp = prev.some(

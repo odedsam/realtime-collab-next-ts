@@ -5,9 +5,9 @@ import { getChatRooms, createChatRoom } from '@/services/chatroom';
 import { ChatRoom } from '@/types/db';
 import { Button } from '@/components/ui/Buttons';
 import { ErrorMsg, Loading } from '@/components/feedback';
+import { MessageCircle } from 'lucide-react';
 import Link from 'next/link';
 import CreateRoomModal from '@/components/rooms/CreateRoomModal';
-import { MessageCircle } from 'lucide-react';
 
 export default function ChatRoomsPage() {
   const [rooms, setRooms] = useState<ChatRoom[]>([]);
@@ -48,8 +48,8 @@ export default function ChatRoomsPage() {
     <section className="min-h-screen bg-zinc-900 p-8 text-cyan-300">
       <div className="mx-auto max-w-3xl">
         <div className="mb-8 flex items-center justify-between">
-          <h1 className="text-3xl font-bold tracking-tight flex justify-center items-center gap-x-4">
-            Chat Rooms  <MessageCircle className='size-8 text-lime-200'/>
+          <h1 className="flex items-center justify-center gap-x-4 text-3xl font-bold tracking-tight">
+            Chat Rooms <MessageCircle className="size-8 text-lime-200" />
           </h1>
           <Button
             onClick={() => setModalOpen(true)}

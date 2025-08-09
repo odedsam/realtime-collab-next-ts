@@ -13,6 +13,6 @@ export async function sendToAI(messages: { role: 'user' | 'assistant'; content: 
 
 // usage
 /* const answer = await sendToAI([
-  { role: 'user', content: 'מה זה LLM ולמה זה חשוב?' }
+  { role: 'user', content: 'Some Meesage From the Ai ' }
 ]);
  */

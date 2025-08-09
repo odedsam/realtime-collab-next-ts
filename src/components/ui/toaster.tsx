@@ -10,7 +10,6 @@ export const Toaster = () => {
       toastOptions={{
         classNames: {
           toast: "bg-primary border border-quinary rounded-lg text-white",
-
           title: "text-white font-medium",
           description: "text-white/90",
           closeButton: "text-white/70 hover:text-white border-quinary",

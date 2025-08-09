@@ -3,6 +3,8 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/utils';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { GoogleIcon, FacebookIcon } from '@/data/icons';
+import { Settings } from 'lucide-react';
+
 import Link from 'next/link';
 
 const buttonVariants = cva(
@@ -45,6 +47,34 @@ const buttonVariants = cva(
   },
 );
 
+const actionButton = cva('mt-4 cursor-pointer rounded-xl px-3 py-2 font-medium transition-all duration-200 hover:scale-105 shadow-lg', {
+  variants: {
+    variant: {
+      danger:
+        'bg-gradient-to-r from-red-500 via-rose-500 to-pink-400 text-zinc-900 shadow-red-500/30 hover:from-red-400 hover:via-rose-400 hover:to-orange-200',
+      sidebar:
+        'bg-orange-200 font-semibold text-zinc-900 shadow-orange-500/30 hover:border-2 hover:border-amber-700 hover:bg-orange-300 hover:text-black',
+    },
+  },
+  defaultVariants: {
+    variant: 'sidebar',
+  },
+});
+
+export interface AuthButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
+  label: string;
+  disabled?: boolean;
+  onClick?: () => void;
+  className?: string;
+}
+
+export interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof actionButton> {
+  label: string;
+  onClick: () => void;
+  variant?: 'danger' | 'sidebar';
+  className?: string;
+}
+
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof buttonVariants> {
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
@@ -53,7 +83,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   full?: boolean;
 }
 
-interface CarouselButtonProps {
+export interface CarouselButtonProps {
   direction: 'prev' | 'next';
   onClick: () => void;
   disabled?: boolean;
@@ -110,13 +140,6 @@ export const CarouselButton = ({ direction, onClick, disabled, className }: Caro
   />
 );
 
-interface AuthButtonProps {
-  label: string;
-  disabled?: boolean;
-  onClick?: () => void;
-  className?: string;
-}
-
 export const FacebookButton = ({ onClick, disabled, label, className }: AuthButtonProps) => {
   return (
     <button
@@ -144,6 +167,34 @@ export const GoogleButton = ({ onClick, disabled, label, className }: AuthButton
       disabled={disabled}
       onClick={onClick}>
       <GoogleIcon />
+      {label}
+    </button>
+  );
+};
+
+export interface SettingsButtonProps {
+  expanded: boolean;
+  onOpenSettings: () => void;
+  className?: string;
+}
+
+export const SettingsButton = ({ expanded, onOpenSettings, className }: SettingsButtonProps) => {
+  return (
+    <div className={cn(`flex border-t border-zinc-700 p-3 ${expanded ? 'px-4' : ''}`, className)}>
+      <button
+        type="button"
+        onClick={onOpenSettings}
+        className="flex gap-2 rounded-md px-3 py-2 text-sm text-lime-200 hover:bg-zinc-700"
+        title="Settings">
+        <Settings size={18} />
+        {expanded && <span>Settings</span>}
+      </button>
+    </div>
+  );
+};
+export const ActionButton = ({ label, onClick, variant, className, ...props }: ActionButtonProps) => {
+  return (
+    <button onClick={onClick} className={cn(actionButton({ variant }), className)} {...props}>
       {label}
     </button>
   );
@@ -183,3 +234,15 @@ export const GoogleButton = ({ onClick, disabled, label, className }: AuthButton
   Full Width Button
 </Button>
  */
+
+/* Usage :
+<ActionButton label="Clear Chat History" onClick={clearChatHistory} variant="danger" />
+
+<ActionButton
+  label={sidebarExpanded ? 'Collapse Sidebar' : 'Expand Sidebar'}
+  onClick={toggleSidebar}
+  variant="sidebar"
+/>
+
+
+*/

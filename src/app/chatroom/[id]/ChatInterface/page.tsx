@@ -4,11 +4,11 @@ import type { ModalState } from '@/types/components';
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
+import { Modal, Button } from '@/components/ui';
+import { Loading, ErrorMsg } from '@/components/feedback';
 import { getChatRoomById } from '@/services/chatroom';
 import { useChatSocket } from '@/hooks/useChatSocket';
-import { Modal, Loading, ErrorMsg } from '@/components/feedback';
 import MessagesList from '@/components/rooms/MessagesList';
-import { Button } from '@/components/ui/Buttons';
 
 export default function ChatRoomPage() {
   const { id: roomId } = useParams<{ id: string }>();
