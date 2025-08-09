@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { login } from '@/services/user';
 import { useAuthStore } from '@/store/useAuth';
@@ -24,5 +24,9 @@ export default function LoginPage() {
     }
   };
 
-  return <AuthForm mode="testlogin" onSubmit={handleLogin} error={error} />;
+  return (
+    <div className="bg-gradient-to-br from-zinc-900 via-zinc-800 to-black">
+      <AuthForm mode="login" onSubmit={handleLogin} error={error} />
+    </div>
+  );
 }

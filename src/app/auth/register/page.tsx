@@ -33,5 +33,9 @@ export default function SignupPage() {
     }
   };
 
-  return <AuthForm mode="signup" onSubmit={handleSignup} error={error} />;
+  return (
+    <div className="bg-gradient-to-br from-zinc-900 via-zinc-800 to-black">
+      <AuthForm mode="signup" onSubmit={handleSignup} error={error} />;
+    </div>
+  );
 }

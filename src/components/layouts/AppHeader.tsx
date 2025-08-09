@@ -4,7 +4,10 @@ import { useAuthStore } from '@/store/useAuth';
 import Link from 'next/link';
 import HamburgerButton from '@/components/layouts/HamburgerButton';
 import MobileMenu from '@/components/layouts/MobileMenu';
-import UserAvatar from '../ui/UserAvatar';
+import UserAvatar from './UserAvatar';
+import { NavLinks } from './AppLinks';
+
+export interface AppLinksProps {}
 
 export default function AppHeader() {
   const { user } = useAuthStore();
@@ -19,24 +22,7 @@ export default function AppHeader() {
           RealTimeCollab
         </Link>
 
-        <nav className="hidden items-center gap-8 text-sm font-medium text-zinc-300 md:flex">
-          <Link href="/#features" className="transition-colors hover:text-yellow-200">
-            Features
-          </Link>
-          <Link href="/#demo" className="transition-colors hover:text-yellow-200">
-            Live Demo
-          </Link>
-          <Link href="/#usecases" className="transition-colors hover:text-yellow-200">
-            Use Cases
-          </Link>
-           <Link href="/chatroom" className="transition-colors hover:text-yellow-200">
-           Chat Rooms
-          </Link>
-          <Link href="/ask-ai" className="transition-colors hover:text-yellow-200">
-            Ask AI
-          </Link>
-        </nav>
-
+        <NavLinks />
         <div className="hidden items-center gap-4 md:flex">
           {user?.id ? (
             <>

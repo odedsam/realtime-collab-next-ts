@@ -1,39 +1,38 @@
-// src/data/mock.ts
 export const guestDemoData = {
   document: {
     id: 'demo-doc',
-    title: '🚀 AI Brainstorm – July 2025',
+    title: ' AI Brainstorm – July 2025',
     content: `
 # AI Product Brainstorming Document
 
 ---
 
-## 🔮 Future Features:
+##  Future Features:
 - Multimodal Input (Voice, Image, Video)
 - Real-time AI Pair Programming
 - Personalized GPTs for teams
 - Browser Automation with Language
 
-## 🧠 Technical Ideas:
+##  Technical Ideas:
 - Edge inference with WASM + quantized models
 - Real-time vector search in local memory
 - WebRTC AI voice streaming
 - Incremental CRDT syncing (low-latency)
 
-## 🧑‍🤝‍🧑 Collaboration Ideas:
+##  Collaboration Ideas:
 - Typing presence avatars
 - Real-time suggestion feedback
 - Timed comment threads
 - “Explain this section” via GPT shortcut
 
-## 🎯 Product Vision:
+##  Product Vision:
 > *“One workspace. Infinite minds.”*
 
 A shared space where humans and AI co-create – fully in sync.
 
 ---
 
-## 🔥 Hot Topics:
+##  Hot Topics:
 - [ ] Ownership of AI content
 - [ ] Ethical watermarking
 - [ ] AI Assistants in regulated fields
@@ -42,7 +41,7 @@ A shared space where humans and AI co-create – fully in sync.
 
 ---
 
-## 📅 Weekly Goals:
+##  Weekly Goals:
 - [x] Live typing sync
 - [x] Document versioning
 - [ ] AI summarizer (WIP)
@@ -50,10 +49,10 @@ A shared space where humans and AI co-create – fully in sync.
 
 ---
 
-## 📝 Notes:
+##  Notes:
 > Alice: “Try integrating Whisper for voice”
 > Ben: “Latency under 100ms is killer”
-> Guest9423: “This UI slaps 😍”
+> Guest9423: “This UI slaps ”
     `.trim(),
     lastUpdated: new Date().toISOString(),
   },
@@ -67,7 +66,7 @@ A shared space where humans and AI co-create – fully in sync.
     {
       id: 'msg-1',
       sender: 'Alice',
-      content: 'Whisper integration sounds 🔥',
+      content: 'Whisper integration sounds ',
       timestamp: Date.now() - 1000 * 60 * 8,
     },
     {
@@ -92,12 +91,12 @@ A shared space where humans and AI co-create – fully in sync.
   info: {
     guestMode: true,
     banner:
-      '👋 You’re in Guest Mode. Viewing only. Sign in to create and edit your own documents.',
+      ' You’re in Guest Mode. Viewing only. Sign in to create and edit your own documents.',
     tips: [
-      '🧠 Brainstorm live with your team',
-      '💬 Chat with collaborators',
-      '🔒 Sign in to save and share',
-      '✨ Experience real-time presence',
+      ' Brainstorm live with your team',
+      ' Chat with collaborators',
+      ' Sign in to save and share',
+      ' Experience real-time presence',
     ],
   },
 }

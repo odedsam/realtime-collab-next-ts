@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect } from 'react';
-import Image from 'next/image';
 import { useAuthStore } from '@/store/useAuth';
-import { Button } from './Buttons';
-import Link from 'next/link';
+import { Button } from '../ui/Buttons';
 import { Loading } from '../feedback';
 import { LogOut } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function UserAvatar() {
   const user = useAuthStore((s) => s.user);
