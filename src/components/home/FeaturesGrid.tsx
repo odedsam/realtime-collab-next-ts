@@ -10,23 +10,19 @@ const features = [
 
 export default function FeaturesGrid() {
   return (
-    <section className="w-full py-20 bg-gradient-to-b from-black via-zinc-900 to-zinc-950">
-      <div className="grid max-w-6xl grid-cols-1 gap-12 px-6 mx-auto sm:grid-cols-2 lg:grid-cols-3">
+    <section id="features" className="w-full bg-gradient-to-b from-black via-zinc-900 to-zinc-950 py-20">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-12 px-6 sm:grid-cols-2 lg:grid-cols-3">
         {features.map(({ text, Icon }, i) => (
           <div
             key={i}
-            className="flex flex-col items-center p-10 transition-transform border border-lime-500/40 shadow-xl select-none rounded-3xl bg-gradient-to-tr from-zinc-800 via-zinc-900 to-zinc-800 hover:scale-105 hover:shadow-lime-500/20"
-          >
-            <div className="flex items-center justify-center w-20 h-20 mb-6 bg-lime-900/20 rounded-full shadow-inner">
-              <Icon className="w-10 h-10 text-lime-300" />
+            className="flex flex-col items-center rounded-3xl border border-lime-500/40 bg-gradient-to-tr from-zinc-800 via-zinc-900 to-zinc-800 p-10 shadow-xl transition-transform select-none hover:scale-105 hover:shadow-lime-500/20">
+            <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-lime-900/20 shadow-inner">
+              <Icon className="h-10 w-10 text-lime-300" />
             </div>
-            <p className="max-w-xs text-lg font-semibold leading-relaxed text-center text-lime-200">
-              {text}
-            </p>
+            <p className="max-w-xs text-center text-lg leading-relaxed font-semibold text-lime-200">{text}</p>
           </div>
         ))}
       </div>
     </section>
   );
 }
-
