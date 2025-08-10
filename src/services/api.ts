@@ -1,1 +1,1 @@
-export const API = process.env.BASE_URL! || 'http://localhost:4000';
+export const API = 'https://realtime-collab-server.onrender.com';
