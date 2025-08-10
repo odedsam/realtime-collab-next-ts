@@ -4,11 +4,13 @@ import { X } from 'lucide-react';
 import { useCloseMobileMenu, useIsMenuOpen } from '@/store/useUiStore';
 
 const menuItems = [
-  { href: '#features', label: 'Features' },
-  { href: '#demo', label: 'Live Demo' },
-  { href: '#usecases', label: 'Use Cases' },
+  { href: '/#features', label: 'Features' },
+  { href: '/#demo', label: 'Live Demo' },
+  { href: '/#usecases', label: 'Use Cases' },
   { href: '/auth/login', label: 'Login' },
   { href: '/auth/register', label: 'Sign Up' },
+  { href: '/chatroom', label: 'Chat Rooms' },
+  { href: '/ask-ai', label: 'Ask AI' },
 ];
 
 export default function MobileMenu() {
